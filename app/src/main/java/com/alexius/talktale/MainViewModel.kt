@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexius.core.domain.usecases.app_entry.ReadAppEntry
+import com.alexius.talktale.presentation.navgraph.Route
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
@@ -19,17 +20,17 @@ class MainViewModel @Inject constructor(
     private val _splashCondition = mutableStateOf(true)
     val splashCondition: State<Boolean> = _splashCondition
 
- /*   private val _startDestination = mutableStateOf(Route.AppStartNavigation.route)
+    private val _startDestination = mutableStateOf(Route.AppStartNavigation.route)
     val startDestination: State<String> = _startDestination
-*/
+
     init {
         readAppEntry().onEach { shouldStartFromHomeScreen ->
-            /*if(shouldStartFromHomeScreen){
-                _startDestination.value = Route.NewsNavigation.route
+            if(shouldStartFromHomeScreen){
+                _startDestination.value = Route.TalkTaleNavigation.route
             }else{
                 _startDestination.value = Route.AppStartNavigation.route
-            }*/
-            delay(2000) //Without this delay, the onBoarding screen will show for a momentum.
+            }
+            delay(300) //Without this delay, the onBoarding screen will show for a momentum.
             _splashCondition.value = false
         }.launchIn(viewModelScope)
     }

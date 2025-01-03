@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 private val LightColorScheme = lightColorScheme(
     primary = Green,
     secondary = Orange,
+    background = WhitePale,
 )
 
 @Composable
