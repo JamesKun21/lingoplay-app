@@ -2,10 +2,10 @@ package com.alexius.talktale.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val Green = Color(0xFF149154)
+val LightGreen = Color(0xFFD1F0DF)
+val Orange = Color(0xFFFF8B2D)
+val LightOrange = Color(0xFFFFE7CC)
+val Grey = Color(0xFFCCD0CF)
+val White = Color(0xFFEDF6F2)
+val Black = Color(0xFF212121)
