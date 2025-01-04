@@ -42,7 +42,7 @@ fun NavGraphEntry(modifier: Modifier = Modifier) {
             }
         }
 
-       /* navigation(
+      /*  navigation(
             route = Route.SignDisplay.route,
             startDestination = Route.SignUpScreen.route
         ){
@@ -61,7 +61,6 @@ fun NavGraphEntry(modifier: Modifier = Modifier) {
             ){
                 SignInScreen()
             }
-            )
         }*/
 
     }
