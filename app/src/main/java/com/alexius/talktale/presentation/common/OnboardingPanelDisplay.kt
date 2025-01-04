@@ -100,7 +100,7 @@ fun OnboardingPanelDisplay(
             Spacer(modifier = modifier
                 .fillMaxWidth()
                 .height(10.dp))
-            it
+            it()
         }
     }
 }
@@ -114,7 +114,14 @@ private fun OnboardingPanelDisplayPrev() {
             title = "Pilih Ceritamu, Mulai Petualangan Seru",
             description = "Ambil cerita dari rak ajaib dan belajar bahasa Inggris sambil menikmati kisah seru!",
             onClickMainButton = {},
-            mainButtonText = "Lanjut"
+            mainButtonText = "Lanjut",
+            underButtonContent = {
+                Text(
+                    text = "Lewati",
+                    style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.primary),
+                    textAlign = TextAlign.Center
+                )
+            }
         )
     }
 }

@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.alexius.talktale.presentation.navgraph_entry.NavGraphEntry
 
 @Composable
 fun NavGraph(
@@ -21,12 +22,12 @@ fun NavGraph(
     ){
         navigation(
             route = Route.AppStartNavigation.route,
-            startDestination = Route.OnBoardingScreen.route
+            startDestination = Route.NavigationEntry.route
         ){
             composable(
-                route = Route.OnBoardingScreen.route
+                route = Route.NavigationEntry.route
             ){
-
+                NavGraphEntry()
             }
         }
     }

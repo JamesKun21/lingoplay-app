@@ -43,7 +43,7 @@ val Typography = Typography(
         lineHeight = 24.sp,
     ),
     labelSmall = TextStyle(
-        fontSize = 13.sp,
+        fontSize = 12.sp,
         fontFamily = Poppins,
         fontWeight = FontWeight.Normal,
         lineHeight = 19.sp,
