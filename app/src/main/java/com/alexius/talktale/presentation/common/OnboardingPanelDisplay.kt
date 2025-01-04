@@ -97,7 +97,7 @@ fun OnboardingPanelDisplay(
         ){
             Text(
                 text = mainButtonText,
-                style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
+                style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold, color = Color.White),
                 textAlign = TextAlign.Center
             )
         }
