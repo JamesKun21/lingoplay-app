@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
@@ -37,6 +38,24 @@ fun SignInScreen(
     val scrollState = rememberScrollState()
     var isLoading by remember { mutableStateOf(false) }
     var emailIsValid by remember { mutableStateOf(false) }
+
+    LaunchedEffect(uiState) {
+        when (uiState) {
+            is UIState.Loading -> {
+
+            }
+
+            is UIState.Success -> {
+                // Do something
+                isLoading = false
+            }
+
+            is UIState.Error -> {
+                // Do something
+                isLoading = false
+            }
+        }
+    }
 
     Column(
         modifier = modifier
@@ -93,24 +112,7 @@ fun SignInScreen(
         )
     }
 
-
     LoadingScreen(enableLoading = isLoading)
-
-    when (uiState) {
-        is UIState.Loading -> {
-
-        }
-
-        is UIState.Success -> {
-            // Do something
-            isLoading = false
-        }
-
-        is UIState.Error -> {
-            // Do something
-            isLoading = false
-        }
-    }
 
     Log.d("SignInScreen", "isLoading: $isLoading")
 }

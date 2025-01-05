@@ -35,7 +35,5 @@ sealed class Route(
 
     object MainNavigation : Route(route = "mainNavigation")
 
-    object TalkTaleNavigation : Route(route = "talkTaleNavigation")
-
     object MainNavigatorScreen : Route(route = "mainNavigator")
 }

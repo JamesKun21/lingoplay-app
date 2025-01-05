@@ -26,7 +26,7 @@ class MainViewModel @Inject constructor(
     init {
         readAppEntry().onEach { shouldStartFromHomeScreen ->
             if(shouldStartFromHomeScreen){
-                _startDestination.value = Route.TalkTaleNavigation.route
+                _startDestination.value = Route.MainNavigation.route
             }else{
                 _startDestination.value = Route.AppStartNavigation.route
             }
