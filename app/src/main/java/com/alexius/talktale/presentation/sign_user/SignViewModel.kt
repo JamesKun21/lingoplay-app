@@ -71,6 +71,12 @@ class SignViewModel @Inject constructor(
             is SignEvent.UpdateBirthDate -> {
                 _signUpState.value = signUpState.value.copy(birthDate = event.birthDate)
             }
+            is SignEvent.UpdatePhoneNumber -> {
+                _signUpState.value = signUpState.value.copy(phoneNumber = event.phoneNumber)
+            }
+            is SignEvent.SignUpWithEmail -> {
+
+            }
         }
     }
 

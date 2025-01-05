@@ -106,7 +106,7 @@ fun PhoneInputField(
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
 @Composable
-private fun NPhoneInputFieldPrev() {
+private fun PhoneInputFieldPrev() {
     TalkTaleTheme {
 
         var phoneNumber by remember { mutableStateOf("") }

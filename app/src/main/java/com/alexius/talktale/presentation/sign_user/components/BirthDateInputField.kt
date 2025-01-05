@@ -19,10 +19,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.alexius.talktale.presentation.navgraph_entry.NavGraphEntry
 import com.alexius.talktale.ui.theme.Green
 import com.alexius.talktale.ui.theme.Grey
 import com.alexius.talktale.ui.theme.LightGreen
 import com.alexius.talktale.ui.theme.Orange
+import com.alexius.talktale.ui.theme.TalkTaleTheme
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -106,5 +109,21 @@ fun BirthDateInputField(
                 )
             )
         }
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
+@Composable
+private fun BirthInputPrev() {
+    TalkTaleTheme {
+        var birthDate by remember { mutableStateOf("") }
+
+        BirthDateInputField(
+            inputText = birthDate,
+            onValueChange = {
+                birthDate = it
+            },
+            onDateConfirm = {}
+        )
     }
 }
