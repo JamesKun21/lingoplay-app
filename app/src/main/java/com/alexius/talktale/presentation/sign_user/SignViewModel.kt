@@ -1,20 +1,32 @@
 package com.alexius.talktale.presentation.sign_user
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alexius.core.domain.usecases.app_entry.ReadAppEntry
+import com.alexius.core.data.manager.AuthResponse
 import com.alexius.core.domain.usecases.app_entry.SaveAppEntry
+import com.alexius.core.domain.usecases.app_entry.SignInGoogle
+import com.alexius.core.util.UIState
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SignViewModel @Inject constructor(
-    private val saveAppEntryUsecase: SaveAppEntry
+    private val saveAppEntryUsecase: SaveAppEntry,
+    private val signInGoogle: SignInGoogle
 ): ViewModel(){
 
     private val _signInState = mutableStateOf(SignInState())
     val signInState: State<SignInState> = _signInState
+
+    private val _uiStateSignIn: MutableState<UIState<AuthResponse>> = mutableStateOf(UIState.Loading)
+    val uiStateSignIn: State<UIState<AuthResponse>> = _uiStateSignIn
 
     fun onEvent(event: SignEvent) {
         when (event) {
@@ -27,7 +39,25 @@ class SignViewModel @Inject constructor(
             is SignEvent.UpdatePassword -> {
                 _signInState.value = signInState.value.copy(password = event.password)
             }
+            is SignEvent.SignInWIthGoogle -> {
+                signInWithGoogle().onEach { response ->
+                    if (response is AuthResponse.Success) {
+                        saveAppEntry()
+                        _uiStateSignIn.value = UIState.Success(response)
+                    } else {
+                        val error = response as AuthResponse.Error
+                        _uiStateSignIn.value = UIState.Error(error.errorMessage)
+                    }
+                }.launchIn(viewModelScope)
+            }
+            is SignEvent.SignInWithEmail -> {
+
+            }
         }
+    }
+
+    private fun signInWithGoogle(): Flow<AuthResponse> {
+        return signInGoogle()
     }
 
     private fun saveAppEntry() {

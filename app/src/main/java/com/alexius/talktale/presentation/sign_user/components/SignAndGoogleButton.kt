@@ -20,6 +20,7 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,6 +50,9 @@ fun SignAndGoogleButton(
     onGoogleButtonClick: () -> Unit,
     enableGoogleButton: Boolean = true,
 ) {
+
+    val coroutineScope = rememberCoroutineScope()
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -106,7 +110,7 @@ fun SignAndGoogleButton(
         Spacer(modifier = modifier.height(20.dp))
 
         Button(
-            onClick = { onGoogleButtonClick() },
+            onClick = {  },
             enabled = enableGoogleButton,
             modifier = modifier.fillMaxWidth().height(44.dp),
             colors = ButtonDefaults.buttonColors(containerColor = White),

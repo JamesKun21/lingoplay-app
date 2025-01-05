@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.alexius.talktale.Greeting
 import com.alexius.talktale.presentation.navgraph_entry.NavGraphEntry
 
 @Composable
@@ -30,5 +31,15 @@ fun NavGraph(
                 NavGraphEntry()
             }
         }
+
+        navigation(
+            route = Route.MainNavigation.route,
+            startDestination = Route.MainNavigatorScreen.route
+        ){
+            composable(route = Route.MainNavigatorScreen.route){
+                Greeting("BERHASIL CUY")
+            }
+        }
+
     }
 }

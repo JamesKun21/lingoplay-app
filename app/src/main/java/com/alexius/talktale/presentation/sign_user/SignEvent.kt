@@ -5,4 +5,6 @@ sealed class SignEvent {
     object SaveAppEntry: SignEvent()
     data class UpdateEmail(val email: String): SignEvent()
     data class UpdatePassword(val password: String): SignEvent()
+    object SignInWIthGoogle: SignEvent()
+    object SignInWithEmail: SignEvent()
 }

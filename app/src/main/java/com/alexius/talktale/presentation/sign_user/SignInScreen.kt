@@ -16,7 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alexius.talktale.presentation.navgraph_entry.NavGraphEntry
+import com.alexius.core.data.manager.AuthResponse
+import com.alexius.core.util.UIState
+import com.alexius.talktale.presentation.common.LoadingScreen
 import com.alexius.talktale.presentation.sign_user.components.EmailInputField
 import com.alexius.talktale.presentation.sign_user.components.OptionalTextHint
 import com.alexius.talktale.presentation.sign_user.components.PasswordInputField
@@ -28,11 +30,11 @@ fun SignInScreen(
     modifier: Modifier = Modifier,
     event: (SignEvent) -> Unit,
     state: SignInState,
-    onSignInButtonClick: () -> Unit,
-    onSignUpButtonClick: () -> Unit
+    uiState: UIState<AuthResponse>,
+    onSignUpButtonClick: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
-
+    var isLoading by remember { mutableStateOf(false) }
     var emailIsValid by remember { mutableStateOf(false) }
 
     Column(
@@ -77,12 +79,28 @@ fun SignInScreen(
             .height(30.dp))
 
         SignAndGoogleButton(
-            enableSignButton = emailIsValid && state.password.isNotEmpty(),
-            onSignButtonClick = onSignInButtonClick,
+            enableSignButton = emailIsValid && state.password.isNotEmpty() && uiState !is UIState.Loading,
+            onSignButtonClick = { event(SignEvent.SignInWithEmail) },
             signButtonText = "Masuk",
-            onGoogleButtonClick = {},
-            enableGoogleButton = false
+            onGoogleButtonClick = { event(SignEvent.SignInWIthGoogle) },
+            enableGoogleButton = uiState !is UIState.Loading
         )
+    }
+
+    LoadingScreen(enableLoading = isLoading)
+
+    when (uiState) {
+        is UIState.Loading -> {
+            isLoading = true
+        }
+        is UIState.Success -> {
+            // Do something
+            isLoading = false
+        }
+        is UIState.Error -> {
+            // Do something
+            isLoading = false
+        }
     }
 }
 
@@ -93,8 +111,8 @@ private fun SignInPrev() {
         SignInScreen(
             event = {},
             state = SignInState(),
-            onSignInButtonClick = {},
-            onSignUpButtonClick = {}
+            onSignUpButtonClick = {},
+            uiState = UIState.Loading,
         )
     }
 }

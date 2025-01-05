@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.alexius.talktale.presentation.navgraph.NavGraph
 import com.alexius.talktale.ui.theme.TalkTaleTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.getValue
@@ -34,8 +35,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             TalkTaleTheme {
                 Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)){
-                    val startDestination = viewModel.startDestination
-                   /* NavGraph(startDestination = startDestination)*/
+                    val startDestination = viewModel.startDestination.value
+                    NavGraph(startDestination = startDestination)
                 }
             }
         }
