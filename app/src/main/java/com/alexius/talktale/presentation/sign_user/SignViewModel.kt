@@ -1,5 +1,6 @@
 package com.alexius.talktale.presentation.sign_user
 
+import android.app.Application
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -9,6 +10,10 @@ import com.alexius.core.data.manager.AuthResponse
 import com.alexius.core.domain.usecases.app_entry.SaveAppEntry
 import com.alexius.core.domain.usecases.app_entry.SignInGoogle
 import com.alexius.core.util.UIState
+import com.alexius.talktale.TalkApplication
+import com.google.firebase.FirebaseApp
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,9 +22,11 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class SignViewModel @Inject constructor(
     private val saveAppEntryUsecase: SaveAppEntry,
-    private val signInGoogle: SignInGoogle
+    private val signInGoogle: SignInGoogle,
+    private val application: Application
 ): ViewModel(){
 
     private val _signInState = mutableStateOf(SignInState())
@@ -47,6 +54,8 @@ class SignViewModel @Inject constructor(
                     } else {
                         val error = response as AuthResponse.Error
                         _uiStateSignIn.value = UIState.Error(error.errorMessage)
+                        delay(2000)
+                        _uiStateSignIn.value = UIState.Loading
                     }
                 }.launchIn(viewModelScope)
             }

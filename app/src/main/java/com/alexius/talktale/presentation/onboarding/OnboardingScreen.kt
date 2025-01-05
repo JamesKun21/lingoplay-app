@@ -44,7 +44,6 @@ fun OnboardingScreen(
                     Text(
                         text = "Lewati",
                         modifier = modifier
-                            .fillMaxWidth()
                             .clickable(onClick = {
                                 navigateTo(
                                     navController,
@@ -76,7 +75,7 @@ fun OnboardingScreen(
                 title = "Kenali Word Wizardmu",
                 description = "Belajar memperbaiki grammar dan kosakata kamu, membuatmu lebih jago di setiap cerita!",
                 onClickMainButton = {
-                    onSignInButtonClick
+                    onSignInButtonClick()
                 },
                 mainButtonText = "Masuk",
                 underButtonContent = {

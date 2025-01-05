@@ -23,8 +23,6 @@ fun NavGraphEntry(modifier: Modifier = Modifier) {
 
     val navController = rememberNavController()
 
-    val viewModel: SignViewModel = hiltViewModel()
-
     NavHost(
         startDestination = Route.OnBoardingDisplay.route,
         navController = navController,
@@ -69,6 +67,8 @@ fun NavGraphEntry(modifier: Modifier = Modifier) {
             composable(
                 route = Route.SignInScreen.route
             ){
+
+                val viewModel: SignViewModel = hiltViewModel()
 
                 if (viewModel.uiStateSignIn.value is UIState.Error){
                     val errorMessage = (viewModel.uiStateSignIn.value as UIState.Error).errorMessage

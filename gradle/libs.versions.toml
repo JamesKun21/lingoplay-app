@@ -22,7 +22,7 @@ navigationCompose = "2.8.5"
 foundation = "1.7.6"
 accompanistSystemuicontroller = "0.28.0"
 coilCompose = "2.4.0"
-googleGmsGoogleServices = "4.4.2"
+googleGmsGoogleServices = "4.4.0"
 firebaseAuth = "23.1.0"
 
 [libraries]

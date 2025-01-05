@@ -26,7 +26,10 @@ class AuthenticationManagerImplementation @Inject constructor(
 
     private val auth = Firebase.auth
 
-    override fun createAccountWithEmailPassword(email: String, password: String): Flow<AuthResponse> =
+    override fun createAccountWithEmailPassword(
+        email: String,
+        password: String
+    ): Flow<AuthResponse> =
         callbackFlow {
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
@@ -34,7 +37,10 @@ class AuthenticationManagerImplementation @Inject constructor(
                         trySend(AuthResponse.Success)
                     } else {
                         trySend(AuthResponse.Error(task.exception?.message ?: "Unknown error"))
-                        Log.d("AuthenticationManager", "createAccountWithEmailPassword: ${task.exception?.message}")
+                        Log.d(
+                            "AuthenticationManager",
+                            "createAccountWithEmailPassword: ${task.exception?.message}"
+                        )
                     }
                 }
             awaitClose()
@@ -48,7 +54,10 @@ class AuthenticationManagerImplementation @Inject constructor(
                         trySend(AuthResponse.Success)
                     } else {
                         trySend(AuthResponse.Error(task.exception?.message ?: "Unknown error"))
-                        Log.d("AuthenticationManager", "signInWithEmailPassword: ${task.exception?.message}")
+                        Log.d(
+                            "AuthenticationManager",
+                            "signInWithEmailPassword: ${task.exception?.message}"
+                        )
                     }
                 }
             awaitClose()
@@ -60,7 +69,7 @@ class AuthenticationManagerImplementation @Inject constructor(
         val md = MessageDigest.getInstance("SHA-256")
         val digest = md.digest(bytes)
 
-        return digest.fold(""){ str, it ->
+        return digest.fold("") { str, it ->
             str + "%02x".format(it)
         }
     }
@@ -70,7 +79,7 @@ class AuthenticationManagerImplementation @Inject constructor(
             val googleIdOption = GetGoogleIdOption.Builder()
                 .setFilterByAuthorizedAccounts(false)
                 .setServerClientId(WEB_CLIENT_ID)
-                .setAutoSelectEnabled(false)
+                .setAutoSelectEnabled(true)
                 .setNonce(createNonce())
                 .build()
 

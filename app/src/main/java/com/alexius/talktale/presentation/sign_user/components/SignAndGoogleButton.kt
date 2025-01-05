@@ -49,6 +49,7 @@ fun SignAndGoogleButton(
     signButtonText: String,
     onGoogleButtonClick: () -> Unit,
     enableGoogleButton: Boolean = true,
+    onError: () -> Unit = {},
 ) {
 
     val coroutineScope = rememberCoroutineScope()
@@ -110,7 +111,7 @@ fun SignAndGoogleButton(
         Spacer(modifier = modifier.height(20.dp))
 
         Button(
-            onClick = {  },
+            onClick = { onGoogleButtonClick() },
             enabled = enableGoogleButton,
             modifier = modifier.fillMaxWidth().height(44.dp),
             colors = ButtonDefaults.buttonColors(containerColor = White),

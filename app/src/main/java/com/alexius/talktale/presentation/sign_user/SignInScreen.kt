@@ -1,5 +1,6 @@
 package com.alexius.talktale.presentation.sign_user
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -79,29 +80,39 @@ fun SignInScreen(
             .height(30.dp))
 
         SignAndGoogleButton(
-            enableSignButton = emailIsValid && state.password.isNotEmpty() && uiState !is UIState.Loading,
-            onSignButtonClick = { event(SignEvent.SignInWithEmail) },
+            enableSignButton = emailIsValid && state.password.isNotEmpty() && !isLoading,
+            onSignButtonClick = {
+                event(SignEvent.SignInWithEmail)
+                isLoading = true },
             signButtonText = "Masuk",
-            onGoogleButtonClick = { event(SignEvent.SignInWIthGoogle) },
-            enableGoogleButton = uiState !is UIState.Loading
+            onGoogleButtonClick = {
+                event(SignEvent.SignInWIthGoogle)
+                isLoading = true
+            },
+            enableGoogleButton = !isLoading
         )
     }
+
 
     LoadingScreen(enableLoading = isLoading)
 
     when (uiState) {
         is UIState.Loading -> {
-            isLoading = true
+
         }
+
         is UIState.Success -> {
             // Do something
             isLoading = false
         }
+
         is UIState.Error -> {
             // Do something
             isLoading = false
         }
     }
+
+    Log.d("SignInScreen", "isLoading: $isLoading")
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
