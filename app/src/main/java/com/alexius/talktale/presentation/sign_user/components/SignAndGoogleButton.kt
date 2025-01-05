@@ -64,7 +64,7 @@ fun SignAndGoogleButton(
             enabled = enableSignButton,
             modifier = modifier.fillMaxWidth().height(44.dp),
             colors = ButtonDefaults.buttonColors(
-                disabledContainerColor = Green50,
+                disabledContainerColor = Green50.copy(alpha = 0.5f),
             ),
         ) {
             Text(

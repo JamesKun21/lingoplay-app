@@ -3,7 +3,7 @@ package com.alexius.talktale.ui.theme
 import androidx.compose.ui.graphics.Color
 
 val Green = Color(0xFF149154)
-val Green50 = Color(0xFFE0F4F0)
+val Green50 = Color(0xFF149154)
 val LightGreen = Color(0xFFD1F0DF)
 val Orange = Color(0xFFFF8B2D)
 val LightOrange = Color(0xFFFFE7CC)

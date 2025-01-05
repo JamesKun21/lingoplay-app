@@ -13,6 +13,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,8 +37,9 @@ fun SignInScreen(
     onSignUpButtonClick: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
-    var isLoading by remember { mutableStateOf(false) }
-    var emailIsValid by remember { mutableStateOf(false) }
+    var isLoading by rememberSaveable { mutableStateOf(false) }
+    var emailIsValid by rememberSaveable { mutableStateOf(false) }
+    var enableSignInButton by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(uiState) {
         when (uiState) {
@@ -55,6 +57,10 @@ fun SignInScreen(
                 isLoading = false
             }
         }
+    }
+
+    LaunchedEffect(emailIsValid, state.password, isLoading) {
+        enableSignInButton = emailIsValid && state.password.isNotEmpty() && !isLoading
     }
 
     Column(
@@ -99,7 +105,7 @@ fun SignInScreen(
             .height(30.dp))
 
         SignAndGoogleButton(
-            enableSignButton = emailIsValid && state.password.isNotEmpty() && !isLoading,
+            enableSignButton = enableSignInButton,
             onSignButtonClick = {
                 event(SignEvent.SignInWithEmail)
                 isLoading = true },

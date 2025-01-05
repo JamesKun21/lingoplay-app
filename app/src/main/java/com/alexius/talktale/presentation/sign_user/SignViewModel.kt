@@ -32,6 +32,9 @@ class SignViewModel @Inject constructor(
     private val _signInState = mutableStateOf(SignInState())
     val signInState: State<SignInState> = _signInState
 
+    private val _signUpState = mutableStateOf(SignUpState())
+    val signUpState: State<SignUpState> = _signUpState
+
     private val _uiStateSignIn: MutableState<UIState<AuthResponse>> = mutableStateOf(UIState.Loading)
     val uiStateSignIn: State<UIState<AuthResponse>> = _uiStateSignIn
 
@@ -61,6 +64,12 @@ class SignViewModel @Inject constructor(
             }
             is SignEvent.SignInWithEmail -> {
 
+            }
+            is SignEvent.UpdateFullName -> {
+                _signUpState.value = signUpState.value.copy(fullName = event.fullName)
+            }
+            is SignEvent.UpdateBirthDate -> {
+                _signUpState.value = signUpState.value.copy(birthDate = event.birthDate)
             }
         }
     }
