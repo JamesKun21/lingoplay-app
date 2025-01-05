@@ -116,7 +116,7 @@ fun OnboardingPanelDisplay(
 private fun OnboardingPanelDisplayPrev() {
     TalkTaleTheme {
         OnboardingPanelDisplay(
-            imageDrawable = R.drawable.girl_reading,
+            imageDrawable = R.drawable.girl_writing,
             title = "Pilih Ceritamu, Mulai Petualangan Seru",
             description = "Ambil cerita dari rak ajaib dan belajar bahasa Inggris sambil menikmati kisah seru!",
             onClickMainButton = {},

@@ -20,6 +20,7 @@ import com.alexius.talktale.presentation.navgraph_entry.NavGraphEntry
 import com.alexius.talktale.presentation.sign_user.components.EmailInputField
 import com.alexius.talktale.presentation.sign_user.components.OptionalTextHint
 import com.alexius.talktale.presentation.sign_user.components.PasswordInputField
+import com.alexius.talktale.presentation.sign_user.components.SignAndGoogleButton
 import com.alexius.talktale.ui.theme.TalkTaleTheme
 
 @Composable
@@ -74,6 +75,14 @@ fun SignInScreen(
         Spacer(modifier = modifier
             .fillMaxWidth()
             .height(30.dp))
+
+        SignAndGoogleButton(
+            enableSignButton = emailIsValid && state.password.isNotEmpty(),
+            onSignButtonClick = onSignInButtonClick,
+            signButtonText = "Masuk",
+            onGoogleButtonClick = {},
+            enableGoogleButton = false
+        )
     }
 }
 

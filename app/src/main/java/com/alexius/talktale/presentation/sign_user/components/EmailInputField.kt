@@ -33,7 +33,7 @@ fun EmailInputField(
 ) {
     var isError by remember { mutableStateOf(false) }
 
-    Column(modifier = modifier.fillMaxWidth()) {
+    Column(modifier = modifier.fillMaxWidth().padding(horizontal = 47.dp)) {
         OutlinedTextField(
             value = email,
             onValueChange = { input ->
@@ -55,8 +55,8 @@ fun EmailInputField(
                 keyboardType = KeyboardType.Email
             ),
             isError = isError,
-            modifier = modifier.fillMaxWidth().padding(horizontal = 47.dp),
             singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.medium,
             textStyle = MaterialTheme.typography.bodySmall,
             colors = OutlinedTextFieldDefaults.colors(

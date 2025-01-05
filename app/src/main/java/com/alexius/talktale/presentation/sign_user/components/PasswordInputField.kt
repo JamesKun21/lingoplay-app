@@ -61,11 +61,11 @@ fun PasswordInputField(
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .padding(horizontal = 47.dp)
     ) {
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 47.dp)
                 .semantics{ contentDescription = semanticContentDescription },
             value = text,
             onValueChange = onTextChanged,
@@ -125,7 +125,6 @@ fun PasswordInputField(
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 47.dp)
                     .semantics { contentDescription = "StrengthPasswordMessage" },
                 text = buildAnnotatedString {
                     withStyle(
@@ -164,7 +163,7 @@ private fun PasswordInputFieldPrev() {
             onTextChanged = {
                 password = it
             },
-            validateStrengthPassword = false,
+            validateStrengthPassword = true,
         )
     }
 }

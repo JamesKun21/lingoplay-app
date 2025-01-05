@@ -6,6 +6,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("kotlin-parcelize")
     id("dagger.hilt.android.plugin")
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -18,8 +19,8 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
-//        val properties = gradleLocalProperties(rootDir, providers = project.providers)
-//        buildConfigField("String", "NEWS_API", "\"${properties.getProperty("NEWS_API_TOKEN")}\"")
+        val properties = gradleLocalProperties(rootDir, providers = project.providers)
+        buildConfigField("String", "WEB_CLIENT_ID", "\"${properties.getProperty("WEB_CLIENT_ID")}\"")
     }
 
     buildTypes {
@@ -47,6 +48,19 @@ android {
 
 dependencies {
 
+    api(platform("com.google.firebase:firebase-bom:33.7.0"))
+
+    api("com.google.firebase:firebase-auth")
+    // Also add the dependency for the Google Play services library and specify its version
+    api("com.google.android.gms:play-services-auth:21.3.0")
+
+    //Credential Manager
+    api("androidx.credentials:credentials:1.5.0-beta01")
+    // optional - needed for credentials support from play services, for devices running
+    // Android 13 and below.
+    api("androidx.credentials:credentials-play-services-auth:1.5.0-beta01")
+    api ("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+
     //Datastore
     implementation (libs.androidx.datastore.preferences)
 
@@ -59,6 +73,7 @@ dependencies {
 
     //Room
     implementation (libs.androidx.room.runtime)
+    implementation(libs.firebase.auth)
     ksp (libs.androidx.room.compiler)
     implementation (libs.androidx.room.ktx)
 
