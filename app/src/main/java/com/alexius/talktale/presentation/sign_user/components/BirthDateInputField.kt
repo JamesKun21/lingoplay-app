@@ -31,7 +31,7 @@ import java.util.Locale
 @Composable
 fun BirthDateInputField(
     modifier: Modifier = Modifier,
-    placeHolderText: String,
+    placeHolderText: String = "Tanggal lahir",
     inputText: String,
     onValueChange: (String) -> Unit,
     onDateConfirm: (String) -> Unit
