@@ -13,4 +13,5 @@ sealed class SignEvent {
     data class SignInWIthGoogle(val callback: () -> Unit): SignEvent()
     data class SignInWithEmail(val callback: () -> Unit): SignEvent()
     data class SignUpWithEmail(val callback: () -> Unit): SignEvent()
+
 }

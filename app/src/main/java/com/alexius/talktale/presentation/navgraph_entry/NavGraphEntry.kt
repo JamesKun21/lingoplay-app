@@ -12,7 +12,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.alexius.core.util.UIState
-import com.alexius.talktale.Greeting
+import com.alexius.talktale.R
+import com.alexius.talktale.presentation.common.OnboardingPanelDisplay
 import com.alexius.talktale.presentation.navgraph.Route
 import com.alexius.talktale.presentation.onboarding.OnboardingScreen
 import com.alexius.talktale.presentation.sign_user.SignInScreen
@@ -90,7 +91,17 @@ fun NavGraphEntry(modifier: Modifier = Modifier) {
             composable(
                 route = Route.BridgeToSignInScreen.route
             ){
-                Greeting("Selamat datang")
+                OnboardingPanelDisplay(
+                    imageDrawable = R.drawable.student_raise,
+                    title = "Daftar Berhasil",
+                    description = "Akunmu berhasil dibuat. Sekarang masuk menggunakan akun yang terdaftar.",
+                    onClickMainButton = {
+                        navController.navigate(Route.SignInScreen.route) {
+                            launchSingleTop = true
+                        }
+                    },
+                    mainButtonText = "Masuk",
+                )
             }
 
             composable(

@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.alexius.core.data.manager.AuthResponse
 import com.alexius.core.domain.usecases.app_entry.SaveAppEntry
 import com.alexius.core.domain.usecases.app_entry.SignInGoogle
+import com.alexius.core.domain.usecases.app_entry.SignInWithEmail
 import com.alexius.core.domain.usecases.app_entry.SignUpWithEmail
 import com.alexius.core.util.UIState
 import com.alexius.talktale.TalkApplication
@@ -28,7 +29,7 @@ class SignViewModel @Inject constructor(
     private val saveAppEntryUsecase: SaveAppEntry,
     private val signInGoogle: SignInGoogle,
     private val signUpWithEmail: SignUpWithEmail,
-    private val application: Application
+    private val signInWithEmail: SignInWithEmail
 ): ViewModel(){
 
     private val _signInState = mutableStateOf(SignInState())
@@ -65,7 +66,17 @@ class SignViewModel @Inject constructor(
                 }.launchIn(viewModelScope)
             }
             is SignEvent.SignInWithEmail -> {
-
+                signInWithEmail(_signInState.value.email, _signInState.value.password).onEach { response ->
+                    if (response is AuthResponse.Success) {
+                        event.callback()
+                        _uiStateSignIn.value = UIState.Success(response)
+                    } else {
+                        val error = response as AuthResponse.Error
+                        _uiStateSignIn.value = UIState.Error(error.errorMessage)
+                        delay(2000)
+                        _uiStateSignIn.value = UIState.Loading
+                    }
+                }.launchIn(viewModelScope)
             }
             is SignEvent.UpdateEmailSignUp -> {
                 _signUpState.value = signUpState.value.copy(email = event.email)
