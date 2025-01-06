@@ -35,6 +35,7 @@ fun SignInScreen(
     state: SignInState,
     uiState: UIState<AuthResponse>,
     onSignUpButtonClick: () -> Unit,
+    onSignInSuccess: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
     var isLoading by rememberSaveable { mutableStateOf(false) }
@@ -107,11 +108,11 @@ fun SignInScreen(
         SignAndGoogleButton(
             enableSignButton = enableSignInButton,
             onSignButtonClick = {
-                event(SignEvent.SignInWithEmail)
+                event(SignEvent.SignInWithEmail(onSignInSuccess))
                 isLoading = true },
             signButtonText = "Masuk",
             onGoogleButtonClick = {
-                event(SignEvent.SignInWIthGoogle)
+                event(SignEvent.SignInWIthGoogle(onSignInSuccess))
                 isLoading = true
             },
             enableGoogleButton = !isLoading
@@ -132,6 +133,7 @@ private fun SignInPrev() {
             state = SignInState(),
             onSignUpButtonClick = {},
             uiState = UIState.Loading,
+            onSignInSuccess = {}
         )
     }
 }

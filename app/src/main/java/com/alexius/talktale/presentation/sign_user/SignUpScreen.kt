@@ -19,10 +19,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexius.core.data.manager.AuthResponse
 import com.alexius.core.util.UIState
+import com.alexius.talktale.presentation.common.LoadingScreen
 import com.alexius.talktale.presentation.sign_user.components.BirthDateInputField
 import com.alexius.talktale.presentation.sign_user.components.EmailInputField
 import com.alexius.talktale.presentation.sign_user.components.EmptyOutlineInputField
 import com.alexius.talktale.presentation.sign_user.components.OptionalTextHint
+import com.alexius.talktale.presentation.sign_user.components.PasswordInputField
 import com.alexius.talktale.presentation.sign_user.components.PhoneInputField
 import com.alexius.talktale.presentation.sign_user.components.SignAndGoogleButton
 import com.alexius.talktale.ui.theme.TalkTaleTheme
@@ -33,7 +35,8 @@ fun SignUoScreen(
     onSignInButtonClick: () -> Unit,
     state: SignUpState,
     event: (SignEvent) -> Unit,
-    uiState: UIState<AuthResponse>
+    uiState: UIState<AuthResponse>,
+    onSignUpSuccess: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
 
@@ -97,7 +100,7 @@ fun SignUoScreen(
 
         EmailInputField(
             email = state.email,
-            onValueChange = { event(SignEvent.UpdateEmail(it)) },
+            onValueChange = { event(SignEvent.UpdateEmailSignUp(it)) },
             onEmailAddressNotValid = { emailIsValid = false },
             onEmailAddressValid = { emailIsValid = true }
         )
@@ -108,8 +111,6 @@ fun SignUoScreen(
 
         BirthDateInputField(
             placeHolderText = "Tanggal lahir",
-            inputText = state.birthDate,
-            onValueChange = { event(SignEvent.UpdateBirthDate(it)) },
             onDateConfirm = { event(SignEvent.UpdateBirthDate(it)) }
         )
 
@@ -125,21 +126,36 @@ fun SignUoScreen(
 
         Spacer(modifier = modifier
             .fillMaxWidth()
+            .height(16.dp))
+
+        PasswordInputField(
+            text = state.password,
+            onTextChanged = { event(SignEvent.UpdatePasswordSignUp(it)) },
+            validateStrengthPassword = true,
+        )
+
+        Spacer(modifier = modifier
+            .fillMaxWidth()
             .height(29.dp))
+
+
 
         SignAndGoogleButton(
             enableSignButton = enableSignUpButton,
             onSignButtonClick = {
-                event(SignEvent.SignUpWithEmail)
+                event(SignEvent.SignUpWithEmail(onSignUpSuccess))
                 isLoading = true },
             signButtonText = "Daftar",
             onGoogleButtonClick = {
-                event(SignEvent.SignInWIthGoogle)
+                event(SignEvent.SignInWIthGoogle(onSignUpSuccess))
                 isLoading = true
             },
-            enableGoogleButton = !isLoading
+            enableGoogleButton = !isLoading,
+
         )
     }
+
+    LoadingScreen(enableLoading = isLoading)
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
@@ -150,7 +166,8 @@ private fun SignUpScreenPrev() {
             onSignInButtonClick = {},
             state = SignUpState(),
             event = {},
-            uiState = UIState.Loading
+            uiState = UIState.Loading,
+            onSignUpSuccess = {}
         )
     }
 }

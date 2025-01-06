@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -25,19 +26,20 @@ fun EmptyOutlineInputField(
     modifier: Modifier = Modifier,
     placeHolderText: String,
     inputText: String,
+    errorCondition: Boolean = false,
     onValueChange: (String) -> Unit,
     onInputFieldEmpty: () -> Unit = {},
     onInputFieldFilled: () -> Unit = {},
     trailingIcon: @Composable (() -> Unit)? = null,
 ) {
-    var isError by remember { mutableStateOf(false) }
+    var isError by rememberSaveable() { mutableStateOf(false) }
 
     Column(modifier = modifier.fillMaxWidth().padding(horizontal = 47.dp)) {
         OutlinedTextField(
             value = inputText,
             onValueChange = { input ->
                 onValueChange(input)
-                isError = input.isEmpty()
+                isError = input.isEmpty() || errorCondition
                 if (isError) {
                     onInputFieldEmpty()
                 } else {

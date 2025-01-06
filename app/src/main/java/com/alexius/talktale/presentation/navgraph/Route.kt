@@ -15,6 +15,8 @@ sealed class Route(
 
     object OnBoarding3Screen : Route(route = "onBoarding3Screen")
 
+    object BridgeToSignInScreen : Route(route = "bridgeToSignInScreen")
+
     object SignDisplay : Route(route = "signDisplay")
 
     object SignUpScreen : Route(route = "signUpScreen")

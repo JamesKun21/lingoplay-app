@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.alexius.core.data.manager.AuthResponse
 import com.alexius.core.domain.usecases.app_entry.SaveAppEntry
 import com.alexius.core.domain.usecases.app_entry.SignInGoogle
+import com.alexius.core.domain.usecases.app_entry.SignUpWithEmail
 import com.alexius.core.util.UIState
 import com.alexius.talktale.TalkApplication
 import com.google.firebase.FirebaseApp
@@ -26,6 +27,7 @@ import javax.inject.Inject
 class SignViewModel @Inject constructor(
     private val saveAppEntryUsecase: SaveAppEntry,
     private val signInGoogle: SignInGoogle,
+    private val signUpWithEmail: SignUpWithEmail,
     private val application: Application
 ): ViewModel(){
 
@@ -52,7 +54,7 @@ class SignViewModel @Inject constructor(
             is SignEvent.SignInWIthGoogle -> {
                 signInWithGoogle().onEach { response ->
                     if (response is AuthResponse.Success) {
-                        saveAppEntry()
+                        event.callback()
                         _uiStateSignIn.value = UIState.Success(response)
                     } else {
                         val error = response as AuthResponse.Error
@@ -65,6 +67,12 @@ class SignViewModel @Inject constructor(
             is SignEvent.SignInWithEmail -> {
 
             }
+            is SignEvent.UpdateEmailSignUp -> {
+                _signUpState.value = signUpState.value.copy(email = event.email)
+            }
+            is SignEvent.UpdatePasswordSignUp -> {
+                _signUpState.value = signUpState.value.copy(password = event.password)
+            }
             is SignEvent.UpdateFullName -> {
                 _signUpState.value = signUpState.value.copy(fullName = event.fullName)
             }
@@ -75,7 +83,17 @@ class SignViewModel @Inject constructor(
                 _signUpState.value = signUpState.value.copy(phoneNumber = event.phoneNumber)
             }
             is SignEvent.SignUpWithEmail -> {
-
+                signUpWithEmail(_signUpState.value.email, _signUpState.value.password).onEach { response ->
+                    if (response is AuthResponse.Success) {
+                        event.callback()
+                        _uiStateSignIn.value = UIState.Success(response)
+                    } else {
+                        val error = response as AuthResponse.Error
+                        _uiStateSignIn.value = UIState.Error(error.errorMessage)
+                        delay(2000)
+                        _uiStateSignIn.value = UIState.Loading
+                    }
+                }.launchIn(viewModelScope)
             }
         }
     }
@@ -84,7 +102,7 @@ class SignViewModel @Inject constructor(
         return signInGoogle()
     }
 
-    private fun saveAppEntry() {
+    fun saveAppEntry() {
         viewModelScope.launch {
             saveAppEntryUsecase()
         }

@@ -71,7 +71,7 @@ fun PasswordInputField(
             onValueChange = onTextChanged,
             placeholder = {
                 Text(
-                    text = "Email",
+                    text = "Kata sandi",
                     style = MaterialTheme.typography.bodySmall.copy(color = Grey)
                 )
             },

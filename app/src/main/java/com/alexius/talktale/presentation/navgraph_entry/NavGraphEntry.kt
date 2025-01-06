@@ -1,5 +1,6 @@
 package com.alexius.talktale.presentation.navgraph_entry
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,11 +11,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import com.alexius.core.data.manager.AuthResponse
 import com.alexius.core.util.UIState
+import com.alexius.talktale.Greeting
 import com.alexius.talktale.presentation.navgraph.Route
 import com.alexius.talktale.presentation.onboarding.OnboardingScreen
 import com.alexius.talktale.presentation.sign_user.SignInScreen
+import com.alexius.talktale.presentation.sign_user.SignUoScreen
 import com.alexius.talktale.presentation.sign_user.SignViewModel
 import com.alexius.talktale.ui.theme.TalkTaleTheme
 
@@ -57,11 +59,38 @@ fun NavGraphEntry(modifier: Modifier = Modifier) {
             composable(
                 route = Route.SignUpScreen.route
             ){
-                /*SignUpScreen(
+                val viewModel: SignViewModel = hiltViewModel()
+                val context = LocalContext.current
+                if (viewModel.uiStateSignIn.value is UIState.Error){
+                    val errorMessage = (viewModel.uiStateSignIn.value as UIState.Error).errorMessage
+                    Toast.makeText(LocalContext.current, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
+                }
+
+                Log.d("SignUpScreen", "viewModel.signUpState.value: ${viewModel.signUpState.value.birthDate}")
+
+                SignUoScreen(
+                    event = viewModel::onEvent,
+                    state = viewModel.signUpState.value,
+                    uiState = viewModel.uiStateSignIn.value,
                     onSignInButtonClick = {
-                        navController.navigate(Route.SignInScreen.route)
+                        navController.navigate(Route.SignInScreen.route) {
+                            launchSingleTop = true
+                        }
+                    },
+                    onSignUpSuccess = {
+                        Toast.makeText(context, "Akun terdaftar", Toast.LENGTH_SHORT).show()
+                        navController.navigate(Route.BridgeToSignInScreen.route) {
+                            popUpTo(Route.OnBoardingDisplay.route) { inclusive = true }
+                            launchSingleTop = true
+                        }
                     }
-                )*/
+                )
+            }
+
+            composable(
+                route = Route.BridgeToSignInScreen.route
+            ){
+                Greeting("Selamat datang")
             }
 
             composable(
@@ -84,6 +113,9 @@ fun NavGraphEntry(modifier: Modifier = Modifier) {
                             launchSingleTop = true
                         }
                     },
+                    onSignInSuccess = {
+                        viewModel.saveAppEntry()
+                    }
                 )
             }
         }
