@@ -2,11 +2,13 @@ package com.alexius.talktale.presentation.navgraph_main
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.alexius.talktale.Greeting
+import com.alexius.talktale.presentation.navgraph_assessment.NavGraphAssessment
 import com.alexius.talktale.presentation.navgraph_entry.NavGraphEntry
 
 @Composable
@@ -15,6 +17,8 @@ fun NavGraph(
     startDestination: String
 ) {
     val navController = rememberNavController()
+
+    val viewModel: NavGraphViewModel = hiltViewModel()
 
     NavHost(
         startDestination = startDestination,
@@ -33,14 +37,19 @@ fun NavGraph(
 
         navigation(
             route = Route.MainNavigation.route,
-            startDestination = Route.AssessmentNavigation.route
+            startDestination = viewModel.takenAssessment.value
         ){
             composable(route = Route.AssessmentNavigation.route){
-
+                NavGraphAssessment(
+                    onEndAssessment = {
+                        viewModel.saveAssessmentTaken()
+                    }
+                )
             }
 
             composable(route = Route.StoryScopeNavigation.route){
 
+                Greeting(name = "Android")
             }
         }
 

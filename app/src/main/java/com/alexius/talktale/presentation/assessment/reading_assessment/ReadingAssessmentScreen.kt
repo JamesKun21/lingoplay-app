@@ -28,7 +28,7 @@ import com.alexius.talktale.presentation.navgraph_main.Route
 @Composable
 fun ReadingAssessmentScreen(
     modifier: Modifier = Modifier,
-    viewModelReading: ReadingAssessmentViewModel = hiltViewModel(),
+    viewModelReading: ReadingAssessmentViewModel,
     onEndAssessment: () -> Unit
 ) {
 

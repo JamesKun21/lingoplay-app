@@ -50,7 +50,6 @@ fun CircularProgressBar(
         )
     }
     Column(
-        modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
 

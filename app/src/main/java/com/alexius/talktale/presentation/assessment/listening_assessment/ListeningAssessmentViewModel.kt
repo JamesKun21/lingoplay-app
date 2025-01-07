@@ -27,7 +27,7 @@ class ListeningAssessmentViewModel @Inject constructor(
     private val getFinalScore: GetFinalScore
 ) : ViewModel() {
 
-    private val _currentQuestionIndex = mutableIntStateOf(-1)
+    private val _currentQuestionIndex = mutableIntStateOf(0)
     val currentQuestionIndex: State<Int> = _currentQuestionIndex
 
     private val _questions = mutableStateListOf<QuestionAssessment>()

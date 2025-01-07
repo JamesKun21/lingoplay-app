@@ -51,6 +51,11 @@ fun AssessmentPanelDisplay(
         Column(
             modifier = modifier.fillMaxWidth().padding(24.dp)
         ) {
+
+            Spacer(modifier = modifier
+                .fillMaxWidth()
+                .height(30.dp))
+
             Box(
                 modifier = modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
@@ -59,6 +64,7 @@ fun AssessmentPanelDisplay(
                     text = title,
                     style = MaterialTheme.typography.displayMedium.copy(fontSize = 28.sp, color = MaterialTheme.colorScheme.primary),
                     textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold,
                     modifier = modifier.fillMaxWidth(),
                 )
             }

@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,10 +25,16 @@ class NavGraphViewModel @Inject constructor (
     init {
         readAssessmentTaken().onEach { shouldStartFromAssessmentScreen ->
             if(shouldStartFromAssessmentScreen){
-                _takenAssessment.value = Route.AssessmentNavigation.route
-            }else{
                 _takenAssessment.value = Route.StoryScopeNavigation.route
+            }else{
+                _takenAssessment.value =  Route.AssessmentNavigation.route
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun saveAssessmentTaken() {
+        viewModelScope.launch {
+            saveAssessment(true)
+        }
     }
 }

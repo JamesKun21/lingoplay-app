@@ -40,6 +40,8 @@ import com.alexius.core.util.UIState
 import com.alexius.talktale.R
 import com.alexius.talktale.presentation.assessment.components.AssessmentPanelDisplay
 import com.alexius.talktale.presentation.assessment.components.AssessmentQuizDisplay
+import com.alexius.talktale.presentation.assessment.reading_assessment.ReadingAssessmentViewModel
+import com.alexius.talktale.presentation.assessment.score.ScoreAssessmentScreen
 import com.alexius.talktale.presentation.common.LoadingScreen
 import com.alexius.talktale.presentation.navgraph_main.Route
 import com.alexius.talktale.ui.theme.LightGreen
@@ -52,8 +54,9 @@ import java.io.File
 @Composable
 fun ListeningAssessment(
     modifier: Modifier = Modifier,
-    viewModelListening: ListeningAssessmentViewModel = hiltViewModel(),
-    onEndAssessment: () -> Unit
+    viewModelListening: ListeningAssessmentViewModel,
+    readViewModel: ReadingAssessmentViewModel,
+    onEndScoreAssessment: () -> Unit
 ) {
     val navController = rememberNavController()
 
@@ -63,7 +66,7 @@ fun ListeningAssessment(
     )
     {
         composable(
-            route = Route.AssessmentReadingBridgingScreen.route
+            route = Route.AssessmentListeningBridgeScreen.route
         ){
             AssessmentPanelDisplay(
                 title = "Listening",
@@ -152,7 +155,7 @@ fun ListeningAssessment(
                 },
                 onNextClick = {
                     if (viewModelListening.currentQuestionIndex.value == viewModelListening.questions.size - 1) {
-                        onEndAssessment()
+                        navigateTo(navController, Route.AssessmentCalculatingScreen.route)
                     } else {
                         viewModelListening.moveToNextQuestion()
                         selectedAnswerIndex.intValue = -1
@@ -196,6 +199,8 @@ fun ListeningAssessment(
             val coroutineScope = rememberCoroutineScope()
             var activateLoading by rememberSaveable { mutableStateOf(false) }
 
+            val readingViewModel: ReadingAssessmentViewModel = hiltViewModel()
+
             AssessmentPanelDisplay(
                 title = "Hebat!",
                 underTitle = "Kamu baru saja menyelesaikan bagian mendengar.",
@@ -221,6 +226,18 @@ fun ListeningAssessment(
             route = Route.AssessmentScoreScreen.route
         ){
 
+            val readFinalScoreData = readViewModel.finalScoreData.value
+            val listenFinalScoreData = viewModelListening.finalScoreData.value
+            val averageScore = (readFinalScoreData.totalScore + listenFinalScoreData.totalScore) / 2
+
+            ScoreAssessmentScreen(
+                userReadingScore = readFinalScoreData.totalScore,
+                userReadingGrade = readFinalScoreData.grade,
+                userListeningScore = listenFinalScoreData.totalScore,
+                userListeningGrade = listenFinalScoreData.grade,
+                averageScore = averageScore,
+                onMainButtonClick = onEndScoreAssessment
+            )
         }
     }
 }
