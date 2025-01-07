@@ -2,8 +2,9 @@ package com.alexius.core.domain.usecases.Assessment
 
 import com.alexius.core.domain.model.AssessmentScore
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class GetFinalScore {
+class GetFinalScore @Inject constructor() {
 
     operator fun invoke(totalCorrect: Int): AssessmentScore {
 

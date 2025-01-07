@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.alexius.talktale.presentation.assessment.reading_assessment.ReadingAssessmentScreen
 import com.alexius.talktale.presentation.navgraph_main.Route
 
 @Composable
@@ -25,7 +26,14 @@ fun NavGraphAssessment(modifier: Modifier = Modifier) {
             composable(
                 route = Route.AssessmentReading.route
             ){
-
+                ReadingAssessmentScreen(
+                    onEndAssessment = {
+                        navController.navigate(Route.AssessmentListening.route) {
+                            popUpTo(Route.AssessmentReading.route) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    }
+                )
             }
         }
 

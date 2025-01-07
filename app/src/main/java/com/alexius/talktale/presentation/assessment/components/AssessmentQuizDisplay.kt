@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -26,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexius.talktale.presentation.common.ExitDialog
 import com.alexius.talktale.presentation.navgraph_entry.NavGraphEntry
+import com.alexius.talktale.ui.theme.Green
 import com.alexius.talktale.ui.theme.TalkTaleTheme
 
 @Composable
@@ -76,7 +78,11 @@ fun AssessmentQuizDisplay(
                     .fillMaxWidth()
                     .padding(horizontal = 15.dp)
                     .height(44.dp),
-                shape = MaterialTheme.shapes.extraLarge
+                shape = MaterialTheme.shapes.extraLarge,
+                enabled = selectedAnswerIndex.value != -1,
+                colors = ButtonDefaults.buttonColors(
+                    disabledContainerColor = Green.copy(alpha = 0.5f)
+                )
             ){
                 Text(
                     text = "Lanjut",

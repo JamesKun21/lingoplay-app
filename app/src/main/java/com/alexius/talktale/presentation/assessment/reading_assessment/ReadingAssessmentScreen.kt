@@ -1,12 +1,20 @@
 package com.alexius.talktale.presentation.assessment.reading_assessment
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,7 +28,8 @@ import com.alexius.talktale.presentation.navgraph_main.Route
 @Composable
 fun ReadingAssessmentScreen(
     modifier: Modifier = Modifier,
-   /* viewModel: ReadingAssessmentViewModel = hiltViewModel()*/
+    viewModelReading: ReadingAssessmentViewModel = hiltViewModel(),
+    onEndAssessment: () -> Unit
 ) {
 
     val navController = rememberNavController()
@@ -51,7 +60,7 @@ fun ReadingAssessmentScreen(
                 title = "Reading",
                 underTitle = "Kamu akan memulai bagian membaca.",
                 drawableImage = R.drawable.robot_reading,
-                onClickMainButton = {},
+                onClickMainButton = {navigateTo(navController, Route.AssessmentReadingQuestionScreen.route)},
                 mainButtonText = "Lanjut",
                 hints = listOf(
                     "Pertanyaan di tes ini dapat semakin sulit atau mudah untuk menyesuaikan levelmu.",
@@ -74,15 +83,37 @@ fun ReadingAssessmentScreen(
             }
 
             AssessmentQuizDisplay(
-                currentQuestionIndex = TODO(),
-                totalQuestions = TODO(),
-                onExitClick = TODO(),
-                contentQuestion = TODO(),
-                answers = TODO(),
-                onAnswerSelected = TODO(),
-                onNextClick = TODO(),
-                showExitDialog = TODO(),
-                selectedAnswerIndex = TODO()
+                currentQuestionIndex = viewModelReading.currentQuestionIndex.value,
+                totalQuestions = 10,
+                onExitClick = {
+                    showExitDialog.value = true
+                },
+                contentQuestion = {
+                    Spacer(modifier = modifier.fillMaxWidth().height(90.dp))
+
+                    Text(
+                        text = viewModelReading.questions[viewModelReading.currentQuestionIndex.value].questionText,
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Center,
+                    )
+
+                    Spacer(modifier = modifier.fillMaxWidth().height(90.dp))
+                },
+                answers = viewModelReading.questions[viewModelReading.currentQuestionIndex.value].options,
+                onAnswerSelected = {
+                    viewModelReading.selectAnswer(it)
+                    viewModelReading.checkAnswer()
+                },
+                onNextClick = {
+                    if (viewModelReading.currentQuestionIndex.value == viewModelReading.questions.size - 1) {
+                        onEndAssessment()
+                    } else {
+                        viewModelReading.moveToNextQuestion()
+                        selectedAnswerIndex.intValue = -1
+                    }
+                },
+                showExitDialog = showExitDialog,
+                selectedAnswerIndex = selectedAnswerIndex
             )
 
         }

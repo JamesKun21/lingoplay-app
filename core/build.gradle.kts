@@ -21,6 +21,7 @@ android {
 
         val properties = gradleLocalProperties(rootDir, providers = project.providers)
         buildConfigField("String", "WEB_CLIENT_ID", "\"${properties.getProperty("WEB_CLIENT_ID")}\"")
+        buildConfigField("String", "SPEECHAI_API_KEY", "\"${properties.getProperty("SPEECHAI_API_KEY")}\"")
     }
 
     buildTypes {

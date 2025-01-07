@@ -1,6 +1,6 @@
 package com.alexius.core.domain.model
 
-data class ReadingQuestionAssessment(
+data class QuestionAssessment(
     val id: Int,
     val questionText: String,
     val options: List<String>,

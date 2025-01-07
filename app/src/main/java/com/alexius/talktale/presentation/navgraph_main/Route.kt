@@ -31,7 +31,13 @@ sealed class Route(
 
     object AssessmentReadingQuestionScreen : Route(route = "assessmentReadingQuestionScreen")
 
-    object AssessmentListening : Route(route = "assessmentListening")
+    object AssessmentListening: Route(route = "assessmentListening")
+
+    object AssessmentListeningBridgeScreen: Route(route = "assessmentListeningBridgeScreen")
+
+    object AssessmentListeningQuestionScreen: Route(route = "assessmentListeningQuestionScreen")
+
+    object AssessmentCalculatingScreen: Route(route = "assessmentCalculatingScreen")
 
     object StoryScopeNavigation: Route(route = "storyScopeNavigation")
 
