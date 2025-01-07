@@ -24,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -39,10 +40,13 @@ import com.alexius.core.util.UIState
 import com.alexius.talktale.R
 import com.alexius.talktale.presentation.assessment.components.AssessmentPanelDisplay
 import com.alexius.talktale.presentation.assessment.components.AssessmentQuizDisplay
+import com.alexius.talktale.presentation.common.LoadingScreen
 import com.alexius.talktale.presentation.navgraph_main.Route
 import com.alexius.talktale.ui.theme.LightGreen
 import com.alexius.talktale.ui.theme.RedError
 import com.alexius.talktale.ui.theme.WhitePale
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.File
 
 @Composable
@@ -189,18 +193,34 @@ fun ListeningAssessment(
         composable(
             route = Route.AssessmentCalculatingScreen.route
         ){
+            val coroutineScope = rememberCoroutineScope()
+            var activateLoading by rememberSaveable { mutableStateOf(false) }
+
             AssessmentPanelDisplay(
                 title = "Hebat!",
                 underTitle = "Kamu baru saja menyelesaikan bagian mendengar.",
                 drawableImage = R.drawable.girl_waiting,
-                onClickMainButton = {},
+                onClickMainButton = {
+                    coroutineScope.launch {
+                        activateLoading = true
+                        delay(4000)
+                        activateLoading = false
+                        navigateTo(navController, Route.AssessmentScoreScreen.route)
+                    }
+                },
                 mainButtonText = "Lanjut",
                 hints = listOf(
-                    "Pertanyaan di tes ini dapat semakin sulit atau mudah untuk menyesuaikan levelmu.",
-                    "Kamu tidak akan kehilangan poin jika salah menjawab.",
-                    "Setelah mengumpulkan jawaban, kamu tidak bisa kembali ke pertanyaan sebelumnya."
+                    "Tunggu sebentar. Kami sedang menganalisis jawabanmu.",
+                    "Skormu akan ditampilkan beserta penjelasan dan level yang kamu capai."
                 )
             )
+            LoadingScreen(enableLoading = activateLoading)
+        }
+
+        composable(
+            route = Route.AssessmentScoreScreen.route
+        ){
+
         }
     }
 }

@@ -39,6 +39,8 @@ sealed class Route(
 
     object AssessmentCalculatingScreen: Route(route = "assessmentCalculatingScreen")
 
+    object AssessmentScoreScreen: Route(route = "assessmentScoreScreen")
+
     object StoryScopeNavigation: Route(route = "storyScopeNavigation")
 
     object AppStartNavigation : Route(route = "appStartNavigation")
