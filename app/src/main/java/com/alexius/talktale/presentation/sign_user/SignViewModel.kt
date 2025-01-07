@@ -6,6 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexius.core.data.manager.AuthResponse
+import com.alexius.core.domain.model.UserInfo
+import com.alexius.core.domain.usecases.app_entry.CreateUserInfo
+import com.alexius.core.domain.usecases.app_entry.GetUserInfo
 import com.alexius.core.domain.usecases.app_entry.SaveAppEntry
 import com.alexius.core.domain.usecases.app_entry.SignInGoogle
 import com.alexius.core.domain.usecases.app_entry.SignInWithEmail
@@ -25,7 +28,9 @@ class SignViewModel @Inject constructor(
     private val saveAppEntryUsecase: SaveAppEntry,
     private val signInGoogle: SignInGoogle,
     private val signUpWithEmail: SignUpWithEmail,
-    private val signInWithEmail: SignInWithEmail
+    private val signInWithEmail: SignInWithEmail,
+    private val createUserInfo: CreateUserInfo,
+    private val GetUserAndAssessmentScore: GetUserInfo
 ): ViewModel(){
 
     private val _signInState = mutableStateOf(SignInState())
@@ -53,8 +58,32 @@ class SignViewModel @Inject constructor(
             is SignEvent.SignInWIthGoogle -> {
                 signInWithGoogle().onEach { response ->
                     if (response is AuthResponse.Success) {
-                        event.callback()
-                        _uiStateSignIn.value = UIState.Success(response)
+
+                        getUserInfoAndAssessmentScore(
+                            onSuccess = {
+                                event.callback()
+                                _uiStateSignIn.value = UIState.Success(response)
+                            },
+                            onFailure = {
+                                addUserInfo(
+                                    UserInfo(
+                                        full_name = "User",
+                                        birth_date = "01/01/2000",
+                                        phone_number = "1234567890"
+                                    ),
+                                    onSuccess = {
+                                        event.callback()
+                                        _uiStateSignIn.value = UIState.Success(response)
+                                    },
+                                    onFailure = {
+                                        _uiStateSignIn.value = UIState.Error("Failed to add user info")
+                                        delay(2000)
+                                        _uiStateSignIn.value = UIState.Loading
+                                    }
+                                )
+                            }
+                        )
+
                     } else {
                         val error = response as AuthResponse.Error
                         _uiStateSignIn.value = UIState.Error(error.errorMessage)
@@ -94,8 +123,22 @@ class SignViewModel @Inject constructor(
             is SignEvent.SignUpWithEmail -> {
                 signUpWithEmail(_signUpState.value.email, _signUpState.value.password).onEach { response ->
                     if (response is AuthResponse.Success) {
-                        event.callback()
-                        _uiStateSignIn.value = UIState.Success(response)
+                        addUserInfo(
+                            UserInfo(
+                                full_name = _signUpState.value.fullName,
+                                birth_date = _signUpState.value.birthDate,
+                                phone_number = _signUpState.value.phoneNumber
+                            ),
+                            onSuccess = {
+                                event.callback()
+                                _uiStateSignIn.value = UIState.Success(response)
+                            },
+                            onFailure = {
+                                _uiStateSignIn.value = UIState.Error("Failed to add user info")
+                                delay(2000)
+                                _uiStateSignIn.value = UIState.Loading
+                            }
+                        )
                     } else {
                         val error = response as AuthResponse.Error
                         _uiStateSignIn.value = UIState.Error(error.errorMessage)
@@ -106,6 +149,31 @@ class SignViewModel @Inject constructor(
             }
         }
     }
+
+    private fun addUserInfo(userInfo: UserInfo, onSuccess: () -> Unit, onFailure: suspend () -> Unit) {
+        viewModelScope.launch {
+            createUserInfo(userInfo).collect { result ->
+                result.onSuccess {
+                    onSuccess()
+                }.onFailure { exception ->
+                    onFailure()
+                }
+            }
+        }
+    }
+
+    private fun getUserInfoAndAssessmentScore(onSuccess: () -> Unit, onFailure: suspend () -> Unit) {
+        viewModelScope.launch {
+            GetUserAndAssessmentScore().collect { result ->
+                result.onSuccess { userInfo ->
+                    onSuccess()
+                }.onFailure { exception ->
+                    onFailure()
+                }
+            }
+        }
+    }
+
 
     private fun signInWithGoogle(): Flow<AuthResponse> {
         return signInGoogle()
