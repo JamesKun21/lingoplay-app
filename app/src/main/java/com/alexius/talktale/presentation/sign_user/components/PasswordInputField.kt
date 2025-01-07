@@ -43,6 +43,7 @@ import com.alexius.talktale.ui.theme.Green
 import com.alexius.talktale.ui.theme.Grey
 import com.alexius.talktale.ui.theme.LightGreen
 import com.alexius.talktale.ui.theme.Poppins
+import com.alexius.talktale.ui.theme.RedError
 import com.alexius.talktale.ui.theme.TalkTaleTheme
 
 @Composable
@@ -110,6 +111,7 @@ fun PasswordInputField(
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Black,
                 unfocusedBorderColor = Grey,
+                errorBorderColor = RedError
             )
         )
         Spacer(modifier = Modifier.height(8.dp))

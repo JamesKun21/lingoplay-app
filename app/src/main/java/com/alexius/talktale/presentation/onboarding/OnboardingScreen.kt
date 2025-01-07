@@ -16,9 +16,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.alexius.talktale.R
-import com.alexius.talktale.presentation.common.LoadingScreen
 import com.alexius.talktale.presentation.common.OnboardingPanelDisplay
-import com.alexius.talktale.presentation.navgraph.Route
+import com.alexius.talktale.presentation.navgraph_main.Route
 import com.alexius.talktale.ui.theme.TalkTaleTheme
 
 @Composable

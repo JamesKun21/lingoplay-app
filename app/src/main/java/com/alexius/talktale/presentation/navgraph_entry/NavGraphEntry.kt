@@ -14,7 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.alexius.core.util.UIState
 import com.alexius.talktale.R
 import com.alexius.talktale.presentation.common.OnboardingPanelDisplay
-import com.alexius.talktale.presentation.navgraph.Route
+import com.alexius.talktale.presentation.navgraph_main.Route
 import com.alexius.talktale.presentation.onboarding.OnboardingScreen
 import com.alexius.talktale.presentation.sign_user.SignInScreen
 import com.alexius.talktale.presentation.sign_user.SignUoScreen

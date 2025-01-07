@@ -20,6 +20,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.alexius.talktale.ui.theme.Black
 import com.alexius.talktale.ui.theme.Grey
+import com.alexius.talktale.ui.theme.RedError
 
 @Composable
 fun EmptyOutlineInputField(
@@ -64,6 +65,7 @@ fun EmptyOutlineInputField(
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Black,
                 unfocusedBorderColor = Grey,
+                errorBorderColor = RedError
             ),
         )
     }

@@ -1,6 +1,5 @@
 package com.alexius.talktale.presentation.sign_user
 
-import android.app.Application
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -12,13 +11,10 @@ import com.alexius.core.domain.usecases.app_entry.SignInGoogle
 import com.alexius.core.domain.usecases.app_entry.SignInWithEmail
 import com.alexius.core.domain.usecases.app_entry.SignUpWithEmail
 import com.alexius.core.util.UIState
-import com.alexius.talktale.TalkApplication
-import com.google.firebase.FirebaseApp
+import com.alexius.talktale.presentation.navgraph_main.Route
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -40,6 +36,8 @@ class SignViewModel @Inject constructor(
 
     private val _uiStateSignIn: MutableState<UIState<AuthResponse>> = mutableStateOf(UIState.Loading)
     val uiStateSignIn: State<UIState<AuthResponse>> = _uiStateSignIn
+
+    private val _destinationAfterSignIn = mutableStateOf(Route.AppStartNavigation.route)
 
     fun onEvent(event: SignEvent) {
         when (event) {

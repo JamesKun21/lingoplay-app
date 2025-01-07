@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexius.talktale.ui.theme.Black
 import com.alexius.talktale.ui.theme.Grey
+import com.alexius.talktale.ui.theme.RedError
 import com.alexius.talktale.ui.theme.TalkTaleTheme
 
 @Composable
@@ -62,6 +63,7 @@ fun EmailInputField(
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Black,
                 unfocusedBorderColor = Grey,
+                errorBorderColor = RedError
             ),
         )
     }

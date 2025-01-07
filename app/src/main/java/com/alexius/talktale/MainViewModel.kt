@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexius.core.domain.usecases.app_entry.ReadAppEntry
-import com.alexius.talktale.presentation.navgraph.Route
+import com.alexius.talktale.presentation.navgraph_main.Route
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn

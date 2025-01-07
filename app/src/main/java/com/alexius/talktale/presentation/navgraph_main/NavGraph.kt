@@ -1,6 +1,5 @@
-package com.alexius.talktale.presentation.navgraph
+package com.alexius.talktale.presentation.navgraph_main
 
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -34,10 +33,14 @@ fun NavGraph(
 
         navigation(
             route = Route.MainNavigation.route,
-            startDestination = Route.MainNavigatorScreen.route
+            startDestination = Route.AssessmentNavigation.route
         ){
-            composable(route = Route.MainNavigatorScreen.route){
-                Greeting("BERHASIL CUY")
+            composable(route = Route.AssessmentNavigation.route){
+
+            }
+
+            composable(route = Route.StoryScopeNavigation.route){
+
             }
         }
 

@@ -1,6 +1,4 @@
-package com.alexius.talktale.presentation.navgraph
-
-import androidx.navigation.NamedNavArgument
+package com.alexius.talktale.presentation.navgraph_main
 
 sealed class Route(
     val route: String,
@@ -23,19 +21,23 @@ sealed class Route(
 
     object SignInScreen : Route(route = "signInScreen")
 
-    object HomeScreen : Route(route = "homeScreen")
+    object AssessmentNavigation : Route(route = "assessmentNavigation")
 
-    object SearchScreen : Route(route = "searchScreen")
+    object AssessmentReading : Route(route = "assessmentReading")
 
-    object BookmarkScreen : Route(route = "bookMarkScreen")
+    object AssessmentReadingOnboardingScreen : Route(route = "assessmentReadingOnboardingScreen")
 
-    object DetailsScreen : Route(route = "detailsScreen")
+    object AssessmentReadingBridgingScreen : Route(route = "assessmentReadingBridgingScreen")
+
+    object AssessmentReadingQuestionScreen : Route(route = "assessmentReadingQuestionScreen")
+
+    object AssessmentListening : Route(route = "assessmentListening")
+
+    object StoryScopeNavigation: Route(route = "storyScopeNavigation")
 
     object AppStartNavigation : Route(route = "appStartNavigation")
 
     object NavigationEntry : Route(route = "navigationEntry")
 
     object MainNavigation : Route(route = "mainNavigation")
-
-    object MainNavigatorScreen : Route(route = "mainNavigator")
 }

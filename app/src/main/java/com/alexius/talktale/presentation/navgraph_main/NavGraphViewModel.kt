@@ -1,0 +1,33 @@
+package com.alexius.talktale.presentation.navgraph_main
+
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.alexius.core.domain.usecases.app_entry.ReadAssessmentTaken
+import com.alexius.core.domain.usecases.app_entry.SaveAssessment
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
+
+@HiltViewModel
+class NavGraphViewModel @Inject constructor (
+    private val saveAssessment: SaveAssessment,
+    private val readAssessmentTaken: ReadAssessmentTaken
+): ViewModel() {
+
+    private val _takenAssessment = mutableStateOf(Route.AssessmentNavigation.route)
+    val takenAssessment: State<String> = _takenAssessment
+
+    init {
+        readAssessmentTaken().onEach { shouldStartFromAssessmentScreen ->
+            if(shouldStartFromAssessmentScreen){
+                _takenAssessment.value = Route.AssessmentNavigation.route
+            }else{
+                _takenAssessment.value = Route.StoryScopeNavigation.route
+            }
+        }.launchIn(viewModelScope)
+    }
+}
