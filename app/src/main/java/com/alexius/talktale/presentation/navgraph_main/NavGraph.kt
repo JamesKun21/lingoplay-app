@@ -1,5 +1,6 @@
 package com.alexius.talktale.presentation.navgraph_main
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -43,6 +44,11 @@ fun NavGraph(
                 NavGraphAssessment(
                     onEndAssessment = {
                         viewModel.saveAssessmentTaken()
+                        navController.navigate(Route.StoryScopeNavigation.route){
+                            popUpTo(Route.AssessmentNavigation.route){
+                                inclusive = true
+                            }
+                        }
                     }
                 )
             }

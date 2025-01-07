@@ -131,6 +131,8 @@ fun ScoreAssessmentScreen(
                 textAlign = TextAlign.Center
             )
         }
+
+        Spacer(modifier = modifier.fillMaxWidth().height(30.dp))
     }
 }
 

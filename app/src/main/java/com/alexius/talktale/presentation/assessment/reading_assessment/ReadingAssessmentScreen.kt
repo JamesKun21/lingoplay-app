@@ -102,10 +102,10 @@ fun ReadingAssessmentScreen(
                 answers = viewModelReading.questions[viewModelReading.currentQuestionIndex.value].options,
                 onAnswerSelected = {
                     viewModelReading.selectAnswer(it)
-                    viewModelReading.checkAnswer()
                 },
                 onNextClick = {
                     if (viewModelReading.currentQuestionIndex.value == viewModelReading.questions.size - 1) {
+                        viewModelReading.getFinalScore()
                         onEndAssessment()
                     } else {
                         viewModelReading.moveToNextQuestion()

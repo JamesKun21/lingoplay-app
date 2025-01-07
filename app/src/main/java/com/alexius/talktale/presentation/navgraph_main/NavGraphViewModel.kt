@@ -1,5 +1,6 @@
 package com.alexius.talktale.presentation.navgraph_main
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -26,8 +27,10 @@ class NavGraphViewModel @Inject constructor (
         readAssessmentTaken().onEach { shouldStartFromAssessmentScreen ->
             if(shouldStartFromAssessmentScreen){
                 _takenAssessment.value = Route.StoryScopeNavigation.route
+                Log.d("NavGraphViewModel", "Assessment taken")
             }else{
                 _takenAssessment.value =  Route.AssessmentNavigation.route
+                Log.d("NavGraphViewModel", "Assessment not taken yet")
             }
         }.launchIn(viewModelScope)
     }

@@ -1,6 +1,7 @@
 package com.alexius.talktale.presentation.assessment.listening_assessment
 
 import android.media.MediaPlayer
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -151,10 +152,10 @@ fun ListeningAssessment(
                 answers = viewModelListening.questions[viewModelListening.currentQuestionIndex.value].options,
                 onAnswerSelected = {
                     viewModelListening.selectAnswer(it)
-                    viewModelListening.checkAnswer()
                 },
                 onNextClick = {
                     if (viewModelListening.currentQuestionIndex.value == viewModelListening.questions.size - 1) {
+                        viewModelListening.getFinalScore()
                         navigateTo(navController, Route.AssessmentCalculatingScreen.route)
                     } else {
                         viewModelListening.moveToNextQuestion()
@@ -228,6 +229,7 @@ fun ListeningAssessment(
 
             val readFinalScoreData = readViewModel.finalScoreData.value
             val listenFinalScoreData = viewModelListening.finalScoreData.value
+
             val averageScore = (readFinalScoreData.totalScore + listenFinalScoreData.totalScore) / 2
 
             ScoreAssessmentScreen(

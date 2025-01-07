@@ -72,17 +72,17 @@ class ReadingAssessmentViewModel @Inject constructor(
     }
 
     fun moveToNextQuestion() {
+        checkAnswer()
+
         if (_currentQuestionIndex.intValue < _questions.size - 1) {
             _currentQuestionIndex.intValue++
         }
     }
 
-    fun checkAnswer() {
+    private fun checkAnswer() {
         val currentQuestion = _questions[_currentQuestionIndex.intValue]
         if (currentQuestion.selectedAnswer == currentQuestion.correctAnswerIndex) {
             _finalScore.intValue += 10
-        } else if(_finalScore.intValue > 0) {
-            _finalScore.intValue -= 10
         }
     }
 
