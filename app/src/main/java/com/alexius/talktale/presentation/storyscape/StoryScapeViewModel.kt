@@ -17,14 +17,15 @@ import com.alexius.core.domain.usecases.talktalenav.GetStories
 import com.alexius.core.util.Constants.SPEECHAI_API_KEY
 import com.alexius.core.util.UIState
 import com.google.ai.client.generativeai.GenerativeModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 
+@HiltViewModel
 class StoryScapeViewModel @Inject constructor(
     private val getStories: GetStories,
     private val generateSound: GenerateSound,
@@ -61,7 +62,7 @@ class StoryScapeViewModel @Inject constructor(
         _story.value = getStories()
     }
 
-    fun analyzeText() {
+    /*fun analyzeText() {
         viewModelScope.launch {
             try {
                 val answerList = getAllUserAnswersNotMultipleChoice()
@@ -86,7 +87,7 @@ class StoryScapeViewModel @Inject constructor(
                 Log.d("StoryScapeViewModel", "Error: ${e.message}")
             }
         }
-    }
+    }*/
 
     fun moveToNextQuestion() {
         if (_currentPharagraphIndex.intValue < _story.value.paragraphs.size - 1) {

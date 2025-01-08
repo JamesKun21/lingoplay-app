@@ -21,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.alexius.core.domain.model.Story
 import com.alexius.core.util.UIState
+import com.alexius.talktale.Greeting
 import com.alexius.talktale.presentation.navgraph_main.Route
 import com.alexius.talktale.presentation.storyscape.choose_screen.StoryChooseScreen
 import com.alexius.talktale.presentation.storyscape.story_quiz.StoryBridgeScreen
@@ -46,12 +47,14 @@ fun StoryScapeScreen(
         composable(
             route = Route.StoryScapeChooseScreen.route
         ){
-            StoryChooseScreen(
+            /*StoryChooseScreen(
                 category = category,
                 onClickPlay = {
-
+                    navigateTo(navController, Route.StoryScapeBridgingScreen.route)
                 }
-            )
+            )*/
+
+            Greeting(name = "StoryScape")
         }
 
         composable(
@@ -115,7 +118,7 @@ fun StoryScapeScreen(
                 onNextClick = {
                     if (viewModelStoryScape.currentPharagraphIndex.value == viewModelStoryScape.story.value.paragraphs.size - 1) {
                         // Get all the answers that is not multiple choice and generate AI grammar and vocabulary
-                        viewModelStoryScape.analyzeText()
+                      /*  viewModelStoryScape.analyzeText()*/
                         navigateTo(navController, Route.StoryScapeEndScreen.route)
                     } else {
                         viewModelStoryScape.moveToNextQuestion()

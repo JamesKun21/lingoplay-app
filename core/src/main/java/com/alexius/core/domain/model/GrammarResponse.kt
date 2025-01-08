@@ -6,6 +6,7 @@ data class GrammarResponse(
     val correctedSentence: String
 )
 
+
 data class VocabularyResponse(
     val originalSentence: String,
     val alternativeWords: Map<String, List<String>>

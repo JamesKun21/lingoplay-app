@@ -1,6 +1,9 @@
 package com.alexius.core.data.repository
 
 import android.util.Log
+import com.alexius.core.data.remote.response.AssessmentScoreFirestore
+import com.alexius.core.data.remote.response.UserInfoFirestore
+import com.alexius.core.data.remote.response.toDomainModel
 import com.alexius.core.data.remote.speech_ai.SpeechAIApi
 import com.alexius.core.data.remote.speech_ai.TextToSpeechRequest
 import com.alexius.core.domain.model.AssessmentScore
@@ -87,13 +90,17 @@ class RepositoryImplementation @Inject constructor(
 
             // Get user info
             val userInfoSnapshot = db.collection("users").document(userId).get().await()
-            _userInfo = userInfoSnapshot.toObject(UserInfo::class.java) ?: throw Exception("User info not found")
+            val userInfoFirestore = userInfoSnapshot.toObject(UserInfoFirestore::class.java) ?: throw Exception("User info not found")
+            _userInfo = userInfoFirestore.toDomainModel()
 
             // Get assessment score
             val assessmentScoreSnapshot = db.collection("users").document(userId)
                 .collection("assessment_score").get().await()
-            _assessmentScore = assessmentScoreSnapshot.documents.firstOrNull()?.toObject(AssessmentScore::class.java)
-                ?: throw Exception("Assessment score not found")
+            val assessmentScoreFirestore = assessmentScoreSnapshot.documents.firstOrNull()?.toObject(
+                AssessmentScoreFirestore::class.java) ?: throw Exception("Assessment score not found")
+
+            _assessmentScore = assessmentScoreFirestore.toDomainModel()
+
             emit(Result.success(Unit))
         } catch (e: Exception) {
             Log.w(TAG, "Error fetching user info and assessment score", e)

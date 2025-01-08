@@ -24,6 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.alexius.core.data.local.ListOfStories
 import com.alexius.core.domain.model.Story
 import com.alexius.talktale.presentation.home_screen.HomeScreen
 import com.alexius.talktale.presentation.home_screen.HomeScreenViewModel
@@ -47,7 +48,7 @@ fun TalkTaleNavgraph(
         )
     }
 
-    val viewModelStoryScape: StoryScapeViewModel = hiltViewModel()
+   /* val viewModelStoryScape: StoryScapeViewModel = hiltViewModel()*/
 
     // Line 34 - 45 is configuration for the bottom navigation bar pages to be displayed
     val navController = rememberNavController()
@@ -118,31 +119,24 @@ fun TalkTaleNavgraph(
                 LevelChooseScreen(
                     onBeginnerLevelChosen = {
                         navigateToTap(navController, Route.StoryScapeScreen.route)
-                        val story = viewModelStoryScape.story
-                        navigateToStoryScape(navController, story.value, "Beginner")
                     },
                     onIntermediateLevelChosen = {
                         navigateToTap(navController, Route.StoryScapeScreen.route)
-                        val story = viewModelStoryScape.story
-                        navigateToStoryScape(navController, story.value, "Intermediate")
                     },
                     onAdvancedLevelChosen = {
                         navigateToTap(navController, Route.StoryScapeScreen.route)
-                        val story = viewModelStoryScape.story
-                        navigateToStoryScape(navController, story.value, "Advanced")
                     }
                 )
             }
 
             composable(route = Route.StoryScapeScreen.route){
-                val story = navController.previousBackStackEntry?.savedStateHandle?.get<Story?>("story")
-                val category = navController.previousBackStackEntry?.savedStateHandle?.get<String?>("category")
-                StoryScapeScreen(
-                    category = category ?: "Beginner",
-                    story = story!!,
+
+               /* StoryScapeScreen(
+                    category =  "Beginner",
+                    story = ListOfStories.stories[0],
                     viewModelStoryScape = viewModelStoryScape,
                     onEndStory = {navigateToTap(navController, Route.HomeScreen.route)}
-                )
+                )*/
             }
 
             composable(route = Route.ReportCardDisplay.route){
@@ -175,10 +169,11 @@ private fun navigateToTap(navController: NavController, route: String) {
     }
 }
 
+/*
 private fun navigateToStoryScape(navController: NavController, story: Story, category: String) {
     navController.currentBackStackEntry?.savedStateHandle?.set("story", story)
     navController.currentBackStackEntry?.savedStateHandle?.set("category", category)
     navController.navigate(
         route = Route.StoryScapeScreen.route
     )
-}
+}*/

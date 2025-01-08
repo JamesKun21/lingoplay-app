@@ -49,6 +49,7 @@ sealed class Route(
 
     object StoryScapeScreen: Route(route = "storyScapeScreen")
 
+
     object StoryScapeChooseScreen: Route(route = "storyScapeChooseScreen")
 
     object StoryScapeBridgingScreen: Route(route = "storyScapeBriefScreen")
