@@ -171,6 +171,4 @@ class RepositoryImplementation @Inject constructor(
             }
         }
     """.trimIndent()
-
-    val
 }

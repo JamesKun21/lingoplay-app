@@ -25,6 +25,7 @@ import com.alexius.talktale.presentation.navgraph_main.Route
 import com.alexius.talktale.presentation.storyscape.choose_screen.StoryChooseScreen
 import com.alexius.talktale.presentation.storyscape.story_quiz.StoryBridgeScreen
 import com.alexius.talktale.presentation.storyscape.story_quiz.StoryQuizDisplay
+import com.alexius.talktale.presentation.storyscape.wordwizard.WordWizardScreen
 import java.io.File
 
 @Composable
@@ -114,6 +115,7 @@ fun StoryScapeScreen(
                 onNextClick = {
                     if (viewModelStoryScape.currentPharagraphIndex.value == viewModelStoryScape.story.value.paragraphs.size - 1) {
                         // Get all the answers that is not multiple choice and generate AI grammar and vocabulary
+                        viewModelStoryScape.analyzeText()
                         navigateTo(navController, Route.StoryScapeEndScreen.route)
                     } else {
                         viewModelStoryScape.moveToNextQuestion()
@@ -172,6 +174,19 @@ fun StoryScapeScreen(
         composable(
             route = Route.WordWizardScreen.route
         ){
+            val grammarResponse by viewModelStoryScape.grammarState.collectAsState()
+            val vocabularyResponse by viewModelStoryScape.vocabularyState.collectAsState()
+
+            if (grammarResponse != null && vocabularyResponse != null){
+                WordWizardScreen(
+                    grammarResponse = grammarResponse!!,
+                    vocabularyResponse = vocabularyResponse!!,
+                    title = story.title,
+                    subtitle = story.subtitle,
+                    imageDrawable = story.imageRes,
+                    onEndButton = onEndStory,
+                )
+            }
 
         }
     }

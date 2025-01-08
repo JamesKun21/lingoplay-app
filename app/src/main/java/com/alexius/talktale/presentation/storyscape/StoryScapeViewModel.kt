@@ -1,5 +1,6 @@
 package com.alexius.talktale.presentation.storyscape
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -20,6 +21,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 
@@ -28,7 +30,7 @@ class StoryScapeViewModel @Inject constructor(
     private val generateSound: GenerateSound,
     private val generateVocabPrompt: GenerateVocabPrompt,
     private val generateGrammarPrompt: GenerateGrammarPrompt,
-    private val generativeModel: GenerativeModel
+    private val geminiModel: GenerativeModel
 ) : ViewModel() {
 
     private val _grammarState = MutableStateFlow<GrammarResponse?>(null)
@@ -36,6 +38,7 @@ class StoryScapeViewModel @Inject constructor(
 
     private val _vocabularyState = MutableStateFlow<VocabularyResponse?>(null)
     val vocabularyState: StateFlow<VocabularyResponse?> = _vocabularyState
+
 
     private val _story = mutableStateOf(Story(
         title = "",
@@ -58,22 +61,29 @@ class StoryScapeViewModel @Inject constructor(
         _story.value = getStories()
     }
 
-    fun analyzeText(text: String) {
+    fun analyzeText() {
         viewModelScope.launch {
             try {
+                val answerList = getAllUserAnswersNotMultipleChoice()
+
+                val answer1 = answerList[0]
+
+                val answer2 = answerList[1]
+
                 // Get grammar analysis
-                val grammarPrompt = generateGrammarPrompt(text)
-                val grammarResponse = generativeModel.generateContent(grammarPrompt)
+                val grammarPrompt = generateGrammarPrompt(answer1)
+                val grammarResponse = geminiModel.generateContent(grammarPrompt)
                     .text?.let { Json.decodeFromString<GrammarResponse>(it) }
                 _grammarState.value = grammarResponse
 
                 // Get vocabulary analysis
-                val vocabPrompt = GeminiPromptGenerator().generateVocabularyPrompt(text)
-                val vocabResponse = generativeModel.generateContent(vocabPrompt)
+                val vocabPrompt = generateVocabPrompt(answer2)
+                val vocabResponse = geminiModel.generateContent(vocabPrompt)
                     .text?.let { Json.decodeFromString<VocabularyResponse>(it) }
                 _vocabularyState.value = vocabResponse
             } catch (e: Exception) {
                 // Handle errors
+                Log.d("StoryScapeViewModel", "Error: ${e.message}")
             }
         }
     }

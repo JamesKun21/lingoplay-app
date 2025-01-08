@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.alexius.talktale.Greeting
 import com.alexius.talktale.presentation.navgraph_assessment.NavGraphAssessment
 import com.alexius.talktale.presentation.navgraph_entry.NavGraphEntry
+import com.alexius.talktale.presentation.talktalenav.TalkTaleNavgraph
 
 @Composable
 fun NavGraph(
@@ -54,8 +55,7 @@ fun NavGraph(
             }
 
             composable(route = Route.TalkTaleNavigator.route){
-
-                Greeting(name = "Android")
+                TalkTaleNavgraph()
             }
         }
 
