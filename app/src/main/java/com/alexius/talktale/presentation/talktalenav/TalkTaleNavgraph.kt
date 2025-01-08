@@ -18,12 +18,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.alexius.core.domain.model.Story
+import com.alexius.talktale.presentation.home_screen.HomeScreen
+import com.alexius.talktale.presentation.home_screen.HomeScreenViewModel
 import com.alexius.talktale.presentation.navgraph_main.Route
+import com.alexius.talktale.presentation.storyscape.StoryScapeViewModel
+import com.alexius.talktale.presentation.storyscape.choose_screen.LevelChooseScreen
 import com.alexius.talktale.presentation.talktalenav.components.TalkTaleBottomNavigation
 
 @Composable
@@ -40,6 +46,8 @@ fun TalkTaleNavgraph(
         )
     }
 
+    val viewModel: StoryScapeViewModel = hiltViewModel()
+
     // Line 34 - 45 is configuration for the bottom navigation bar pages to be displayed
     val navController = rememberNavController()
     val backstackState = navController.currentBackStackEntryAsState().value
@@ -50,8 +58,8 @@ fun TalkTaleNavgraph(
     selectedItem = remember(backstackState) {
         when (backstackState?.destination?.route) {
             Route.HomeScreen.route -> 0
-            Route.StoryScapeScreen.route -> 1
-            Route.ReportCardScreen.route -> 2
+            Route.StoryScapeLevelScreen.route -> 1
+            Route.ReportCardDisplay.route -> 2
             Route.ProfileScreen.route -> 3
             else -> 0
         }
@@ -59,8 +67,8 @@ fun TalkTaleNavgraph(
 
     // This will hide the bottom navigation bar when the user navigates to the detail screen
     val isBottomBarVisible = remember(key1 = backstackState) {
-        backstackState?.destination?.route != Route.StoryScopeNavigation.route &&
-                backstackState?.destination?.route != Route.ReportCardNavigation.route
+        backstackState?.destination?.route != Route.StoryScapeScreen.route &&
+                backstackState?.destination?.route != Route.ReportCardScreen.route
     }
 
     Scaffold(
@@ -73,8 +81,8 @@ fun TalkTaleNavgraph(
                     onItemClick = { index ->
                         when (index) {
                             0 -> navigateToTap(navController, Route.HomeScreen.route)
-                            1 -> navigateToTap(navController, Route.StoryScapeScreen.route)
-                            2 -> navigateToTap(navController, Route.ReportCardScreen.route)
+                            1 -> navigateToTap(navController, Route.StoryScapeLevelScreen.route)
+                            2 -> navigateToTap(navController, Route.ReportCardDisplay.route)
                             3 -> navigateToTap(navController, Route.ProfileScreen.route)
                         }
                     })
@@ -88,6 +96,52 @@ fun TalkTaleNavgraph(
             modifier = modifier.padding(bottom = bottomPadding)
         ){
             composable(route = Route.HomeScreen.route){
+                val viewModel: HomeScreenViewModel = hiltViewModel()
+                val userName = viewModel.userInfo.value.full_name
+                val category = viewModel.assessmentScore.value.category
+
+                HomeScreen(
+                    userName = userName,
+                    category = category,
+                    onClickStoryCard = {
+                        navigateToTap(navController, Route.StoryScapeLevelScreen.route)
+                    },
+                    onClickReportCard = {
+                        navigateToTap(navController, Route.ReportCardScreen.route)
+                    }
+                )
+            }
+
+            composable( route = Route.StoryScapeLevelScreen.route){
+
+                LevelChooseScreen(
+                    onBeginnerLevelChosen = {
+                        navigateToTap(navController, Route.StoryScapeScreen.route)
+                        val story = viewModel.story
+                        navigateToStoryScape(navController, story.value, "Beginner")
+                    },
+                    onIntermediateLevelChosen = {
+                        navigateToTap(navController, Route.StoryScapeScreen.route)
+                        val story = viewModel.story
+                        navigateToStoryScape(navController, story.value, "Intermediate")
+                    },
+                    onAdvancedLevelChosen = {
+                        navigateToTap(navController, Route.StoryScapeScreen.route)
+                        val story = viewModel.story
+                        navigateToStoryScape(navController, story.value, "Advanced")
+                    }
+                )
+            }
+
+            composable(route = Route.StoryScapeScreen.route){
+
+            }
+
+            composable(route = Route.ReportCardDisplay.route){
+
+            }
+
+            composable(route = Route.ReportCardScreen.route){
 
             }
         }
@@ -111,4 +165,12 @@ private fun navigateToTap(navController: NavController, route: String) {
             launchSingleTop = true
         }
     }
+}
+
+private fun navigateToStoryScape(navController: NavController, story: Story, category: String) {
+    navController.currentBackStackEntry?.savedStateHandle?.set("story", story)
+    navController.currentBackStackEntry?.savedStateHandle?.set("category", category)
+    navController.navigate(
+        route = Route.StoryScapeScreen.route
+    )
 }

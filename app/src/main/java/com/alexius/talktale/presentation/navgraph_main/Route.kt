@@ -45,15 +45,17 @@ sealed class Route(
 
     object HomeScreen: Route(route = "homeScreen")
 
+    object StoryScapeLevelScreen: Route(route = "storyScapeLevelScreen")
+
     object StoryScapeScreen: Route(route = "storyScapeScreen")
+
+    object StoryScapeChooseScreen: Route(route = "storyScapeChooseScreen")
 
     object ReportCardScreen: Route(route = "reportCardScreen")
 
     object ProfileScreen: Route(route = "profileScreen")
 
-    object StoryScopeNavigation: Route(route = "storyScopeNavigation")
-
-    object ReportCardNavigation: Route(route = "reportCardNavigation")
+    object ReportCardDisplay: Route(route = "reportCardDisplay")
 
     object AppStartNavigation : Route(route = "appStartNavigation")
 

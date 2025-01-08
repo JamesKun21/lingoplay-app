@@ -31,6 +31,7 @@ import com.alexius.talktale.ui.theme.LightGreen
 import com.alexius.talktale.ui.theme.TalkTaleTheme
 import com.alexius.talktale.R
 import com.alexius.talktale.presentation.common.StoryCard
+import com.alexius.talktale.presentation.home_screen.components.ProgressCard
 import com.alexius.talktale.ui.theme.Poppins
 import com.alexius.talktale.ui.theme.White
 import com.alexius.talktale.ui.theme.WhitePale
@@ -40,7 +41,8 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     userName: String,
     category: String,
-    onClickStoryCard: () -> Unit
+    onClickStoryCard: () -> Unit,
+    onClickReportCard: () -> Unit
 ) {
 
     val scrollState = rememberScrollState()
@@ -196,6 +198,11 @@ fun HomeScreen(
                 )
             }
 
+            Spacer(modifier = modifier.height(10.dp))
+
+            ProgressCard(
+                onClickNext = onClickReportCard
+            )
 
         }
     }
@@ -208,7 +215,8 @@ private fun Prev() {
         HomeScreen(
             userName = "Alexius",
             category = "Pemula",
-            onClickStoryCard = {}
+            onClickStoryCard = {},
+            onClickReportCard = {}
         )
     }
 }

@@ -31,7 +31,7 @@ class SignViewModel @Inject constructor(
     private val signUpWithEmail: SignUpWithEmail,
     private val signInWithEmail: SignInWithEmail,
     private val createUserInfo: CreateUserInfo,
-    private val GetUserAndAssessmentScore: GetUserInfo,
+    private val getUserAndAssessmentScore: GetUserInfo,
     private val repository: Repository
 ): ViewModel(){
 
@@ -166,7 +166,7 @@ class SignViewModel @Inject constructor(
 
     private fun getUserInfoAndAssessmentScore(onSuccess: () -> Unit, onFailure: suspend () -> Unit) {
         viewModelScope.launch {
-            GetUserAndAssessmentScore().collect { result ->
+            getUserAndAssessmentScore().collect { result ->
                 result.onSuccess { userInfo ->
                     onSuccess()
                 }.onFailure { exception ->

@@ -97,7 +97,7 @@ fun StoryCard(
                     }
                 ),
                 modifier = modifier
-                    .size(70.dp)
+                    .size(50.dp)
                     .clip(CircleShape)
                     .clickable(
                         enabled = !locked,
