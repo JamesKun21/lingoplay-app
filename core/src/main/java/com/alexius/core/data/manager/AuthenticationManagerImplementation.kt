@@ -6,6 +6,8 @@ import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import com.alexius.core.domain.manager.AuthenticationManager
+import com.alexius.core.domain.usecases.app_entry.ChangeLocalName
+import com.alexius.core.domain.usecases.app_entry.CreateUserInfo
 import com.alexius.core.util.Constants.WEB_CLIENT_ID
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -21,7 +23,8 @@ import java.util.UUID
 import javax.inject.Inject
 
 class AuthenticationManagerImplementation @Inject constructor(
-    private val context: Application
+    private val context: Application,
+    private val changeLocalName: ChangeLocalName
 ) : AuthenticationManager {
 
     private val auth = Firebase.auth
@@ -111,6 +114,9 @@ class AuthenticationManagerImplementation @Inject constructor(
                                 .addOnCompleteListener {
                                     if (it.isSuccessful) {
                                         trySend(AuthResponse.Success)
+                                        googleIdTokenCredential.displayName?.let { name ->
+                                            changeLocalName(name)
+                                        }
                                     } else {
                                         trySend(
                                             AuthResponse.Error(

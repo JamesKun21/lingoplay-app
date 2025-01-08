@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexius.core.data.manager.AuthResponse
 import com.alexius.core.domain.model.UserInfo
+import com.alexius.core.domain.repository.Repository
 import com.alexius.core.domain.usecases.app_entry.CreateUserInfo
 import com.alexius.core.domain.usecases.app_entry.GetUserInfo
 import com.alexius.core.domain.usecases.app_entry.SaveAppEntry
@@ -30,7 +31,8 @@ class SignViewModel @Inject constructor(
     private val signUpWithEmail: SignUpWithEmail,
     private val signInWithEmail: SignInWithEmail,
     private val createUserInfo: CreateUserInfo,
-    private val GetUserAndAssessmentScore: GetUserInfo
+    private val GetUserAndAssessmentScore: GetUserInfo,
+    private val repository: Repository
 ): ViewModel(){
 
     private val _signInState = mutableStateOf(SignInState())
@@ -67,7 +69,7 @@ class SignViewModel @Inject constructor(
                             onFailure = {
                                 addUserInfo(
                                     UserInfo(
-                                        full_name = "User",
+                                        full_name = repository.getLocalUserInfo().full_name,
                                         birth_date = "01/01/2000",
                                         phone_number = "1234567890"
                                     ),

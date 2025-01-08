@@ -11,6 +11,7 @@ import com.alexius.core.domain.model.AssessmentScore
 import com.alexius.core.domain.model.QuestionAssessment
 import com.alexius.core.domain.usecases.Assessment.GenerateSound
 import com.alexius.core.domain.usecases.Assessment.GetFinalScore
+import com.alexius.core.domain.usecases.Assessment.UpdateAssessmentScore
 import com.alexius.core.util.Constants.SPEECHAI_API_KEY
 import com.alexius.core.util.Constants.SPEECHAI_BASE_URL
 import com.alexius.core.util.UIState
@@ -24,7 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ListeningAssessmentViewModel @Inject constructor(
     private val generateSound: GenerateSound,
-    private val getFinalScore: GetFinalScore
+    private val getFinalScore: GetFinalScore,
+    private val updateAssessmentScore: UpdateAssessmentScore
 ) : ViewModel() {
 
     private val _currentQuestionIndex = mutableIntStateOf(0)
@@ -126,5 +128,17 @@ class ListeningAssessmentViewModel @Inject constructor(
 
     fun getFinalScore() {
         _finalScoreData.value = getFinalScore(_finalScore.intValue)
+    }
+
+    fun updateAssessmentScore(assessmentScore: AssessmentScore, onSuccess: () -> Unit, onFailure: suspend () -> Unit) {
+        viewModelScope.launch {
+            updateAssessmentScore(assessmentScore).collect { result ->
+                result.onSuccess { userInfo ->
+                    onSuccess()
+                }.onFailure { exception ->
+                    onFailure()
+                }
+            }
+        }
     }
 }

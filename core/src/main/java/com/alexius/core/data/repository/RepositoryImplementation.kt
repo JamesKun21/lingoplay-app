@@ -62,7 +62,7 @@ class RepositoryImplementation @Inject constructor(
                 .set(user)
                 .await() // Use await to make it suspend function
 
-            /*// Add a document to the assessment_score subcollection
+            // Add a document to the assessment_score subcollection
             val assessmentScore = AssessmentScore(
                 totalScore = 0,
                 grade = "",
@@ -72,7 +72,7 @@ class RepositoryImplementation @Inject constructor(
             db.collection("users").document(userId)
                 .collection("assessment_score")
                 .add(assessmentScore)
-                .await() // Use await to make it suspend function*/
+                .await() // Use await to make it suspend function
 
             emit(Result.success(Unit))
         } catch (e: Exception) {
@@ -89,17 +89,53 @@ class RepositoryImplementation @Inject constructor(
             val userInfoSnapshot = db.collection("users").document(userId).get().await()
             _userInfo = userInfoSnapshot.toObject(UserInfo::class.java) ?: throw Exception("User info not found")
 
-           /* // Get assessment score
+            // Get assessment score
             val assessmentScoreSnapshot = db.collection("users").document(userId)
                 .collection("assessment_score").get().await()
             _assessmentScore = assessmentScoreSnapshot.documents.firstOrNull()?.toObject(AssessmentScore::class.java)
                 ?: throw Exception("Assessment score not found")
-*/
             emit(Result.success(Unit))
         } catch (e: Exception) {
             Log.w(TAG, "Error fetching user info and assessment score", e)
             emit(Result.failure(e))
         }
+    }
+
+    override suspend fun updateAssessmentScore(newScore: AssessmentScore): Flow<Result<Unit>> = flow {
+        try {
+            val userId = auth.currentUser?.uid ?: throw Exception("User not authenticated")
+
+            // Get all documents in the assessment_score collection
+            val assessmentScoreSnapshot = db.collection("users").document(userId)
+                .collection("assessment_score").get().await()
+
+            // Get the first document
+            val firstDocument = assessmentScoreSnapshot.documents.firstOrNull()
+                ?: throw Exception("No assessment score document found")
+
+            // Update the first document
+            val assessmentScoreRef = db.collection("users").document(userId)
+                .collection("assessment_score").document(firstDocument.id)
+
+            assessmentScoreRef.set(newScore).await() // Use await to make it suspend function
+
+            emit(Result.success(Unit))
+        } catch (e: Exception) {
+            Log.w(TAG, "Error updating assessment score", e)
+            emit(Result.failure(e))
+        }
+    }
+
+    override fun changeLocalUserInfoName(name: String) {
+        _userInfo.full_name = name
+    }
+
+    override fun getLocalUserInfo(): UserInfo {
+        return userInfo
+    }
+
+    override fun getLocalAssessmentScore(): AssessmentScore {
+        return assessmentScore
     }
 
 }

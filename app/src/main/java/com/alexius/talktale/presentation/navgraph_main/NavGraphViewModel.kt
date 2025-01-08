@@ -26,7 +26,7 @@ class NavGraphViewModel @Inject constructor (
     init {
         readAssessmentTaken().onEach { shouldStartFromAssessmentScreen ->
             if(shouldStartFromAssessmentScreen){
-                _takenAssessment.value = Route.StoryScopeNavigation.route
+                _takenAssessment.value = Route.TalkTaleNavigator.route
                 Log.d("NavGraphViewModel", "Assessment taken")
             }else{
                 _takenAssessment.value =  Route.AssessmentNavigation.route

@@ -13,4 +13,12 @@ interface Repository {
     suspend fun addUserInfo(userInfo: UserInfo): Flow<Result<Unit>>
 
     suspend fun getUserInfoAndAssessmentScore(): Flow<Result<Unit>>
+
+    suspend fun updateAssessmentScore(assessmentScore: AssessmentScore): Flow<Result<Unit>>
+
+    fun changeLocalUserInfoName(name: String)
+
+    fun getLocalUserInfo(): UserInfo
+
+    fun getLocalAssessmentScore(): AssessmentScore
 }

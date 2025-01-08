@@ -44,7 +44,7 @@ fun NavGraph(
                 NavGraphAssessment(
                     onEndAssessment = {
                         viewModel.saveAssessmentTaken()
-                        navController.navigate(Route.StoryScopeNavigation.route){
+                        navController.navigate(Route.TalkTaleNavigator.route){
                             popUpTo(Route.AssessmentNavigation.route){
                                 inclusive = true
                             }
@@ -53,7 +53,7 @@ fun NavGraph(
                 )
             }
 
-            composable(route = Route.StoryScopeNavigation.route){
+            composable(route = Route.TalkTaleNavigator.route){
 
                 Greeting(name = "Android")
             }

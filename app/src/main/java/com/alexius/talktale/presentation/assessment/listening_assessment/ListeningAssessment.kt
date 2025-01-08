@@ -37,6 +37,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.alexius.core.domain.model.AssessmentScore
 import com.alexius.core.util.UIState
 import com.alexius.talktale.R
 import com.alexius.talktale.presentation.assessment.components.AssessmentPanelDisplay
@@ -200,7 +201,31 @@ fun ListeningAssessment(
             val coroutineScope = rememberCoroutineScope()
             var activateLoading by rememberSaveable { mutableStateOf(false) }
 
-            val readingViewModel: ReadingAssessmentViewModel = hiltViewModel()
+            val readFinalScoreData = remember { readViewModel.finalScoreData.value }
+            val listenFinalScoreData = remember { viewModelListening.finalScoreData.value }
+
+            val averageScore = remember { (readFinalScoreData.totalScore + listenFinalScoreData.totalScore) / 2 }
+
+            // Helper function to determine category based on score
+            fun getCategory(score: Int): String {
+                return when (score) {
+                    in 0..60 -> "Beginner"
+                    in 61..85 -> "Intermediate"
+                    in 86..100 -> "Advanced"
+                    else -> "Invalid Score"
+                }
+            }
+
+            fun getGrade(score: Int): String {
+                return when (score) {
+                    in 0..60 -> "A1/A2"
+                    in 61..85 -> "B1/B2"
+                    in 86..100 -> "C1/C2"
+                    else -> "Invalid Score"
+                }
+            }
+
+            val context = LocalContext.current
 
             AssessmentPanelDisplay(
                 title = "Hebat!",
@@ -209,9 +234,21 @@ fun ListeningAssessment(
                 onClickMainButton = {
                     coroutineScope.launch {
                         activateLoading = true
-                        delay(4000)
-                        activateLoading = false
-                        navigateTo(navController, Route.AssessmentScoreScreen.route)
+                        val grade = getGrade(averageScore)
+                        val category = getCategory(averageScore)
+                        viewModelListening.updateAssessmentScore(AssessmentScore(
+                            totalScore = averageScore,
+                            grade = grade,
+                            category = category
+                        ),
+                            onSuccess = {
+                                activateLoading = false
+                                navigateTo(navController, Route.AssessmentScoreScreen.route)
+                        },
+                            onFailure = {
+                                activateLoading = false
+                                Toast.makeText(context, "Gagal mengupdate skor", Toast.LENGTH_SHORT).show()
+                        })
                     }
                 },
                 mainButtonText = "Lanjut",
@@ -227,10 +264,10 @@ fun ListeningAssessment(
             route = Route.AssessmentScoreScreen.route
         ){
 
-            val readFinalScoreData = readViewModel.finalScoreData.value
-            val listenFinalScoreData = viewModelListening.finalScoreData.value
+            val readFinalScoreData = remember { readViewModel.finalScoreData.value }
+            val listenFinalScoreData = remember { viewModelListening.finalScoreData.value }
 
-            val averageScore = (readFinalScoreData.totalScore + listenFinalScoreData.totalScore) / 2
+            val averageScore = remember { (readFinalScoreData.totalScore + listenFinalScoreData.totalScore) / 2 }
 
             ScoreAssessmentScreen(
                 userReadingScore = readFinalScoreData.totalScore,
