@@ -21,4 +21,8 @@ interface Repository {
     fun getLocalUserInfo(): UserInfo
 
     fun getLocalAssessmentScore(): AssessmentScore
+
+    fun generateGrammarPrompt(userSentence: String): String
+
+    fun generateVocabularyPrompt(userSentence: String): String
 }

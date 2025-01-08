@@ -22,6 +22,7 @@ android {
         val properties = gradleLocalProperties(rootDir, providers = project.providers)
         buildConfigField("String", "WEB_CLIENT_ID", "\"${properties.getProperty("WEB_CLIENT_ID")}\"")
         buildConfigField("String", "SPEECHAI_API_KEY", "\"${properties.getProperty("SPEECHAI_API_KEY")}\"")
+        buildConfigField("String", "GEMINI_API_KEY", "\"${properties.getProperty("GEMINI_API_KEY")}\"")
     }
 
     buildTypes {
@@ -84,6 +85,9 @@ dependencies {
     ksp(libs.hilt.android.compiler)
     api(libs.androidx.hilt.navigation.compose)
     ksp(libs.androidx.hilt.compiler)
+
+    //Gemini
+    api("com.google.ai.client.generativeai:generativeai:0.9.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

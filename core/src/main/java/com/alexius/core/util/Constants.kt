@@ -12,4 +12,6 @@ object Constants {
     const val SPEECHAI_BASE_URL = "https://api.elevenlabs.io/v1/"
 
     const val SPEECHAI_API_KEY = BuildConfig.SPEECHAI_API_KEY
+
+    const val GEMINI_API_KEY = BuildConfig.GEMINI_API_KEY
 }
