@@ -146,32 +146,32 @@ class RepositoryImplementation @Inject constructor(
     }
 
     override fun generateGrammarPrompt(userSentence: String): String = """
-        Analyze the following English sentence for grammar corrections and provide a structured response:
-        Sentence: "$userSentence"
-        
-        Please provide:
-        1. A list of specific grammar corrections needed (maximum 3 points)
-        2. The fully corrected sentence
-        
-        Format the response as JSON:
+        Analisis kalimat bahasa Inggris berikut untuk koreksi tata bahasa dan berikan respons terstruktur dengan bahasa indonesia:
+        Kalimat: "$userSentence"
+
+        Harap berikan:
+        1. Daftar koreksi tata bahasa tertentu yang diperlukan (maksimum 3 poin)
+        2. Kalimat yang sudah dikoreksi sepenuhnya
+
+        Format respons sebagai JSON:
         {
-            "incorrectSentence": "original sentence",
-            "corrections": ["correction point 1", "correction point 2", "correction point 3"],
-            "correctedSentence": "fully corrected sentence"
+            "incorrectSentence": "kalimat asli",
+            "corrections": ["titik koreksi 1", "titik koreksi 2", "titik koreksi 3"],
+            "correctedSentence": "kalimat yang sudah dikoreksi sepenuhnya"
         }
     """.trimIndent()
 
     override fun generateVocabularyPrompt(userSentence: String): String = """
-        Analyze the following English sentence and provide vocabulary alternatives:
-        Sentence: "$userSentence"
+        Analisis kalimat bahasa Inggris berikut dan berikan alternatif kosakata:
+        Kalimat: "$userSentence"
+
+        Harap berikan:
+        1. Identifikasi kata sifat atau kata deskriptif utama
+        2. Berikan 4 sinonim untuk setiap kata yang diidentifikasi
         
-        Please provide:
-        1. Identify key adjectives or descriptive words
-        2. Provide 4 synonyms for each identified word
-        
-        Format the response as JSON:
+        Format respons sebagai JSON:
         {
-            "originalSentence": "original sentence",
+            "originalSentence": "kalimat asli",
             "alternativeWords": {
                 "word1": ["synonym1", "synonym2", "synonym3", "synonym4"],
                 "word2": ["synonym1", "synonym2", "synonym3", "synonym4"]
