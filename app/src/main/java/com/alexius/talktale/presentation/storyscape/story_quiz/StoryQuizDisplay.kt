@@ -52,6 +52,7 @@ import com.alexius.talktale.ui.theme.RedError
 @Composable
 fun StoryQuizDisplay(
     modifier: Modifier = Modifier,
+    isLoading: Boolean,
     onExitClick: () -> Unit,
     onAnswerFieldChange: (String) -> Unit,
     answerInput: String,
@@ -146,7 +147,8 @@ fun StoryQuizDisplay(
             ) {
                 Spacer(modifier = modifier.height(77.dp))
                 IconButton(
-                    onClick = onPlayAudioClick
+                    onClick = onPlayAudioClick,
+                    enabled = !isLoading
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.play_audio_orange),

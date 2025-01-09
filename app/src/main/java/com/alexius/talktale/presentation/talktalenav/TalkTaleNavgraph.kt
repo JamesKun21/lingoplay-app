@@ -1,6 +1,7 @@
 package com.alexius.talktale.presentation.talktalenav
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -33,6 +35,7 @@ import com.alexius.talktale.presentation.storyscape.StoryScapeScreen
 import com.alexius.talktale.presentation.storyscape.StoryScapeViewModel
 import com.alexius.talktale.presentation.storyscape.choose_screen.LevelChooseScreen
 import com.alexius.talktale.presentation.talktalenav.components.TalkTaleBottomNavigation
+import kotlinx.coroutines.flow.asStateFlow
 
 @Composable
 fun TalkTaleNavgraph(
@@ -99,8 +102,10 @@ fun TalkTaleNavgraph(
         ){
             composable(route = Route.HomeScreen.route){
                 val viewModel: HomeScreenViewModel = hiltViewModel()
-                val userName = viewModel.userInfo.value.full_name
-                val category = viewModel.assessmentScore.value.category
+                val userName by viewModel.userName.collectAsStateWithLifecycle()
+                val category by viewModel.category.collectAsStateWithLifecycle()
+
+                Log.d("TalkTaleNavgraph", "userName: $userName")
 
                 HomeScreen(
                     userName = userName,

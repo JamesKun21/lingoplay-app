@@ -60,6 +60,9 @@ class StoryScapeViewModel @Inject constructor(
     private val _uiStateAudio = MutableStateFlow<UIState<ByteArray>>(UIState.Loading)
     val uiStateAudio: StateFlow<UIState<ByteArray>> = _uiStateAudio
 
+    private val _uiStateGemini = MutableStateFlow<UIState<String>>(UIState.Loading)
+    val uiStateGemini: StateFlow<UIState<String>> = _uiStateGemini
+
     init {
         _story.value =   Story(
             title = "Timun Mas",
@@ -162,6 +165,9 @@ class StoryScapeViewModel @Inject constructor(
     fun analyzeText() {
         viewModelScope.launch {
             try {
+
+                _uiStateGemini.value = UIState.Loading
+
                 val answerList = getAllUserAnswersNotMultipleChoice()
 
                 val answer1 = answerList[0]
@@ -174,13 +180,18 @@ class StoryScapeViewModel @Inject constructor(
                     .text?.replace("```json", "")?.replace("```", "")?.let { Json.decodeFromString<GrammarResponse>(it) }
                 _grammarState.value = grammarResponse
 
+
                 // Get vocabulary analysis
                 val vocabPrompt = generateVocabPrompt(answer2)
                 val vocabResponse = geminiModel.generateContent(vocabPrompt)
                     .text?.replace("```json", "")?.replace("```", "")?.let { Json.decodeFromString<VocabularyResponse>(it) }
                 _vocabularyState.value = vocabResponse
+
+                _uiStateGemini.value = UIState.Success("Analysis completed")
+
             } catch (e: Exception) {
                 // Handle errors
+                _uiStateGemini.value = UIState.Error(e.message ?: "Unknown error")
                 Log.d("StoryScapeViewModel", "Error: ${e.message}")
             }
         }

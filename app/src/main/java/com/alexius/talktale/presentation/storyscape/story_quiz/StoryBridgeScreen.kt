@@ -49,6 +49,7 @@ fun StoryBridgeScreen(
     imageDrawable: Int,
     title: String,
     subtitle: String,
+    buttonText: String,
     onStartButton: () -> Unit
 ) {
 
@@ -135,7 +136,7 @@ fun StoryBridgeScreen(
                 shape = MaterialTheme.shapes.extraLarge
             ){
                 Text(
-                    text = "Mulai",
+                    text = buttonText,
                     style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold, color = Color.White),
                     textAlign = TextAlign.Center
                 )
@@ -156,7 +157,8 @@ private fun Prev() {
             imageDrawable = 0,
             title = "Title",
             subtitle = "Subtitle",
-            onStartButton = {}
+            onStartButton = {},
+            buttonText = "Start"
         )
     }
 }

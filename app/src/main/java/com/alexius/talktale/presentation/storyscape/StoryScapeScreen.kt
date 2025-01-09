@@ -22,6 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import com.alexius.core.domain.model.Story
 import com.alexius.core.util.UIState
 import com.alexius.talktale.Greeting
+import com.alexius.talktale.presentation.common.LoadingScreen
 import com.alexius.talktale.presentation.navgraph_main.Route
 import com.alexius.talktale.presentation.storyscape.choose_screen.StoryChooseScreen
 import com.alexius.talktale.presentation.storyscape.story_quiz.StoryBridgeScreen
@@ -64,6 +65,7 @@ fun StoryScapeScreen(
                 imageDrawable = story.imageRes,
                 title = story.title,
                 subtitle = story.subtitle,
+                buttonText = "Mulai",
                 onStartButton = {
                     navigateTo(navController, Route.StoryScapeQuizScreen.route)
                 }
@@ -99,6 +101,7 @@ fun StoryScapeScreen(
             var text by remember { mutableStateOf(viewModelStoryScape.story.value.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].question.userAnswer) }
 
             StoryQuizDisplay(
+                isLoading = isLoading,
                 onExitClick = {
                     showExitDialog.value = true
                 },
@@ -144,8 +147,8 @@ fun StoryScapeScreen(
                             setDataSource(file.path)
                             prepare()
                             start()
+                            isLoading = false
                         }
-                        isLoading = false
                     }
                 }
                 is UIState.Error -> {
@@ -169,6 +172,7 @@ fun StoryScapeScreen(
                 imageDrawable = story.imageRes,
                 title = story.title,
                 subtitle = story.subtitle,
+                buttonText = "Lihat hasil",
                 onStartButton = {
                     navigateTo(navController, Route.WordWizardScreen.route)
                 }
@@ -178,6 +182,10 @@ fun StoryScapeScreen(
         composable(
             route = Route.WordWizardScreen.route
         ){
+            var isLoading by remember { mutableStateOf(false) }
+            val geminiState by viewModelStoryScape.uiStateGemini.collectAsState()
+            val context = LocalContext.current
+
             val grammarResponse by viewModelStoryScape.grammarState.collectAsState()
             val vocabularyResponse by viewModelStoryScape.vocabularyState.collectAsState()
 
@@ -190,6 +198,27 @@ fun StoryScapeScreen(
                     imageDrawable = story.imageRes,
                     onEndButton = onEndStory,
                 )
+            }
+
+            LoadingScreen(enableLoading = isLoading)
+
+            when (val state = geminiState) {
+                is UIState.Loading -> {
+                    isLoading = true
+                }
+                is UIState.Success -> {
+                    // Play audio
+                    LaunchedEffect(state) {
+                        isLoading = false
+                    }
+                }
+                is UIState.Error -> {
+                    // Show error message
+                    if (state.errorMessage != null) {
+                        Toast.makeText(context, state.errorMessage, Toast.LENGTH_SHORT).show()
+                    }
+                    isLoading = false
+                }
             }
         }
     }

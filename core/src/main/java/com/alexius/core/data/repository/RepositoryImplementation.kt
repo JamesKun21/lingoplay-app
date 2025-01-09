@@ -91,17 +91,16 @@ class RepositoryImplementation @Inject constructor(
             // Get user info
             val userInfoSnapshot = db.collection("users").document(userId).get().await()
             val userInfoFirestore = userInfoSnapshot.toObject(UserInfoFirestore::class.java) ?: throw Exception("User info not found")
-            _userInfo = userInfoFirestore.toDomainModel()
+            val userInfo = userInfoFirestore.toDomainModel()
 
             // Get assessment score
             val assessmentScoreSnapshot = db.collection("users").document(userId)
                 .collection("assessment_score").get().await()
             val assessmentScoreFirestore = assessmentScoreSnapshot.documents.firstOrNull()?.toObject(
                 AssessmentScoreFirestore::class.java) ?: throw Exception("Assessment score not found")
+            val assessmentScore = assessmentScoreFirestore.toDomainModel()
 
-            _assessmentScore = assessmentScoreFirestore.toDomainModel()
-
-            emit(Result.success(Unit))
+            emit(Result.success(Pair(userInfo, assessmentScore)))
         } catch (e: Exception) {
             Log.w(TAG, "Error fetching user info and assessment score", e)
             emit(Result.failure(e))
@@ -138,6 +137,7 @@ class RepositoryImplementation @Inject constructor(
     }
 
     override fun getLocalUserInfo(): UserInfo {
+        Log.d(TAG, "getLocalUserInfo: ${_userInfo.full_name}")
         return userInfo
     }
 

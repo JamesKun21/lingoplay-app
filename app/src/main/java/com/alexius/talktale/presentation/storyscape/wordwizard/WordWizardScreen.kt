@@ -17,14 +17,8 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -45,7 +39,6 @@ import androidx.compose.ui.unit.sp
 import com.alexius.core.domain.model.GrammarResponse
 import com.alexius.core.domain.model.VocabularyResponse
 import com.alexius.talktale.presentation.assessment.components.HintText
-import com.alexius.talktale.presentation.home_screen.HomeScreen
 import com.alexius.talktale.ui.theme.GreenAnswer
 import com.alexius.talktale.ui.theme.LightOrange
 import com.alexius.talktale.ui.theme.Orange
@@ -72,13 +65,19 @@ fun WordWizardScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        text = "StoryScape",
-                        style = MaterialTheme.typography.displaySmall,
-                        fontSize = 20.sp,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                    Box(
+                        modifier = Modifier.fillMaxWidth().padding(end = 50.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "StoryScape",
+                            style = MaterialTheme.typography.displaySmall,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.Transparent
@@ -92,7 +91,6 @@ fun WordWizardScreen(
         ){
             Row(
                 modifier = modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Box(
                     modifier = modifier.height(53.dp).width(146.dp).clip(MaterialTheme.shapes.large).background(
@@ -106,6 +104,8 @@ fun WordWizardScreen(
                         color = MaterialTheme.colorScheme.secondary
                     )
                 }
+
+                Spacer(modifier = modifier.width(15.dp))
 
                 Column {
                     Text(
@@ -208,7 +208,8 @@ fun WordWizardScreen(
                             Box(
                                 modifier = modifier.clip(MaterialTheme.shapes.small).background(
                                     Orange
-                                ),
+                                )
+                                    .padding(9.dp),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
