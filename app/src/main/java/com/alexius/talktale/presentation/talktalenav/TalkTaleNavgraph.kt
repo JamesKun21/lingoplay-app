@@ -48,7 +48,7 @@ fun TalkTaleNavgraph(
         )
     }
 
-   /* val viewModelStoryScape: StoryScapeViewModel = hiltViewModel()*/
+    val viewModelStoryScape: StoryScapeViewModel = hiltViewModel()
 
     // Line 34 - 45 is configuration for the bottom navigation bar pages to be displayed
     val navController = rememberNavController()
@@ -118,7 +118,9 @@ fun TalkTaleNavgraph(
 
                 LevelChooseScreen(
                     onBeginnerLevelChosen = {
-                        navigateToTap(navController, Route.StoryScapeScreen.route)
+                        navController.navigate(Route.StoryScapeScreen.route){
+                            launchSingleTop
+                        }
                     },
                     onIntermediateLevelChosen = {
                         navigateToTap(navController, Route.StoryScapeScreen.route)
@@ -131,12 +133,12 @@ fun TalkTaleNavgraph(
 
             composable(route = Route.StoryScapeScreen.route){
 
-               /* StoryScapeScreen(
+                StoryScapeScreen(
                     category =  "Beginner",
                     story = ListOfStories.stories[0],
-                    viewModelStoryScape = viewModelStoryScape,
+                    /*viewModelStoryScape = viewModelStoryScape,*/
                     onEndStory = {navigateToTap(navController, Route.HomeScreen.route)}
-                )*/
+                )
             }
 
             composable(route = Route.ReportCardDisplay.route){

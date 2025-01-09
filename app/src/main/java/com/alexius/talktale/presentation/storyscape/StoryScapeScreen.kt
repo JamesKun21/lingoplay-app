@@ -34,14 +34,14 @@ fun StoryScapeScreen(
     modifier: Modifier = Modifier,
     category: String,
     story: Story,
-    viewModelStoryScape: StoryScapeViewModel,
+   /* viewModelStoryScape: StoryScapeViewModel,*/
     onEndStory: () -> Unit
 ) {
 
     val navController= rememberNavController()
 
     NavHost(
-        startDestination = Route.StoryScapeChooseScreen,
+        startDestination = Route.StoryScapeChooseScreen.route,
         navController = navController
     ){
         composable(
@@ -76,7 +76,7 @@ fun StoryScapeScreen(
             route = Route.StoryScapeQuizScreen.route
         )
         {
-            var showExitDialog = rememberSaveable() { mutableStateOf(false) }
+           /* var showExitDialog = rememberSaveable() { mutableStateOf(false) }
 
             var selectedAnswerIndex = rememberSaveable() { mutableIntStateOf(-1) }
 
@@ -118,7 +118,7 @@ fun StoryScapeScreen(
                 onNextClick = {
                     if (viewModelStoryScape.currentPharagraphIndex.value == viewModelStoryScape.story.value.paragraphs.size - 1) {
                         // Get all the answers that is not multiple choice and generate AI grammar and vocabulary
-                      /*  viewModelStoryScape.analyzeText()*/
+                      *//*  viewModelStoryScape.analyzeText()*//*
                         navigateTo(navController, Route.StoryScapeEndScreen.route)
                     } else {
                         viewModelStoryScape.moveToNextQuestion()
@@ -154,7 +154,7 @@ fun StoryScapeScreen(
                     }
                     isLoading = false
                 }
-            }
+            }*/
 
         }
 
@@ -177,7 +177,7 @@ fun StoryScapeScreen(
         composable(
             route = Route.WordWizardScreen.route
         ){
-            val grammarResponse by viewModelStoryScape.grammarState.collectAsState()
+           /* val grammarResponse by viewModelStoryScape.grammarState.collectAsState()
             val vocabularyResponse by viewModelStoryScape.vocabularyState.collectAsState()
 
             if (grammarResponse != null && vocabularyResponse != null){
@@ -190,7 +190,7 @@ fun StoryScapeScreen(
                     onEndButton = onEndStory,
                 )
             }
-
+*/
         }
     }
 
