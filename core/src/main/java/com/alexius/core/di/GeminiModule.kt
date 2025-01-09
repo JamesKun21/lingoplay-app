@@ -28,7 +28,7 @@ object GeminiModule {
         }
 
         val generativeModel = GenerativeModel(
-            modelName = "gemini-1.5-flash-latest",
+            modelName = "gemini-1.5-pro",
             apiKey = GEMINI_API_KEY,
             generationConfig = config,
             safetySettings = listOf(

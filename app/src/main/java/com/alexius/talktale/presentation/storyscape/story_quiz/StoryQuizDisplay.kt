@@ -192,7 +192,7 @@ fun StoryQuizDisplay(
                         )
                     },
                     keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email
+                        keyboardType = KeyboardType.Text
                     ),
                     modifier = Modifier.fillMaxWidth().height(100.dp),
                     shape = MaterialTheme.shapes.medium,

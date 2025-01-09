@@ -24,7 +24,6 @@ fun MainButton(
         onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 40.dp)
             .height(44.dp),
         shape = MaterialTheme.shapes.extraLarge
     ){
