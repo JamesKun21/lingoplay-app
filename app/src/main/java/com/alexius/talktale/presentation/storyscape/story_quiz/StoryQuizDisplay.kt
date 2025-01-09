@@ -2,6 +2,8 @@ package com.alexius.talktale.presentation.storyscape.story_quiz
 
 import android.util.Patterns
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -73,13 +75,19 @@ fun StoryQuizDisplay(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        text = "StoryScape",
-                        style = MaterialTheme.typography.displaySmall,
-                        fontSize = 20.sp,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                    Box(
+                        modifier = Modifier.fillMaxWidth().padding(end = 50.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "StoryScape",
+                            style = MaterialTheme.typography.displaySmall,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
                 },
                 navigationIcon = {
                     IconButton(onClick = {
@@ -133,7 +141,8 @@ fun StoryQuizDisplay(
 
             Row(
                 modifier = modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
                 Spacer(modifier = modifier.height(77.dp))
                 IconButton(

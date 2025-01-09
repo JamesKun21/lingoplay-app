@@ -118,27 +118,29 @@ fun TalkTaleNavgraph(
 
                 LevelChooseScreen(
                     onBeginnerLevelChosen = {
-                        navController.navigate(Route.StoryScapeScreen.route){
-                            launchSingleTop
-                        }
+                        navigateToStoryScape(navController, "Beginner")
                     },
                     onIntermediateLevelChosen = {
-                        navigateToTap(navController, Route.StoryScapeScreen.route)
+                        navigateToStoryScape(navController, "Intermediate")
                     },
                     onAdvancedLevelChosen = {
-                        navigateToTap(navController, Route.StoryScapeScreen.route)
+                        navigateToStoryScape(navController, "Advanced")
                     }
                 )
             }
 
             composable(route = Route.StoryScapeScreen.route){
 
-                StoryScapeScreen(
-                    category =  "Beginner",
-                    story = ListOfStories.stories[0],
-                    /*viewModelStoryScape = viewModelStoryScape,*/
-                    onEndStory = {navigateToTap(navController, Route.HomeScreen.route)}
-                )
+                navController.previousBackStackEntry?.savedStateHandle?.get<String?>("category")
+                    ?.let { category ->
+                        StoryScapeScreen(
+                            category =  category,
+                            story = viewModelStoryScape.story.value,
+                            viewModelStoryScape = viewModelStoryScape,
+                            onEndStory = {navigateToTap(navController, Route.HomeScreen.route)}
+                        )
+                    }
+
             }
 
             composable(route = Route.ReportCardDisplay.route){
@@ -171,11 +173,10 @@ private fun navigateToTap(navController: NavController, route: String) {
     }
 }
 
-/*
-private fun navigateToStoryScape(navController: NavController, story: Story, category: String) {
-    navController.currentBackStackEntry?.savedStateHandle?.set("story", story)
+private fun navigateToStoryScape(navController: NavController, /*story: Story,*/ category: String) {
+/*    navController.currentBackStackEntry?.savedStateHandle?.set("story", story)*/
     navController.currentBackStackEntry?.savedStateHandle?.set("category", category)
     navController.navigate(
         route = Route.StoryScapeScreen.route
     )
-}*/
+}

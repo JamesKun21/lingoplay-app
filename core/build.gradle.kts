@@ -7,6 +7,7 @@ plugins {
     id("kotlin-parcelize")
     id("dagger.hilt.android.plugin")
     alias(libs.plugins.google.gms.google.services)
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -88,6 +89,9 @@ dependencies {
 
     //Gemini
     api("com.google.ai.client.generativeai:generativeai:0.9.0")
+
+    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

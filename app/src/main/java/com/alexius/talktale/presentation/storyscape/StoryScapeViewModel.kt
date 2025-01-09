@@ -25,6 +25,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 
@@ -36,12 +37,11 @@ class StoryScapeViewModel @Inject constructor(
     private val geminiModel: GenerativeModel
 ) : ViewModel() {
 
-   /* private val _grammarState = MutableStateFlow<GrammarResponse?>(null)
+    private val _grammarState = MutableStateFlow<GrammarResponse?>(null)
     val grammarState: StateFlow<GrammarResponse?> = _grammarState
 
     private val _vocabularyState = MutableStateFlow<VocabularyResponse?>(null)
     val vocabularyState: StateFlow<VocabularyResponse?> = _vocabularyState
-*/
 
     private val _story = mutableStateOf(Story(
         title = "",
@@ -52,7 +52,7 @@ class StoryScapeViewModel @Inject constructor(
         closeStatement = "",
         paragraphs = emptyList()
     ))
-    val story = _story
+    val story: State<Story> = _story
 
     private val _currentPharagraphIndex = mutableIntStateOf(0)
     val currentPharagraphIndex: State<Int> = _currentPharagraphIndex
@@ -60,7 +60,7 @@ class StoryScapeViewModel @Inject constructor(
     private val _uiStateAudio = MutableStateFlow<UIState<ByteArray>>(UIState.Loading)
     val uiStateAudio: StateFlow<UIState<ByteArray>> = _uiStateAudio
 
-    /*init {
+    init {
         _story.value =   Story(
             title = "Timun Mas",
             subtitle = "The Golden Cucumber Adventure",
@@ -157,9 +157,9 @@ class StoryScapeViewModel @Inject constructor(
                 )
             )
         )
-    }*/
+    }
 
-    /*fun analyzeText() {
+    fun analyzeText() {
         viewModelScope.launch {
             try {
                 val answerList = getAllUserAnswersNotMultipleChoice()
@@ -171,30 +171,34 @@ class StoryScapeViewModel @Inject constructor(
                 // Get grammar analysis
                 val grammarPrompt = generateGrammarPrompt(answer1)
                 val grammarResponse = geminiModel.generateContent(grammarPrompt)
-                    .text?.let { Json.decodeFromString<GrammarResponse>(it) }
+                    .text?.replace("```json", "")?.replace("```", "")?.let { Json.decodeFromString<GrammarResponse>(it) }
                 _grammarState.value = grammarResponse
 
                 // Get vocabulary analysis
                 val vocabPrompt = generateVocabPrompt(answer2)
                 val vocabResponse = geminiModel.generateContent(vocabPrompt)
-                    .text?.let { Json.decodeFromString<VocabularyResponse>(it) }
+                    .text?.replace("```json", "")?.replace("```", "")?.let { Json.decodeFromString<VocabularyResponse>(it) }
                 _vocabularyState.value = vocabResponse
             } catch (e: Exception) {
                 // Handle errors
                 Log.d("StoryScapeViewModel", "Error: ${e.message}")
             }
         }
-    }*/
+    }
 
     fun moveToNextQuestion() {
         if (_currentPharagraphIndex.intValue < _story.value.paragraphs.size - 1) {
             _currentPharagraphIndex.intValue++
+            Log.d("StoryScapeViewModel", "Current Paragraph Index: ${_currentPharagraphIndex.intValue}")
         }
     }
 
     fun answerQuestion(answer: String) {
         val currentParagraphQuestion = _story.value.paragraphs[_currentPharagraphIndex.intValue].question
+
         currentParagraphQuestion.userAnswer = answer
+
+        Log.d("StoryScapeViewModel", "User Answer: ${currentParagraphQuestion.userAnswer}")
     }
 
     private fun getAllUserAnswersNotMultipleChoice(): List<String> {

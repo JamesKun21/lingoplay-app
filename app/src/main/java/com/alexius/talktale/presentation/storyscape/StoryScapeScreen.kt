@@ -34,7 +34,7 @@ fun StoryScapeScreen(
     modifier: Modifier = Modifier,
     category: String,
     story: Story,
-   /* viewModelStoryScape: StoryScapeViewModel,*/
+    viewModelStoryScape: StoryScapeViewModel,
     onEndStory: () -> Unit
 ) {
 
@@ -47,14 +47,12 @@ fun StoryScapeScreen(
         composable(
             route = Route.StoryScapeChooseScreen.route
         ){
-            /*StoryChooseScreen(
+            StoryChooseScreen(
                 category = category,
                 onClickPlay = {
                     navigateTo(navController, Route.StoryScapeBridgingScreen.route)
                 }
-            )*/
-
-            Greeting(name = "StoryScape")
+            )
         }
 
         composable(
@@ -76,7 +74,7 @@ fun StoryScapeScreen(
             route = Route.StoryScapeQuizScreen.route
         )
         {
-           /* var showExitDialog = rememberSaveable() { mutableStateOf(false) }
+            var showExitDialog = rememberSaveable() { mutableStateOf(false) }
 
             var selectedAnswerIndex = rememberSaveable() { mutableIntStateOf(-1) }
 
@@ -85,8 +83,6 @@ fun StoryScapeScreen(
             var isLoading by remember { mutableStateOf(false) }
 
             val context = LocalContext.current
-
-            val currentParagraphIndex by remember { mutableIntStateOf(viewModelStoryScape.currentPharagraphIndex.value) }
 
             var mediaPlayer by remember { mutableStateOf<MediaPlayer?>(null) }
 
@@ -100,28 +96,33 @@ fun StoryScapeScreen(
                 showExitDialog.value = true
             }
 
+            var text by remember { mutableStateOf(viewModelStoryScape.story.value.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].question.userAnswer) }
+
             StoryQuizDisplay(
                 onExitClick = {
                     showExitDialog.value = true
                 },
-                onAnswerFieldChange = {viewModelStoryScape.answerQuestion(it)},
-                answerInput = viewModelStoryScape.story.value.paragraphs[currentParagraphIndex].question.userAnswer,
-                question = story.paragraphs[currentParagraphIndex].question.text,
-                paragraph = story.paragraphs[currentParagraphIndex].content,
-                imageDrawable = story.paragraphs[currentParagraphIndex].imageRes,
+                onAnswerFieldChange = {
+                    text = it
+                    viewModelStoryScape.answerQuestion(it)},
+                answerInput = text,
+                question = viewModelStoryScape.story.value.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].question.text,
+                paragraph = viewModelStoryScape.story.value.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].content,
+                imageDrawable = viewModelStoryScape.story.value.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].imageRes,
                 onPlayAudioClick = {
-                    viewModelStoryScape.generateSpeech(story.paragraphs[currentParagraphIndex].question.text)
+                    viewModelStoryScape.generateSpeech(viewModelStoryScape.story.value.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].content)
                 },
-                isMultipleChoice = story.paragraphs[currentParagraphIndex].question.multipleChoice,
-                options = story.paragraphs[currentParagraphIndex].question.options,
+                isMultipleChoice = viewModelStoryScape.story.value.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].question.multipleChoice,
+                options = viewModelStoryScape.story.value.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].question.options,
                 onAnswerSelected = {},
                 onNextClick = {
                     if (viewModelStoryScape.currentPharagraphIndex.value == viewModelStoryScape.story.value.paragraphs.size - 1) {
                         // Get all the answers that is not multiple choice and generate AI grammar and vocabulary
-                      *//*  viewModelStoryScape.analyzeText()*//*
+                        viewModelStoryScape.analyzeText()
                         navigateTo(navController, Route.StoryScapeEndScreen.route)
                     } else {
                         viewModelStoryScape.moveToNextQuestion()
+                        text = ""
                         selectedAnswerIndex.intValue = -1
                     }
                 },
@@ -154,7 +155,7 @@ fun StoryScapeScreen(
                     }
                     isLoading = false
                 }
-            }*/
+            }
 
         }
 
@@ -177,7 +178,7 @@ fun StoryScapeScreen(
         composable(
             route = Route.WordWizardScreen.route
         ){
-           /* val grammarResponse by viewModelStoryScape.grammarState.collectAsState()
+            val grammarResponse by viewModelStoryScape.grammarState.collectAsState()
             val vocabularyResponse by viewModelStoryScape.vocabularyState.collectAsState()
 
             if (grammarResponse != null && vocabularyResponse != null){
@@ -190,7 +191,6 @@ fun StoryScapeScreen(
                     onEndButton = onEndStory,
                 )
             }
-*/
         }
     }
 

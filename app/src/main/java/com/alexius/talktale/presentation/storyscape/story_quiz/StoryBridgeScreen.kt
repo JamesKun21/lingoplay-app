@@ -1,6 +1,7 @@
 package com.alexius.talktale.presentation.storyscape.story_quiz
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,8 +34,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.alexius.talktale.presentation.home_screen.HomeScreen
+import com.alexius.talktale.ui.theme.TalkTaleTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,13 +57,19 @@ fun StoryBridgeScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        text = "StoryScape",
-                        style = MaterialTheme.typography.displaySmall,
-                        fontSize = 20.sp,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                    Box(
+                        modifier = Modifier.fillMaxWidth().padding(end = 50.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "StoryScape",
+                            style = MaterialTheme.typography.displaySmall,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
@@ -134,4 +144,19 @@ fun StoryBridgeScreen(
 
     }
 
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
+@Composable
+private fun Prev() {
+    TalkTaleTheme {
+        StoryBridgeScreen(
+            onBackClick = {},
+            bridgeHint = "Hint",
+            imageDrawable = 0,
+            title = "Title",
+            subtitle = "Subtitle",
+            onStartButton = {}
+        )
+    }
 }
