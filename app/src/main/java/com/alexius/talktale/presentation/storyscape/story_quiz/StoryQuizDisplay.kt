@@ -100,7 +100,7 @@ fun StoryQuizDisplay(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent
+                    containerColor = Color.White
                 )
             )
         }

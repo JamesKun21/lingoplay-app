@@ -60,7 +60,14 @@ fun StoryScapeScreen(
             route = Route.StoryScapeBridgingScreen.route
         ){
             StoryBridgeScreen(
-                onBackClick = {navigateTo(navController, Route.StoryScapeChooseScreen.route)},
+                onBackClick = {
+                    navController.navigate(Route.StoryScapeChooseScreen.route){
+                        launchSingleTop = true
+                        popUpTo(Route.StoryScapeBridgingScreen.route){
+                            inclusive = true
+                        }
+                    }
+                },
                 bridgeHint = story.bridgeHint,
                 imageDrawable = story.imageRes,
                 title = story.title,
@@ -103,7 +110,12 @@ fun StoryScapeScreen(
             StoryQuizDisplay(
                 isLoading = isLoading,
                 onExitClick = {
-                    showExitDialog.value = true
+                    navController.navigate(Route.StoryScapeChooseScreen.route){
+                        launchSingleTop = true
+                        popUpTo(Route.StoryScapeChooseScreen.route){
+                            inclusive = true
+                        }
+                    }
                 },
                 onAnswerFieldChange = {
                     text = it
