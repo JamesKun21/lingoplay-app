@@ -125,6 +125,9 @@ fun StoryScapeScreen(
                 paragraph = viewModelStoryScape.story.value.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].content,
                 imageDrawable = viewModelStoryScape.story.value.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].imageRes,
                 onPlayAudioClick = {
+                    isLoading = true
+                    mediaPlayer?.stop()
+                    mediaPlayer?.prepare()
                     viewModelStoryScape.generateSpeech(viewModelStoryScape.story.value.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].content)
                 },
                 isMultipleChoice = viewModelStoryScape.story.value.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].question.multipleChoice,
@@ -171,6 +174,8 @@ fun StoryScapeScreen(
                     isLoading = false
                 }
             }
+
+            LoadingScreen(enableLoading = isLoading)
 
         }
 

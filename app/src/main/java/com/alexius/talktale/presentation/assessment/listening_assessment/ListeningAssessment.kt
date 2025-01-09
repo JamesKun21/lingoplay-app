@@ -122,6 +122,8 @@ fun ListeningAssessment(
                     IconButton(
                         onClick = {
                             isLoading = true
+                            mediaPlayer?.stop()
+                            mediaPlayer?.prepare()
                             viewModelListening.generateSpeech(viewModelListening.questions[viewModelListening.currentQuestionIndex.value].questionText)
                         },
                         modifier = modifier
@@ -166,6 +168,8 @@ fun ListeningAssessment(
                 showExitDialog = showExitDialog,
                 selectedAnswerIndex = selectedAnswerIndex
             )
+
+            LoadingScreen(enableLoading = isLoading)
 
             when (val state = uiStateAudio) {
                 is UIState.Loading -> {

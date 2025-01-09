@@ -202,7 +202,8 @@ fun WordWizardScreen(
 
                     FlowRow(
                         modifier = modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalArrangement = Arrangement.SpaceBetween
                     ) {
                         alternatives.forEach { alternative ->
                             Box(
