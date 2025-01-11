@@ -8,7 +8,7 @@ data class Story(
     val title: String,
     val subtitle: String,
     val imageRes: Int,
-    val isLocked: Boolean = false,
+    val isComplete: Boolean = false,
     val bridgeHint: String,
     val closeStatement: String,
     val paragraphs: List<StoryParagraph>
