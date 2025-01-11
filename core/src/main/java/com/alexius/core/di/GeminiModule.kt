@@ -30,7 +30,6 @@ object GeminiModule {
         val generativeModel = GenerativeModel(
             modelName = "gemini-1.5-pro",
             apiKey = GEMINI_API_KEY,
-            generationConfig = config,
             safetySettings = listOf(
                 SafetySetting(HarmCategory.HARASSMENT, BlockThreshold.MEDIUM_AND_ABOVE),
                 SafetySetting(HarmCategory.HATE_SPEECH, BlockThreshold.MEDIUM_AND_ABOVE),

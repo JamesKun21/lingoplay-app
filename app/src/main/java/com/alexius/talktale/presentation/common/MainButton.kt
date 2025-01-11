@@ -17,7 +17,8 @@ import androidx.compose.ui.unit.dp
 fun MainButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    text: String
+    text: String,
+    enabled: Boolean,
 ) {
 
     Button(
@@ -25,7 +26,8 @@ fun MainButton(
         modifier = modifier
             .fillMaxWidth()
             .height(44.dp),
-        shape = MaterialTheme.shapes.extraLarge
+        shape = MaterialTheme.shapes.extraLarge,
+        enabled = enabled,
     ){
         Text(
             text = text,

@@ -25,4 +25,8 @@ interface Repository {
     fun generateGrammarPrompt(userSentence: String): String
 
     fun generateVocabularyPrompt(userSentence: String): String
+
+    fun generateGrammarReportCardPrompt(userSentence: String): String
+
+    fun generateVocabularyReportCardPrompt(userSentence: String): String
 }

@@ -178,4 +178,36 @@ class RepositoryImplementation @Inject constructor(
             }
         }
     """.trimIndent()
+
+    override fun generateGrammarReportCardPrompt(userSentence: String): String = """
+        Analisis kalimat bahasa Inggris berikut untuk koreksi tata bahasa (grammar) dan berikan respons terstruktur dengan bahasa indonesia:
+        Kalimat: "$userSentence"
+
+        Harap berikan:
+        1. Koreksi tata bahasa tertentu yang diperlukan secara grammar, perjelas dalam kalimat
+        2. Kalimat yang sudah dikoreksi sepenuhnya
+
+        Format respons sebagai JSON:
+        {
+            "originalSentence": "kalimat asli",
+            "correctedSentence": "kalimat yang sudah dikoreksi sepenuhnya",
+            "suggestion": "koreksi tata bahasa yang diperlukan secara grammar"
+        }
+    """.trimIndent()
+
+    override fun generateVocabularyReportCardPrompt(userSentence: String): String = """
+        Analisis kalimat bahasa Inggris berikut dan berikan alternatif kosakata yang bisa dipakai dalam kalimat tersebut:
+        Kalimat: "$userSentence"
+
+        Harap berikan:
+        1. Identifikasi kata sifat atau kata deskriptif utama
+        2. Berikan saran deskriptif terkait kata sinonim yang lebih baik untuk kata yang diidentifikasi untuk menambah variasi kosakata (vocabolaries)
+        
+        Format respons sebagai JSON:
+        {
+            "originalSentence": "kalimat asli",
+            "correctedSentence": "kalimat yang sudah diganti dengan kosakata lain sepenuhnya",
+            "suggestion": "saran deskriptif kosakata yang lebih baik untuk kata yang diidentifikasi"
+        }
+    """.trimIndent()
 }

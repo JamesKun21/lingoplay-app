@@ -41,7 +41,7 @@ fun TalkTaleBottomNavigation(
     Card(
         modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = WhitePale
+            containerColor = Color.Transparent
         ),
         shape = RoundedCornerShape(
             topStart = 20.dp,
@@ -86,7 +86,7 @@ fun TalkTaleBottomNavigation(
 
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
+@Preview
 @Composable
 private fun Prev() {
     TalkTaleTheme {
