@@ -153,7 +153,12 @@ fun TalkTaleNavgraph(
                                 else -> viewModelStoryScape.advancedCareerStories.value
                             },
                             viewModelStoryScape = viewModelStoryScape,
-                            onEndStory = { navigateToTap(navController, Route.HomeScreen.route) },
+                            onEndStory = { navController.navigate(Route.HomeScreen.route){
+                                launchSingleTop = true
+                                popUpTo(Route.StoryScapeScreen.route){
+                                    inclusive = true
+                                }
+                            } },
                             onBackChooseStory = {
                                 navController.navigate(Route.StoryScapeLevelScreen.route) {
                                     launchSingleTop = true

@@ -98,7 +98,7 @@ fun StoryScapeScreen(
                     navigateTo(navController, Route.StoryScapeChooseScreen.route)
                 },
                 onClickSecondPlay = {
-
+                    navigateTo(navController, Route.CareerChooseScreen.route)
                 },
                 onBackClick = onBackChooseStory
             )
@@ -110,17 +110,17 @@ fun StoryScapeScreen(
             CareerChooseScreen(
                 onClickFirstPlay = {
                     story = stories[3]
-                    viewModelStoryScape.chooseStory(3)
+                    viewModelStoryScape.chooseStory(0)
                     navigateTo(navController, Route.StoryScapeBridgingScreen.route)
                 },
                 onClickSecondPlay = {
                     story = stories[4]
-                    viewModelStoryScape.chooseStory(4)
+                    viewModelStoryScape.chooseStory(1)
                     navigateTo(navController, Route.StoryScapeBridgingScreen.route)
                 },
                 onClickThirdPlay = {
                     story = stories[5]
-                    viewModelStoryScape.chooseStory(5)
+                    viewModelStoryScape.chooseStory(2)
                     navigateTo(navController, Route.StoryScapeBridgingScreen.route)
                 },
                 onBackClick = {
