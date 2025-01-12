@@ -2,11 +2,13 @@ package com.alexius.core.data.repository
 
 import android.util.Log
 import com.alexius.core.data.remote.response.AssessmentScoreFirestore
+import com.alexius.core.data.remote.response.CompletedStoriesFirestore
 import com.alexius.core.data.remote.response.UserInfoFirestore
 import com.alexius.core.data.remote.response.toDomainModel
 import com.alexius.core.data.remote.speech_ai.SpeechAIApi
 import com.alexius.core.data.remote.speech_ai.TextToSpeechRequest
 import com.alexius.core.domain.model.AssessmentScore
+import com.alexius.core.domain.model.CompletedStories
 import com.alexius.core.domain.model.UserInfo
 import com.alexius.core.domain.repository.Repository
 import com.google.firebase.Firebase
@@ -77,6 +79,18 @@ class RepositoryImplementation @Inject constructor(
                 .add(assessmentScore)
                 .await() // Use await to make it suspend function
 
+            val completedStories = CompletedStories(
+                beginner = arrayListOf(false, false, false),
+                intermediate = arrayListOf(false, false, false),
+                advancedTales = arrayListOf(false, false, false),
+                careerTales = arrayListOf(false, false, false)
+            )
+
+            db.collection("users").document(userId)
+                .collection("completed_stories")
+                .add(completedStories)
+                .await() // Use await to make it suspend function
+
             emit(Result.success(Unit))
         } catch (e: Exception) {
             Log.w(TAG, "Error writing document", e)
@@ -107,6 +121,30 @@ class RepositoryImplementation @Inject constructor(
         }
     }
 
+    override suspend fun getCompletedStories(): Flow<Result<CompletedStories>> = flow {
+        try {
+            val userId = auth.currentUser?.uid ?: throw Exception("User not authenticated")
+
+            // Get all documents in the completed_stories collection
+            val completedStoriesSnapshot = db.collection("users").document(userId)
+                .collection("completed_stories").get().await()
+
+            // Get the first document
+            val firstDocument = completedStoriesSnapshot.documents.firstOrNull()
+                ?: throw Exception("No completed stories document found")
+
+            // Convert the first document to CompletedStoriesFirestore
+            val completedStoriesFirestore = firstDocument.toObject(CompletedStoriesFirestore::class.java)
+                ?: throw Exception("Failed to convert document to CompletedStoriesFirestore")
+            val completedStories = completedStoriesFirestore.toDomainModel()
+
+            emit(Result.success(completedStories))
+        } catch (e: Exception) {
+            Log.w(TAG, "Error fetching completed stories", e)
+            emit(Result.failure(e))
+        }
+    }
+
     override suspend fun updateAssessmentScore(newScore: AssessmentScore): Flow<Result<Unit>> = flow {
         try {
             val userId = auth.currentUser?.uid ?: throw Exception("User not authenticated")
@@ -128,6 +166,31 @@ class RepositoryImplementation @Inject constructor(
             emit(Result.success(Unit))
         } catch (e: Exception) {
             Log.w(TAG, "Error updating assessment score", e)
+            emit(Result.failure(e))
+        }
+    }
+
+    override suspend fun updateCompletedStories(completedStories: CompletedStories): Flow<Result<Unit>> = flow {
+        try {
+            val userId = auth.currentUser?.uid ?: throw Exception("User not authenticated")
+
+            // Get all documents in the completed_stories collection
+            val completedStoriesSnapshot = db.collection("users").document(userId)
+                .collection("completed_stories").get().await()
+
+            // Get the first document
+            val firstDocument = completedStoriesSnapshot.documents.firstOrNull()
+                ?: throw Exception("No completed stories document found")
+
+            // Update the first document
+            val completedStoriesRef = db.collection("users").document(userId)
+                .collection("completed_stories").document(firstDocument.id)
+
+            completedStoriesRef.set(completedStories).await() // Use await to make it suspend function
+
+            emit(Result.success(Unit))
+        } catch (e: Exception) {
+            Log.w(TAG, "Error updating completed stories", e)
             emit(Result.failure(e))
         }
     }

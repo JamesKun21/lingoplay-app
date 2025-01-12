@@ -31,6 +31,7 @@ fun CareerChooseScreen(
     onClickSecondPlay: () -> Unit,
     onClickThirdPlay: () -> Unit,
     onBackClick: () -> Unit,
+    listCompleted: List<Boolean>
 ) {
     val scrollState = rememberScrollState()
 
@@ -71,7 +72,7 @@ fun CareerChooseScreen(
                 imageDrawable = R.drawable.no_smoking,
                 title = "The Journey of Smoking",
                 description = "The Transformative Path of Quitting Smoking",
-                completed = false,
+                completed = if (listCompleted.isNotEmpty()) listCompleted[0] else false,
                 locked = false,
                 onClickPlay = onClickFirstPlay
             )
@@ -90,7 +91,7 @@ fun CareerChooseScreen(
                 imageDrawable = R.drawable.engineering,
                 title = "How Hydroelectric Dams Generate Power",
                 description = "The Mechanics and Impact of Hydroelectric Dams",
-                completed = false,
+                completed = if (listCompleted.isNotEmpty()) listCompleted[1] else false,
                 locked = false,
                 onClickPlay = onClickSecondPlay
             )
@@ -109,7 +110,7 @@ fun CareerChooseScreen(
                 imageDrawable = com.alexius.core.R.drawable.money,
                 title = "The Impact of Inflation on Prices and the Economy",
                 description = "How Rising Prices Affect Your Wallet and the Economy",
-                completed = false,
+                completed = if (listCompleted.isNotEmpty()) listCompleted[2] else false,
                 locked = false,
                 onClickPlay = onClickThirdPlay
             )

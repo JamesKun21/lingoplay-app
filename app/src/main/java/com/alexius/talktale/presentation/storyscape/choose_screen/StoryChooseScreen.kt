@@ -32,6 +32,7 @@ fun StoryChooseScreen(
     onClickThirdPlay: () -> Unit,
     onBackClick: () -> Unit,
     category: String,
+    listCompleted: List<Boolean>
 ) {
     val scrollState = rememberScrollState()
 
@@ -76,7 +77,7 @@ fun StoryChooseScreen(
                 imageDrawable = R.drawable.timun_mas,
                 title = "Timun Mas",
                 description = "The Golden Cucumber Adventure",
-                completed = false,
+                completed = if (listCompleted.isNotEmpty()) listCompleted[0] else false,
                 locked = false,
                 onClickPlay = onClickFirstPlay
             )
@@ -87,7 +88,7 @@ fun StoryChooseScreen(
                 imageDrawable = R.drawable.lion,
                 title = "The Lion and The Mouse",
                 description = "The Unexpected Friendship Adventure",
-                completed = false,
+                completed = if (listCompleted.isNotEmpty()) listCompleted[1] else false,
                 locked = false,
                 onClickPlay = onClickSecondPlay
             )
@@ -98,7 +99,7 @@ fun StoryChooseScreen(
                 imageDrawable = com.alexius.core.R.drawable.red_hood,
                 title = "The Girl in the Red Hood",
                 description = "The Little Red Riding Hood Adventure",
-                completed = false,
+                completed = if (listCompleted.isNotEmpty()) listCompleted[2] else false,
                 locked = false,
                 onClickPlay = onClickThirdPlay
             )

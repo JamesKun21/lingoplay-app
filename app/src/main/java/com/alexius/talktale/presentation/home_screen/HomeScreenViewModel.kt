@@ -17,9 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
-    private val getLocalUserInfo: GetLocalUserInfo,
     private val getUserInfo: GetUserInfo,
-    private val getLocalAssessmentScore: GetLocalAssessmentScore
 ) : ViewModel() {
 
     private val _userName = MutableStateFlow("")
@@ -34,8 +32,6 @@ class HomeScreenViewModel @Inject constructor(
                 response.onSuccess {
                     val userInfo = it.first
                     _userName.value = if (userInfo.full_name.isNotEmpty()) userInfo.full_name else "User"
-                    Log.d("HomeScreenViewModel", "User Info Name: ${_userName.value}")
-                    Log.d("HomeScreenViewModel", "User local Name: ${getLocalUserInfo().full_name}")
 
                     val assessmentScore = it.second
                     _category.value = assessmentScore.category

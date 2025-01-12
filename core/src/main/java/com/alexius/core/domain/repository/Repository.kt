@@ -2,6 +2,7 @@ package com.alexius.core.domain.repository
 
 import com.alexius.core.data.remote.speech_ai.TextToSpeechRequest
 import com.alexius.core.domain.model.AssessmentScore
+import com.alexius.core.domain.model.CompletedStories
 import com.alexius.core.domain.model.UserInfo
 import kotlinx.coroutines.flow.Flow
 import okhttp3.ResponseBody
@@ -14,7 +15,11 @@ interface Repository {
 
     suspend fun getUserInfoAndAssessmentScore(): Flow<Result<Pair<UserInfo, AssessmentScore>>>
 
+    suspend fun getCompletedStories(): Flow<Result<CompletedStories>>
+
     suspend fun updateAssessmentScore(assessmentScore: AssessmentScore): Flow<Result<Unit>>
+
+    suspend fun updateCompletedStories(completedStories: CompletedStories): Flow<Result<Unit>>
 
     fun changeLocalUserInfoName(name: String)
 

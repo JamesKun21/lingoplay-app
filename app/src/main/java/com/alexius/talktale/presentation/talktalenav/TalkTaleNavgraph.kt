@@ -11,6 +11,7 @@ import androidx.compose.material.icons.outlined.Book
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -139,6 +140,11 @@ fun TalkTaleNavgraph(
 
                 navController.previousBackStackEntry?.savedStateHandle?.get<String?>("category")
                     ?.let { category ->
+
+                        LaunchedEffect(Unit) {
+                            viewModelStoryScape.getListCompletedStories()
+                        }
+
                         StoryScapeScreen(
                             category = category,
                             stories = when (category) {

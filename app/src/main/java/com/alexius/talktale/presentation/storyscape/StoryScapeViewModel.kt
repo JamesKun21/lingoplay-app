@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexius.core.R
 import com.alexius.core.data.remote.speech_ai.TextToSpeechRequest
+import com.alexius.core.domain.model.CompletedStories
 import com.alexius.core.domain.model.GrammarResponse
 import com.alexius.core.domain.model.Question
 import com.alexius.core.domain.model.Story
@@ -16,7 +17,9 @@ import com.alexius.core.domain.model.VocabularyResponse
 import com.alexius.core.domain.usecases.Assessment.GenerateSound
 import com.alexius.core.domain.usecases.talktalenav.GenerateGrammarPrompt
 import com.alexius.core.domain.usecases.talktalenav.GenerateVocabPrompt
+import com.alexius.core.domain.usecases.talktalenav.GetCompletedStories
 import com.alexius.core.domain.usecases.talktalenav.GetStories
+import com.alexius.core.domain.usecases.talktalenav.UpdateCompletedStories
 import com.alexius.core.util.Constants.SPEECHAI_API_KEY
 import com.alexius.core.util.UIState
 import com.google.ai.client.generativeai.GenerativeModel
@@ -34,8 +37,23 @@ class StoryScapeViewModel @Inject constructor(
     private val generateSound: GenerateSound,
     private val generateVocabPrompt: GenerateVocabPrompt,
     private val generateGrammarPrompt: GenerateGrammarPrompt,
-    private val geminiModel: GenerativeModel
+    private val geminiModel: GenerativeModel,
+    private val getCompletedStories: GetCompletedStories,
+    private val updateCompletedStories: UpdateCompletedStories
 ) : ViewModel() {
+
+    private val _beginnerCompletedStories = mutableListOf<Boolean>()
+    private val _intermediateCompletedStories = mutableListOf<Boolean>()
+    private val _advancedCompletedStories = mutableListOf<Boolean>()
+    private val _advancedCareerCompletedStories = mutableListOf<Boolean>()
+
+    val beginnerCompletedStories: List<Boolean> = _beginnerCompletedStories
+    val intermediateCompletedStories: List<Boolean> = _intermediateCompletedStories
+    val advancedCompletedStories: List<Boolean> = _advancedCompletedStories
+    val advancedCareerCompletedStories: List<Boolean> = _advancedCareerCompletedStories
+
+    var _totalCompletedStories = mutableIntStateOf(0)
+    val totalCompletedStories: State<Int> = _totalCompletedStories
 
     private val _grammarState = MutableStateFlow<GrammarResponse?>(null)
     val grammarState: StateFlow<GrammarResponse?> = _grammarState
@@ -82,6 +100,9 @@ class StoryScapeViewModel @Inject constructor(
     val currentStoryIndex: State<Int> = _currentStoryIndex
 
     init {
+
+        getListCompletedStories()
+
         val listBeginnerStories = listOf<Story>(
             //region Timun Mas
             Story(
@@ -1281,6 +1302,72 @@ class StoryScapeViewModel @Inject constructor(
             //endregion
         )
         _advancedCareerStories.value = listAdvanceCareen
+    }
+
+    fun getListCompletedStories() {
+        viewModelScope.launch{
+            getCompletedStories().collect {response ->
+                response.onSuccess {
+                    val completedStories = it
+                    _beginnerCompletedStories.addAll(completedStories.beginner )
+                    _intermediateCompletedStories.addAll(completedStories.intermediate)
+                    _advancedCompletedStories.addAll(completedStories.advancedTales)
+                    _advancedCareerCompletedStories.addAll(completedStories.careerTales)
+                }
+            }
+        }
+    }
+
+    fun updateCompletedStries(storyCategory: StoryCategory, index: Int, value: Boolean){
+        viewModelScope.launch {
+            when(storyCategory){
+                StoryCategory.BEGINNER -> {
+                    _beginnerCompletedStories[index] = value
+                }
+                StoryCategory.INTERMEDIATE -> {
+                    _intermediateCompletedStories[index] = value
+                }
+                StoryCategory.ADVANCED -> {
+                    _advancedCompletedStories[index] = value
+                }
+                StoryCategory.ADVANCED_CAREER -> {
+                    _advancedCareerCompletedStories[index] = value
+                }
+            }
+            val completedStories = CompletedStories(
+                beginner = _beginnerCompletedStories as ArrayList<Boolean>,
+                intermediate = _intermediateCompletedStories as ArrayList<Boolean>,
+                advancedTales = _advancedCompletedStories as ArrayList<Boolean>,
+                careerTales = _advancedCareerCompletedStories as ArrayList<Boolean>
+            )
+
+            updateCompletedStories(completedStories).collect {response ->
+                response.onSuccess {
+                    Log.d("StoryScapeViewModel", "Completed Stories Updated")
+                }
+            }
+        }
+    }
+
+    fun getTotalCompletedStoriesInEachCategory() {
+
+        viewModelScope.launch {
+            getCompletedStories().collect {response ->
+                response.onSuccess {
+                    val completedStories = it
+                    _beginnerCompletedStories.addAll(completedStories.beginner )
+                    _intermediateCompletedStories.addAll(completedStories.intermediate)
+                    _advancedCompletedStories.addAll(completedStories.advancedTales)
+                    _advancedCareerCompletedStories.addAll(completedStories.careerTales)
+
+                    _totalCompletedStories.value += _beginnerCompletedStories.filter { it == true }.size
+                    _totalCompletedStories.value += _intermediateCompletedStories.filter { it == true }.size
+                    _totalCompletedStories.value += _advancedCompletedStories.filter { it == true }.size
+                    _totalCompletedStories.value += _advancedCareerCompletedStories.filter { it == true }.size
+
+                }
+            }
+        }
     }
 
     fun analyzeText(category: StoryCategory) {

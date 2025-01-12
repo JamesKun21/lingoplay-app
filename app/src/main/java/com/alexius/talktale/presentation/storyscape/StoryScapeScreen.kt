@@ -62,6 +62,8 @@ fun StoryScapeScreen(
 
     var story by remember { mutableStateOf(stories[0]) }
 
+    val callbackState = remember { mutableStateOf<() -> Unit>({}) }
+
     NavHost(
         startDestination = startRoute,
         navController = navController
@@ -74,19 +76,39 @@ fun StoryScapeScreen(
                 onClickFirstPlay = {
                     story = stories[0]
                     viewModelStoryScape.chooseStory(0)
+                    callbackState.value = {viewModelStoryScape.updateCompletedStries( when(category){
+                        "Beginner" -> StoryScapeViewModel.StoryCategory.BEGINNER
+                        "Intermediate" -> StoryScapeViewModel.StoryCategory.INTERMEDIATE
+                        else -> StoryScapeViewModel.StoryCategory.ADVANCED
+                    }, 0, true)}
                     navigateTo(navController, Route.StoryScapeBridgingScreen.route)
                 },
                 onClickSecondPlay = {
                     story = stories[1]
                     viewModelStoryScape.chooseStory(1)
+                    callbackState.value = {viewModelStoryScape.updateCompletedStries( when(category){
+                        "Beginner" -> StoryScapeViewModel.StoryCategory.BEGINNER
+                        "Intermediate" -> StoryScapeViewModel.StoryCategory.INTERMEDIATE
+                        else -> StoryScapeViewModel.StoryCategory.ADVANCED
+                    }, 1, true)}
                     navigateTo(navController, Route.StoryScapeBridgingScreen.route)
                 },
                 onClickThirdPlay = {
                     story = stories[2]
                     viewModelStoryScape.chooseStory(2)
+                    callbackState.value = {viewModelStoryScape.updateCompletedStries( when(category){
+                        "Beginner" -> StoryScapeViewModel.StoryCategory.BEGINNER
+                        "Intermediate" -> StoryScapeViewModel.StoryCategory.INTERMEDIATE
+                        else -> StoryScapeViewModel.StoryCategory.ADVANCED
+                    }, 2, true)}
                     navigateTo(navController, Route.StoryScapeBridgingScreen.route)
                 },
-                onBackClick = onBackChooseStory
+                onBackClick = onBackChooseStory,
+                listCompleted = when (category) {
+                    "Beginner" -> viewModelStoryScape.beginnerCompletedStories
+                    "Intermediate" -> viewModelStoryScape.intermediateCompletedStories
+                    else -> viewModelStoryScape.advancedCompletedStories
+                }
             )
         }
 
@@ -111,15 +133,18 @@ fun StoryScapeScreen(
                 onClickFirstPlay = {
                     story = stories[3]
                     viewModelStoryScape.chooseStory(0)
+                    callbackState.value = {viewModelStoryScape.updateCompletedStries( StoryScapeViewModel.StoryCategory.ADVANCED_CAREER, 0, true)}
                     navigateTo(navController, Route.StoryScapeBridgingScreen.route)
                 },
                 onClickSecondPlay = {
                     story = stories[4]
                     viewModelStoryScape.chooseStory(1)
+                    callbackState.value = {viewModelStoryScape.updateCompletedStries( StoryScapeViewModel.StoryCategory.ADVANCED_CAREER, 1, true)}
                     navigateTo(navController, Route.StoryScapeBridgingScreen.route)
                 },
                 onClickThirdPlay = {
                     story = stories[5]
+                    callbackState.value = {viewModelStoryScape.updateCompletedStries( StoryScapeViewModel.StoryCategory.ADVANCED_CAREER, 2, true)}
                     viewModelStoryScape.chooseStory(2)
                     navigateTo(navController, Route.StoryScapeBridgingScreen.route)
                 },
@@ -130,7 +155,8 @@ fun StoryScapeScreen(
                             inclusive = true
                         }
                     }
-                }
+                },
+                listCompleted = viewModelStoryScape.advancedCareerCompletedStories
             )
         }
 
@@ -220,6 +246,7 @@ fun StoryScapeScreen(
                     if (viewModelStoryScape.currentPharagraphIndex.value == story.paragraphs.size - 1) {
                         // Get all the answers that is not multiple choice and generate AI grammar and vocabulary
                         viewModelStoryScape.resetParagraphIndex()
+                        callbackState.value()
                         viewModelStoryScape.analyzeText(if (category == "Beginner") StoryScapeViewModel.StoryCategory.BEGINNER else if (category == "Intermediate")
                             StoryScapeViewModel.StoryCategory.INTERMEDIATE else StoryScapeViewModel.StoryCategory.ADVANCED)
                         navigateTo(navController, Route.StoryScapeEndScreen.route)
