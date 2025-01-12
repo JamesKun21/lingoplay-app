@@ -24,6 +24,8 @@ import com.alexius.core.util.UIState
 import com.alexius.talktale.Greeting
 import com.alexius.talktale.presentation.common.LoadingScreen
 import com.alexius.talktale.presentation.navgraph_main.Route
+import com.alexius.talktale.presentation.storyscape.choose_screen.CareerChooseScreen
+import com.alexius.talktale.presentation.storyscape.choose_screen.StoryCareerChooseScreen
 import com.alexius.talktale.presentation.storyscape.choose_screen.StoryChooseScreen
 import com.alexius.talktale.presentation.storyscape.story_quiz.StoryBridgeScreen
 import com.alexius.talktale.presentation.storyscape.story_quiz.StoryQuizDisplay
@@ -36,15 +38,32 @@ fun StoryScapeScreen(
     category: String,
     stories: List<Story>,
     viewModelStoryScape: StoryScapeViewModel,
-    onEndStory: () -> Unit
+    onEndStory: () -> Unit,
+    startRoute: String,
+    onBackChooseStory: () -> Unit
 ) {
+
+    /*val dongengStories = remember { mutableListOf<Story?>(null) }
+
+    val careerStories = remember { mutableListOf<Story?>(null) }
+
+    LaunchedEffect(stories) {
+        if (stories.size >= 6){
+            for (i in 0..2){
+                dongengStories.add(stories[i])
+            }
+            for (i in 3..5) {
+                careerStories.add(stories[i])
+            }
+        }
+    }*/
 
     val navController= rememberNavController()
 
     var story by remember { mutableStateOf(stories[0]) }
 
     NavHost(
-        startDestination = Route.StoryScapeChooseScreen.route,
+        startDestination = startRoute,
         navController = navController
     ){
         composable(
@@ -67,6 +86,51 @@ fun StoryScapeScreen(
                     viewModelStoryScape.chooseStory(2)
                     navigateTo(navController, Route.StoryScapeBridgingScreen.route)
                 },
+                onBackClick = onBackChooseStory
+            )
+        }
+
+        composable(
+            route = Route.StoryAdvancedChooseScreen.route
+        ){
+            StoryCareerChooseScreen(
+                onClickFirstPlay = {
+                    navigateTo(navController, Route.StoryScapeChooseScreen.route)
+                },
+                onClickSecondPlay = {
+
+                },
+                onBackClick = onBackChooseStory
+            )
+        }
+
+        composable(
+            route = Route.CareerChooseScreen.route
+        ){
+            CareerChooseScreen(
+                onClickFirstPlay = {
+                    story = stories[3]
+                    viewModelStoryScape.chooseStory(3)
+                    navigateTo(navController, Route.StoryScapeBridgingScreen.route)
+                },
+                onClickSecondPlay = {
+                    story = stories[4]
+                    viewModelStoryScape.chooseStory(4)
+                    navigateTo(navController, Route.StoryScapeBridgingScreen.route)
+                },
+                onClickThirdPlay = {
+                    story = stories[5]
+                    viewModelStoryScape.chooseStory(5)
+                    navigateTo(navController, Route.StoryScapeBridgingScreen.route)
+                },
+                onBackClick = {
+                    navController.navigate(Route.StoryAdvancedChooseScreen.route){
+                        launchSingleTop = true
+                        popUpTo(Route.CareerChooseScreen.route){
+                            inclusive = true
+                        }
+                    }
+                }
             )
         }
 

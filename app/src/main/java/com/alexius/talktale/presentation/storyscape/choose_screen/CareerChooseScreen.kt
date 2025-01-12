@@ -17,21 +17,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.alexius.talktale.R
+import com.alexius.core.R
 import com.alexius.talktale.presentation.common.StoryCard
 import com.alexius.talktale.presentation.common.TopBarQuiz
 import com.alexius.talktale.ui.theme.Blue
+import com.alexius.talktale.ui.theme.Orange
 import com.alexius.talktale.ui.theme.Pink
 
 @Composable
-fun StoryChooseScreen(
+fun CareerChooseScreen(
     modifier: Modifier = Modifier,
     onClickFirstPlay: () -> Unit,
     onClickSecondPlay: () -> Unit,
     onClickThirdPlay: () -> Unit,
     onBackClick: () -> Unit,
-    category: String,
 ) {
     val scrollState = rememberScrollState()
 
@@ -61,21 +60,17 @@ fun StoryChooseScreen(
             Spacer(modifier = modifier.fillMaxWidth().height(20.dp))
 
             Text(
-                text = category,
+                text = "Kesehatan",
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                color = when(category){
-                    "Beginner" -> MaterialTheme.colorScheme.secondary
-                    "Intermediate" -> Blue
-                    else -> Pink
-                }
+                color = Orange
             )
 
             Spacer(modifier = modifier.fillMaxWidth().height(10.dp))
 
             StoryCard(
-                imageDrawable = R.drawable.timun_mas,
-                title = "Timun Mas",
-                description = "The Golden Cucumber Adventure",
+                imageDrawable = R.drawable.no_smoking,
+                title = "The Journey of Smoking",
+                description = "The Transformative Path of Quitting Smoking",
                 completed = false,
                 locked = false,
                 onClickPlay = onClickFirstPlay
@@ -83,10 +78,18 @@ fun StoryChooseScreen(
 
             Spacer(modifier = modifier.fillMaxWidth().height(10.dp))
 
+            Text(
+                text = "Teknik",
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                color = Orange
+            )
+
+            Spacer(modifier = modifier.fillMaxWidth().height(10.dp))
+
             StoryCard(
-                imageDrawable = R.drawable.lion,
-                title = "The Lion and The Mouse",
-                description = "The Unexpected Friendship Adventure",
+                imageDrawable = R.drawable.engineering,
+                title = "How Hydroelectric Dams Generate Power",
+                description = "The Mechanics and Impact of Hydroelectric Dams",
                 completed = false,
                 locked = false,
                 onClickPlay = onClickSecondPlay
@@ -94,10 +97,18 @@ fun StoryChooseScreen(
 
             Spacer(modifier = modifier.fillMaxWidth().height(10.dp))
 
+            Text(
+                text = "Ekonomi",
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                color = Orange
+            )
+
+            Spacer(modifier = modifier.fillMaxWidth().height(10.dp))
+
             StoryCard(
-                imageDrawable = com.alexius.core.R.drawable.red_hood,
-                title = "The Girl in the Red Hood",
-                description = "The Little Red Riding Hood Adventure",
+                imageDrawable = com.alexius.core.R.drawable.money,
+                title = "The Impact of Inflation on Prices and the Economy",
+                description = "How Rising Prices Affect Your Wallet and the Economy",
                 completed = false,
                 locked = false,
                 onClickPlay = onClickThirdPlay

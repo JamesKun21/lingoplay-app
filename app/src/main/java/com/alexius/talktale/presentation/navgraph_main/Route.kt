@@ -51,6 +51,10 @@ sealed class Route(
 
     object StoryScapeChooseScreen: Route(route = "storyScapeChooseScreen")
 
+    object StoryAdvancedChooseScreen: Route(route = "storyAdvancedChooseScreen")
+
+    object CareerChooseScreen: Route(route = "careerChooseScreen")
+
     object StoryScapeBridgingScreen: Route(route = "storyScapeBriefScreen")
 
     object StoryScapeQuizScreen: Route(route = "storyScapeQuizScreen")

@@ -140,15 +140,30 @@ fun TalkTaleNavgraph(
                 navController.previousBackStackEntry?.savedStateHandle?.get<String?>("category")
                     ?.let { category ->
                         StoryScapeScreen(
-                            category =  category,
+                            category = category,
                             stories = when (category) {
                                 "Beginner" -> viewModelStoryScape.beginnerStories.value
                                 "Intermediate" -> viewModelStoryScape.intermediateStories.value
-                                "Advanced" -> viewModelStoryScape.advancedStories.value
+                                "Advanced" -> {
+                                    val stories = arrayListOf<Story>()
+                                    stories.addAll(viewModelStoryScape.advancedStories.value)
+                                    stories.addAll(viewModelStoryScape.advancedCareerStories.value)
+                                    stories
+                                }
                                 else -> viewModelStoryScape.advancedCareerStories.value
                             },
                             viewModelStoryScape = viewModelStoryScape,
-                            onEndStory = {navigateToTap(navController, Route.HomeScreen.route)}
+                            onEndStory = { navigateToTap(navController, Route.HomeScreen.route) },
+                            onBackChooseStory = {
+                                navController.navigate(Route.StoryScapeLevelScreen.route) {
+                                    launchSingleTop = true
+                                    popUpTo(Route.StoryScapeScreen.route){
+                                        inclusive = true
+                                    }
+                                }
+                            },
+
+                            startRoute = if (category == "Advanced") Route.StoryAdvancedChooseScreen.route else Route.StoryScapeChooseScreen.route
                         )
                     }
 
