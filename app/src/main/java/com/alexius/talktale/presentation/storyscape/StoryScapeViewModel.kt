@@ -63,7 +63,8 @@ class StoryScapeViewModel @Inject constructor(
     private val _advancedStories = MutableStateFlow<List<Story>>(emptyList())
     val advancedStories: StateFlow<List<Story>> = _advancedStories
 
-   /* private val _advancedCareerStories = */
+    private val _advancedCareerStories = MutableStateFlow<List<Story>>(emptyList())
+    val advancedCareerStories: StateFlow<List<Story>> = _advancedCareerStories
 
     private val _currentPharagraphIndex = mutableIntStateOf(0)
     val currentPharagraphIndex: State<Int> = _currentPharagraphIndex
@@ -975,7 +976,304 @@ class StoryScapeViewModel @Inject constructor(
         )
         _advancedStories.value = listAdvancedStories
         
-        
+        val listAdvanceCareen = listOf<Story>(
+            //region No Smoking
+            Story(
+                title = "The Journey of Smoking",
+                subtitle = "The Transformative Path of Quitting Smoking",
+                imageRes = R.drawable.no_smoking,
+                isComplete = false,
+                bridgeHint = "Kamu akan membaca cerita The Journey of Smoking sambil mendengarkan audionya. Jawab pertanyaan dan ikuti instruksi yang diberikan.",
+                closeStatement = "Kamu telah menyelesaikan cerita The Journey of Smoking. Selanjutnya kamu akan melihat analisis grammar dan vocabularymu.",
+                paragraphs = listOf(
+
+                    StoryParagraph(
+                        imageRes = R.drawable.no_smoking_1,
+                        content = "Cigarettes harm the body in multiple ways, starting with their 5,000 chemical substances. Tar coats the teeth, gums, and lungs, causing decay and damaging nerve endings, leading to loss of smell. Smoke weakens the lungs by destroying cilia, the tiny structures that keep airways clean. Carbon monoxide from cigarette smoke enters the bloodstream, displacing oxygen and causing oxygen deprivation and shortness of breath.",
+                        question = Question(
+                            multipleChoice = true,
+                            options = listOf(
+                                "Tar",
+                                "Carbon monoxide",
+                            ),
+                            correctAnswerIndex = 1,
+                            text = "What substance in cigarette smoke coats the teeth, gums, and lungs, causing decay?",
+                            userAnswer = "",
+                        )
+                    ),
+
+                    StoryParagraph(
+                        imageRes = R.drawable.no_smoking_2,
+                        content = "Within seconds of inhaling, nicotine reaches the brain, triggering the release of dopamine and other chemicals that make smoking addictive. Simultaneously, it restricts blood flow by narrowing blood vessels and thickening their walls. This increases the risk of clots, leading to heart attacks and strokes. The chemicals in cigarettes also mutate DNA, causing cancer, and hinder DNA repair, weakening the body's defenses against multiple diseases.",
+                        question = Question(
+                            multipleChoice = false,
+                            options = listOf(
+                                ""
+                            ),
+                            correctAnswerIndex = 0,
+                            text = "How does nicotine affect blood vessels?",
+                            userAnswer = "",
+                        )
+                    ),
+
+                    StoryParagraph(
+                        imageRes = R.drawable.no_smoking_3,
+                        content = "Smoking isn’t limited to causing lung cancer; it can lead to cancers in other tissues and organs, damage eyesight, and weaken bones. It complicates pregnancy for women and causes erectile dysfunction in men. About one-third of cancer deaths in the U.S. are linked to smoking. These wide-ranging effects emphasize the extensive harm caused by cigarettes.",
+                        question = Question(
+                            multipleChoice = false,
+                            options = listOf(
+                                ""
+                            ),
+                            correctAnswerIndex = 0,
+                            text = "How does smoking impact reproductive health in men and women?",
+                            userAnswer = "",
+                        )
+                    ),
+
+                    StoryParagraph(
+                        imageRes = R.drawable.no_smoking_4,
+                        content = "Quitting smoking brings almost instant health benefits. Within 20 minutes, heart rate and blood pressure normalize, and after 12 hours, carbon monoxide levels stabilize. In just one day, the risk of heart attack begins to decrease. By two days, senses of smell and taste start to recover. After a month, lungs function better, and symptoms like coughing reduce.",
+                        question = Question(
+                            multipleChoice = false,
+                            options = listOf(
+                                ""
+                            ),
+                            correctAnswerIndex = 0,
+                            text = "What happens to carbon monoxide levels in the blood after 12 hours of quitting smoking?",
+                            userAnswer = "",
+                        )
+                    ),
+
+                    StoryParagraph(
+                        imageRes = R.drawable.no_smoking_5,
+                        content = "The body's recovery continues over months and years. By nine months, cilia in the lungs regenerate, reducing infections. After a year, heart disease risk is halved, and by five years, the chance of clots and strokes decreases significantly. A decade later, lung cancer risk drops by 50%, and after 15 years, the risk of coronary heart disease matches that of a non-smoker.",
+                        question = Question(
+                            multipleChoice = true,
+                            options = listOf(
+                                "9 months",
+                                "1 month",
+                            ),
+                            correctAnswerIndex = 0,
+                            text = "By what time frame do cilia in the lungs fully regenerate?",
+                            userAnswer = "",
+                        )
+                    ),
+
+                    StoryParagraph(
+                        imageRes = R.drawable.no_smoking_6,
+                        content = "Quitting smoking is challenging due to nicotine withdrawal, which can cause anxiety and depression. However, tools like nicotine replacement therapies (gum, patches, lozenges) and behavioral support (counseling, therapy, and exercise) help manage withdrawal symptoms and prevent relapse. With determination and the right resources, quitting sets the body on a path to health and longevity.",
+                        question = Question(
+                            multipleChoice = false,
+                            options = listOf(
+                                "",
+                            ),
+                            correctAnswerIndex = 0,
+                            text = "What are two types of support that can help someone quit smoking?",
+                            userAnswer = "",
+                        )
+                    )
+                )
+            ),
+            //endregion
+
+            //region Engineering
+            Story(
+                title = "How Hydroelectric Dams Generate Power",
+                subtitle = "The Mechanics and Impact of Hydroelectric Dams",
+                imageRes = R.drawable.engineering,
+                isComplete = false,
+                bridgeHint = "Kamu akan membaca cerita How Hydroelectric Dams Generate Power sambil mendengarkan audionya. Jawab pertanyaan dan ikuti instruksi yang diberikan.",
+                closeStatement = "Kamu telah menyelesaikan cerita How Hydroelectric Dams Generate Power. Selanjutnya kamu akan melihat analisis grammar dan vocabularymu.",
+                paragraphs = listOf(
+
+                    StoryParagraph(
+                        imageRes = R.drawable.engineering_1,
+                        content = "Humans have harnessed water's energy for centuries, using it to drive mills and pumps. However, converting the potential energy of water into electricity is a relatively modern innovation. Hydroelectric dams require two key components to generate electricity: a plentiful water source and an elevation difference, known as the head, between the upstream headwater and downstream tailwater. The dam separates these two, creating the conditions needed for energy production.",
+                        question = Question(
+                            multipleChoice = true,
+                            options = listOf(
+                                "Solar panels",
+                                "Water and elevation",
+                            ),
+                            correctAnswerIndex = 1,
+                            text = "What is needed to generate electricity with a hydroelectric dam?",
+                            userAnswer = "",
+                        )
+                    ),
+
+                    StoryParagraph(
+                        imageRes = R.drawable.engineering_2,
+                        content = "The process begins as water enters the dam through penstocks at the main inlets. The water flows down the penstocks to the hydroelectric turbines housed in the powerhouse. As water moves over the turbine runners, the runners rotate, transforming the water’s energy into mechanical energy. This mechanical energy is then transferred to electrical generators connected to the turbines via common shafts, ultimately producing electricity.",
+                        question = Question(
+                            multipleChoice = false,
+                            options = listOf(
+                                ""
+                            ),
+                            correctAnswerIndex = 0,
+                            text = "What energy transformation occurs in the turbine runners?",
+                            userAnswer = "",
+                        )
+                    ),
+
+                    StoryParagraph(
+                        imageRes = R.drawable.engineering_3,
+                        content = "The generated electricity is then distributed through transformers to the high-voltage national grid for use. The water completes its journey by flowing out of the powerhouse through draft tubes into the tailwater. This continuous cycle allows hydro dams to provide a reliable and constant source of power generation.",
+                        question = Question(
+                            multipleChoice = false,
+                            options = listOf(
+                                ""
+                            ),
+                            correctAnswerIndex = 0,
+                            text = "What happens to the water after it passes through the powerhouse?",
+                            userAnswer = "",
+                        )
+                    ),
+
+                    StoryParagraph(
+                        imageRes = R.drawable.engineering_4,
+                        content = "Hydroelectric dams offer many advantages. They are a renewable energy source that produces no waste products and are efficient and economical to operate. Additionally, dams have a long service life, with some operating for over 100 years. Their consistent performance makes them a cornerstone of renewable energy solutions.",
+                        question = Question(
+                            multipleChoice = false,
+                            options = listOf(
+                                ""
+                            ),
+                            correctAnswerIndex = 0,
+                            text = "How long can some hydroelectric dams remain operational?",
+                            userAnswer = "",
+                        )
+                    ),
+
+                    StoryParagraph(
+                        imageRes = R.drawable.engineering_5,
+                        content = "However, hydro dams are not without their drawbacks. Their construction can disrupt local habitats for plants and animals, requiring significant changes to the environment. Building dams is also costly, with high initial investments. Furthermore, while generally reliable, dam failures, though rare, can lead to catastrophic flooding downstream.",
+                        question = Question(
+                            multipleChoice = true,
+                            options = listOf(
+                                "They are cheap to construct",
+                                "They can disrupt local habitats",
+                            ),
+                            correctAnswerIndex = 1,
+                            text = "What is one major disadvantage of hydroelectric dams?",
+                            userAnswer = "",
+                        )
+                    ),
+
+                    StoryParagraph(
+                        imageRes = R.drawable.engineering_6,
+                        content = "Despite their challenges, hydroelectric dams remain a vital part of the energy landscape, offering sustainable power generation for the future. As iconic structures of engineering, they are likely to endure in our surroundings for many decades, contributing to energy needs worldwide.",
+                        question = Question(
+                            multipleChoice = false,
+                            options = listOf(
+                                "",
+                            ),
+                            correctAnswerIndex = 0,
+                            text = "What role do hydroelectric dams play in the future of energy?",
+                            userAnswer = "",
+                        )
+                    )
+                )
+            ),
+            //endregion
+
+            //region Money
+            Story(
+                title = "The Impact of Inflation on Prices and the Economy",
+                subtitle = "How Rising Prices Affect Your Wallet and the Economy",
+                imageRes = R.drawable.money,
+                isComplete = false,
+                bridgeHint = "Kamu akan membaca cerita The Impact of Inflation on Prices and the Economy sambil mendengarkan audionya. Jawab pertanyaan dan ikuti instruksi yang diberikan.",
+                closeStatement = "Kamu telah menyelesaikan cerita The Impact of Inflation on Prices and the Economy. Selanjutnya kamu akan melihat analisis grammar dan vocabularymu.",
+                paragraphs = listOf(
+
+                    StoryParagraph(
+                        imageRes = R.drawable.money_1,
+                        content = "In 1967, McDonald's launched the Big Mac for just 45 cents, but today the same burger costs \$3.99. This significant price increase is an example of inflation, which is the rising cost of goods and services over time.",
+                        question = Question(
+                            multipleChoice = true,
+                            options = listOf(
+                                "\$3.99",
+                                "45 cents",
+                            ),
+                            correctAnswerIndex = 1,
+                            text = "What was the price of a Big Mac when McDonald's launched it in 1967?",
+                            userAnswer = "",
+                        )
+                    ),
+
+                    StoryParagraph(
+                        imageRes = R.drawable.money_2,
+                        content = "Inflation is monitored by statistical bureaus, which track price changes for everything, from everyday items like leg wax to luxury goods like whiskey. The data is then used to calculate the rate of inflation, a single percentage number.",
+                        question = Question(
+                            multipleChoice = false,
+                            options = listOf(
+                                ""
+                            ),
+                            correctAnswerIndex = 0,
+                            text = "What is the purpose of monitoring inflation?",
+                            userAnswer = "",
+                        )
+                    ),
+
+                    StoryParagraph(
+                        imageRes = R.drawable.money_3,
+                        content = "Governments use the inflation rate to adjust welfare payments and to help workers determine fair pay raises. In a stable economy, prices usually rise slowly, by around 1 to 2% each year.",
+                        question = Question(
+                            multipleChoice = false,
+                            options = listOf(
+                                ""
+                            ),
+                            correctAnswerIndex = 0,
+                            text = "How much do prices typically rise in a stable economy each year?",
+                            userAnswer = "",
+                        )
+                    ),
+
+                    StoryParagraph(
+                        imageRes = R.drawable.money_4,
+                        content = "However, inflation can sometimes spiral out of control, as seen in Zimbabwe in 2008, where prices doubled every 24 hours due to an overabundance of money. This hyperinflation caused people to become trillionaires, and the country even ran out of paper to print banknotes.",
+                        question = Question(
+                            multipleChoice = false,
+                            options = listOf(
+                                ""
+                            ),
+                            correctAnswerIndex = 0,
+                            text = "What was the cause of hyperinflation in Zimbabwe?",
+                            userAnswer = "",
+                        )
+                    ),
+
+                    StoryParagraph(
+                        imageRes = R.drawable.money_5,
+                        content = "Once inflation spirals like this, it's hard to recover. In such cases, governments may be forced to devalue their currency or abandon it altogether, as was the case in Germany during the 1920s.",
+                        question = Question(
+                            multipleChoice = true,
+                            options = listOf(
+                                "Increase wages",
+                                "Devalue or abandon their currency",
+                            ),
+                            correctAnswerIndex = 1,
+                            text = "What must governments do if inflation becomes uncontrollable?",
+                            userAnswer = "",
+                        )
+                    ),
+
+                    StoryParagraph(
+                        imageRes = R.drawable.money_6,
+                        content = "While inflation can be harmful when it becomes excessive, a small amount of inflation is actually beneficial for the economy. It helps stimulate growth and prevents deflation. However, inflation can negatively affect savers, as the value of money decreases over time if it isn't growing at the same rate.",
+                        question = Question(
+                            multipleChoice = false,
+                            options = listOf(
+                                "",
+                            ),
+                            correctAnswerIndex = 0,
+                            text = "How does inflation affect savers?",
+                            userAnswer = "",
+                        )
+                    )
+                )
+            ),
+            //endregion
+        )
     }
 
     fun analyzeText() {
