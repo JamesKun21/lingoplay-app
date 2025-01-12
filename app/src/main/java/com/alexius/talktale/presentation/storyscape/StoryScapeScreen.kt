@@ -34,12 +34,14 @@ import java.io.File
 fun StoryScapeScreen(
     modifier: Modifier = Modifier,
     category: String,
-    story: Story,
+    stories: List<Story>,
     viewModelStoryScape: StoryScapeViewModel,
     onEndStory: () -> Unit
 ) {
 
     val navController= rememberNavController()
+
+    var story by remember { mutableStateOf(stories[0]) }
 
     NavHost(
         startDestination = Route.StoryScapeChooseScreen.route,
@@ -50,9 +52,21 @@ fun StoryScapeScreen(
         ){
             StoryChooseScreen(
                 category = category,
-                onClickPlay = {
+                onClickFirstPlay = {
+                    story = stories[0]
+                    viewModelStoryScape.chooseStory(0)
                     navigateTo(navController, Route.StoryScapeBridgingScreen.route)
-                }
+                },
+                onClickSecondPlay = {
+                    story = stories[1]
+                    viewModelStoryScape.chooseStory(1)
+                    navigateTo(navController, Route.StoryScapeBridgingScreen.route)
+                },
+                onClickThirdPlay = {
+                    story = stories[2]
+                    viewModelStoryScape.chooseStory(2)
+                    navigateTo(navController, Route.StoryScapeBridgingScreen.route)
+                },
             )
         }
 
@@ -105,7 +119,11 @@ fun StoryScapeScreen(
                 showExitDialog.value = true
             }
 
-            var text by remember { mutableStateOf(viewModelStoryScape.story.value.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].question.userAnswer) }
+            var text by remember { mutableStateOf(when (category) {
+                "Beginner" -> viewModelStoryScape.beginnerStories.value[viewModelStoryScape.currentStoryIndex.value].paragraphs[viewModelStoryScape.currentPharagraphIndex.value].question.text
+                "Intermediate" -> viewModelStoryScape.intermediateStories.value[viewModelStoryScape.currentStoryIndex.value].paragraphs[viewModelStoryScape.currentPharagraphIndex.value].question.text
+                else -> viewModelStoryScape.advancedStories.value[viewModelStoryScape.currentStoryIndex.value].paragraphs[viewModelStoryScape.currentPharagraphIndex.value].question.text
+            }) }
 
             StoryQuizDisplay(
                 isLoading = isLoading,
@@ -119,27 +137,30 @@ fun StoryScapeScreen(
                 },
                 onAnswerFieldChange = {
                     text = it
-                    viewModelStoryScape.answerQuestion(it)},
+                    viewModelStoryScape.answerQuestion(it, if (category == "Beginner") StoryScapeViewModel.StoryCategory.BEGINNER else if (category == "Intermediate")
+                        StoryScapeViewModel.StoryCategory.INTERMEDIATE else StoryScapeViewModel.StoryCategory.ADVANCED)},
                 answerInput = text,
-                question = viewModelStoryScape.story.value.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].question.text,
-                paragraph = viewModelStoryScape.story.value.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].content,
-                imageDrawable = viewModelStoryScape.story.value.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].imageRes,
+                question = story.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].question.text,
+                paragraph = story.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].content,
+                imageDrawable = story.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].imageRes,
                 onPlayAudioClick = {
                     isLoading = true
                     mediaPlayer?.stop()
                     mediaPlayer?.prepare()
-                    viewModelStoryScape.generateSpeech(viewModelStoryScape.story.value.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].content)
+                    viewModelStoryScape.generateSpeech(story.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].content)
                 },
-                isMultipleChoice = viewModelStoryScape.story.value.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].question.multipleChoice,
-                options = viewModelStoryScape.story.value.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].question.options,
+                isMultipleChoice = story.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].question.multipleChoice,
+                options = story.paragraphs[viewModelStoryScape.currentPharagraphIndex.value].question.options,
                 onAnswerSelected = {},
                 onNextClick = {
-                    if (viewModelStoryScape.currentPharagraphIndex.value == viewModelStoryScape.story.value.paragraphs.size - 1) {
+                    if (viewModelStoryScape.currentPharagraphIndex.value == story.paragraphs.size - 1) {
                         // Get all the answers that is not multiple choice and generate AI grammar and vocabulary
-                        viewModelStoryScape.analyzeText()
+                        viewModelStoryScape.analyzeText(if (category == "Beginner") StoryScapeViewModel.StoryCategory.BEGINNER else if (category == "Intermediate")
+                            StoryScapeViewModel.StoryCategory.INTERMEDIATE else StoryScapeViewModel.StoryCategory.ADVANCED)
                         navigateTo(navController, Route.StoryScapeEndScreen.route)
                     } else {
-                        viewModelStoryScape.moveToNextQuestion()
+                        viewModelStoryScape.moveToNextQuestion(if (category == "Beginner") StoryScapeViewModel.StoryCategory.BEGINNER else if (category == "Intermediate")
+                            StoryScapeViewModel.StoryCategory.INTERMEDIATE else StoryScapeViewModel.StoryCategory.ADVANCED)
                         text = ""
                         selectedAnswerIndex.intValue = -1
                     }

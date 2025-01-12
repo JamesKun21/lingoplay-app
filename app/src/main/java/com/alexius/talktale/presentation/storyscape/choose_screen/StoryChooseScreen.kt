@@ -24,7 +24,9 @@ import com.alexius.talktale.ui.theme.Pink
 @Composable
 fun StoryChooseScreen(
     modifier: Modifier = Modifier,
-    onClickPlay: () -> Unit,
+    onClickFirstPlay: () -> Unit,
+    onClickSecondPlay: () -> Unit,
+    onClickThirdPlay: () -> Unit,
     category: String,
 ) {
     val scrollState = rememberScrollState()
@@ -68,7 +70,7 @@ fun StoryChooseScreen(
             description = "The Golden Cucumber Adventure",
             completed = false,
             locked = false,
-            onClickPlay = onClickPlay
+            onClickPlay = onClickFirstPlay
         )
 
         Spacer(modifier = modifier.fillMaxWidth().height(10.dp))
@@ -78,8 +80,8 @@ fun StoryChooseScreen(
             title = "The Lion and The Mouse",
             description = "The Unexpected Friendship Adventure",
             completed = false,
-            locked = true,
-            onClickPlay = {}
+            locked = false,
+            onClickPlay = onClickSecondPlay
         )
 
         Spacer(modifier = modifier.fillMaxWidth().height(10.dp))
@@ -89,8 +91,8 @@ fun StoryChooseScreen(
             title = "The Girl in the Red Hood",
             description = "The Little Red Riding Hood Adventure",
             completed = false,
-            locked = true,
-            onClickPlay = {}
+            locked = false,
+            onClickPlay = onClickThirdPlay
         )
 
     }

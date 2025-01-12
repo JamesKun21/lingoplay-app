@@ -66,6 +66,9 @@ class StoryScapeViewModel @Inject constructor(
     private val _advancedCareerStories = MutableStateFlow<List<Story>>(emptyList())
     val advancedCareerStories: StateFlow<List<Story>> = _advancedCareerStories
 
+    private val _listOfAnswers = mutableListOf<String>()
+    val listOfAnswers: List<String> = _listOfAnswers
+
     private val _currentPharagraphIndex = mutableIntStateOf(0)
     val currentPharagraphIndex: State<Int> = _currentPharagraphIndex
 
@@ -74,6 +77,9 @@ class StoryScapeViewModel @Inject constructor(
 
     private val _uiStateGemini = MutableStateFlow<UIState<String>>(UIState.Loading)
     val uiStateGemini: StateFlow<UIState<String>> = _uiStateGemini
+
+    private val _currentStoryIndex = mutableIntStateOf(0)
+    val currentStoryIndex: State<Int> = _currentStoryIndex
 
     init {
         val listBeginnerStories = listOf<Story>(
@@ -1274,15 +1280,16 @@ class StoryScapeViewModel @Inject constructor(
             ),
             //endregion
         )
+        _advancedCareerStories.value = listAdvanceCareen
     }
 
-    fun analyzeText() {
+    fun analyzeText(category: StoryCategory) {
         viewModelScope.launch {
             try {
 
                 _uiStateGemini.value = UIState.Loading
 
-                val answerList = getAllUserAnswersNotMultipleChoice()
+                val answerList = getAllUserAnswersNotMultipleChoice(category)
 
                 val answer1 = answerList[0]
 
@@ -1311,8 +1318,17 @@ class StoryScapeViewModel @Inject constructor(
         }
     }
 
-    fun moveToNextQuestion() {
-        if (_currentPharagraphIndex.intValue < _story.value.paragraphs.size - 1) {
+    fun chooseStory(index: Int) {
+        _currentStoryIndex.intValue = index
+    }
+
+    fun moveToNextQuestion(category: StoryCategory) {
+        if (_currentPharagraphIndex.intValue < when (category) {
+                StoryCategory.BEGINNER -> _beginnerStories.value[_currentStoryIndex.intValue].paragraphs.size - 1
+                StoryCategory.INTERMEDIATE -> _intermediateStories.value[_currentStoryIndex.intValue].paragraphs.size - 1
+                StoryCategory.ADVANCED -> _advancedStories.value[_currentStoryIndex.intValue].paragraphs.size - 1
+                StoryCategory.ADVANCED_CAREER -> _advancedCareerStories.value[_currentStoryIndex.intValue].paragraphs.size - 1
+            }) {
             _currentPharagraphIndex.intValue++
             Log.d("StoryScapeViewModel", "Current Paragraph Index: ${_currentPharagraphIndex.intValue}")
         } else {
@@ -1320,22 +1336,62 @@ class StoryScapeViewModel @Inject constructor(
         }
     }
 
-    fun answerQuestion(answer: String) {
-        val currentParagraphQuestion = _story.value.paragraphs[_currentPharagraphIndex.intValue].question
+    fun answerQuestion(answer: String, category: StoryCategory) {
+        val currentParagraphQuestion = when (category) {
+            StoryCategory.BEGINNER -> _beginnerStories.value[_currentStoryIndex.intValue].paragraphs[_currentPharagraphIndex.intValue].question
+            StoryCategory.INTERMEDIATE -> _intermediateStories.value[_currentStoryIndex.intValue].paragraphs[_currentPharagraphIndex.intValue].question
+            StoryCategory.ADVANCED -> _advancedStories.value[_currentStoryIndex.intValue].paragraphs[_currentPharagraphIndex.intValue].question
+            StoryCategory.ADVANCED_CAREER -> _advancedCareerStories.value[_currentStoryIndex.intValue].paragraphs[_currentPharagraphIndex.intValue].question
+        }
 
         currentParagraphQuestion.userAnswer = answer
 
         Log.d("StoryScapeViewModel", "User Answer: ${currentParagraphQuestion.userAnswer}")
     }
 
-    private fun getAllUserAnswersNotMultipleChoice(): List<String> {
-        val userAnswers = mutableListOf<String>()
-        _story.value.paragraphs.forEach { paragraph ->
-            if (!paragraph.question.multipleChoice) {
-                userAnswers.add(paragraph.question.userAnswer)
+    private fun getAllUserAnswersNotMultipleChoice(category: StoryCategory): List<String> {
+        when (category) {
+            StoryCategory.BEGINNER -> {
+                val userAnswers = mutableListOf<String>()
+                _beginnerStories.value[_currentStoryIndex.intValue].paragraphs.forEach { paragraph ->
+                    if (!paragraph.question.multipleChoice) {
+                        userAnswers.add(paragraph.question.userAnswer)
+                    }
+                }
+                _listOfAnswers.addAll(userAnswers)
+                return userAnswers
+            }
+            StoryCategory.INTERMEDIATE -> {
+                val userAnswers = mutableListOf<String>()
+                _intermediateStories.value[_currentStoryIndex.intValue].paragraphs.forEach { paragraph ->
+                    if (!paragraph.question.multipleChoice) {
+                        userAnswers.add(paragraph.question.userAnswer)
+                    }
+                }
+                _listOfAnswers.addAll(userAnswers)
+                return userAnswers
+            }
+            StoryCategory.ADVANCED -> {
+                val userAnswers = mutableListOf<String>()
+                _advancedStories.value[_currentStoryIndex.intValue].paragraphs.forEach { paragraph ->
+                    if (!paragraph.question.multipleChoice) {
+                        userAnswers.add(paragraph.question.userAnswer)
+                    }
+                }
+                _listOfAnswers.addAll(userAnswers)
+                return userAnswers
+            }
+            StoryCategory.ADVANCED_CAREER -> {
+                val userAnswers = mutableListOf<String>()
+                _advancedCareerStories.value[_currentStoryIndex.intValue].paragraphs.forEach { paragraph ->
+                    if (!paragraph.question.multipleChoice) {
+                        userAnswers.add(paragraph.question.userAnswer)
+                    }
+                }
+                _listOfAnswers.addAll(userAnswers)
+                return userAnswers
             }
         }
-        return userAnswers
     }
 
     fun generateSpeech(text: String) {
@@ -1361,5 +1417,12 @@ class StoryScapeViewModel @Inject constructor(
                 _uiStateAudio.value = UIState.Loading
             }
         }
+    }
+
+    public enum class StoryCategory {
+        BEGINNER,
+        INTERMEDIATE,
+        ADVANCED,
+        ADVANCED_CAREER
     }
 }

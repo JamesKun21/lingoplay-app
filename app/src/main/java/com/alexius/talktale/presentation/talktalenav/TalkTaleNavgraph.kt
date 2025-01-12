@@ -13,6 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -140,7 +141,12 @@ fun TalkTaleNavgraph(
                     ?.let { category ->
                         StoryScapeScreen(
                             category =  category,
-                            story = viewModelStoryScape.story.value,
+                            stories = when (category) {
+                                "Beginner" -> viewModelStoryScape.beginnerStories.value
+                                "Intermediate" -> viewModelStoryScape.intermediateStories.value
+                                "Advanced" -> viewModelStoryScape.advancedStories.value
+                                else -> viewModelStoryScape.advancedCareerStories.value
+                            },
                             viewModelStoryScape = viewModelStoryScape,
                             onEndStory = {navigateToTap(navController, Route.HomeScreen.route)}
                         )
