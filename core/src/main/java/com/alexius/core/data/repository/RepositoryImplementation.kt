@@ -159,6 +159,8 @@ class RepositoryImplementation @Inject constructor(
             "corrections": ["titik koreksi 1", "titik koreksi 2", "titik koreksi 3"],
             "correctedSentence": "kalimat yang sudah dikoreksi sepenuhnya"
         }
+        
+        selalu beri hasil response json dalam bahasa Indonesia
     """.trimIndent()
 
     override fun generateVocabularyPrompt(userSentence: String): String = """
@@ -193,6 +195,8 @@ class RepositoryImplementation @Inject constructor(
             "correctedSentence": "kalimat yang sudah dikoreksi sepenuhnya",
             "suggestion": "koreksi tata bahasa yang diperlukan secara grammar"
         }
+        
+        selalu beri hasil response json dalam bahasa Indonesia
     """.trimIndent()
 
     override fun generateVocabularyReportCardPrompt(userSentence: String): String = """
@@ -209,5 +213,7 @@ class RepositoryImplementation @Inject constructor(
             "correctedSentence": "kalimat yang sudah diganti dengan kosakata lain sepenuhnya",
             "suggestion": "saran deskriptif kosakata yang lebih baik untuk kata yang diidentifikasi"
         }
+        
+        selalu beri hasil response json dalam bahasa Indonesia
     """.trimIndent()
 }

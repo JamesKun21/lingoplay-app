@@ -82,7 +82,8 @@ fun ReportCardBridgeScreen(
         MainButton(
             modifier = modifier,
             onClick = onNextButton,
-            text = "Lanjut"
+            text = "Lanjut",
+            enabled = true
         )
     }
 }

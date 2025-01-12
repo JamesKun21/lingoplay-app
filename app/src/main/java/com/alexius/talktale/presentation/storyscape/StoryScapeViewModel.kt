@@ -1291,9 +1291,9 @@ class StoryScapeViewModel @Inject constructor(
 
                 val answerList = getAllUserAnswersNotMultipleChoice(category)
 
-                val answer1 = answerList[0]
+                val answer1 = answerList.random()
 
-                val answer2 = answerList[1]
+                val answer2 = answerList.random()
 
                 // Get grammar analysis
                 val grammarPrompt = generateGrammarPrompt(answer1)
@@ -1334,6 +1334,10 @@ class StoryScapeViewModel @Inject constructor(
         } else {
             _currentPharagraphIndex.intValue = 0
         }
+    }
+
+    fun resetParagraphIndex() {
+        _currentPharagraphIndex.intValue = 0
     }
 
     fun answerQuestion(answer: String, category: StoryCategory) {

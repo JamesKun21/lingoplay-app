@@ -12,7 +12,7 @@ object ListOfStories {
             title = "Timun Mas",
             subtitle = "The Golden Cucumber Adventure",
             imageRes = R.drawable.timun_mas,
-            isLocked = false,
+            isComplete = false,
             bridgeHint = "Kamu akan membaca cerita Timun Mas sambil mendengarkan audionya. Jawab pertanyaan dan ikuti instruksi yang diberikan.",
             closeStatement = "Kamu telah menyelesaikan cerita Timun Mas. Selanjutnya kamu akan melihat analisis grammar dan vocabularymu.",
             paragraphs = listOf(

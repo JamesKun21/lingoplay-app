@@ -155,6 +155,7 @@ fun StoryScapeScreen(
                 onNextClick = {
                     if (viewModelStoryScape.currentPharagraphIndex.value == story.paragraphs.size - 1) {
                         // Get all the answers that is not multiple choice and generate AI grammar and vocabulary
+                        viewModelStoryScape.resetParagraphIndex()
                         viewModelStoryScape.analyzeText(if (category == "Beginner") StoryScapeViewModel.StoryCategory.BEGINNER else if (category == "Intermediate")
                             StoryScapeViewModel.StoryCategory.INTERMEDIATE else StoryScapeViewModel.StoryCategory.ADVANCED)
                         navigateTo(navController, Route.StoryScapeEndScreen.route)

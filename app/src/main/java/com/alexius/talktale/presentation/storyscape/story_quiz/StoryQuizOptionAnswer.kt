@@ -47,7 +47,8 @@ fun StoryQuizOptionAnswer(
                     style = MaterialTheme.typography.bodySmall,
                     modifier = modifier,
                     textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
+                    color = Orange
                 )
             }
 
