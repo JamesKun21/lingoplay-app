@@ -52,7 +52,7 @@ fun PhoneInputField(
     if (!LocalInspectionMode.current) {
         CCPUtils.getCountryAutomatically(context = LocalContext.current).let {
             it?.let {
-                country = it
+                country = Country.Indonesia
             }
         }
     }

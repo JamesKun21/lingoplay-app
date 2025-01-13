@@ -55,7 +55,16 @@ fun NavGraph(
             }
 
             composable(route = Route.TalkTaleNavigator.route){
-                TalkTaleNavgraph()
+                TalkTaleNavgraph(
+                    onSignOut = {
+                        viewModel.deleteEntry()
+                        navController.navigate(Route.AppStartNavigation.route){
+                            popUpTo(Route.MainNavigation.route){
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
             }
         }
 

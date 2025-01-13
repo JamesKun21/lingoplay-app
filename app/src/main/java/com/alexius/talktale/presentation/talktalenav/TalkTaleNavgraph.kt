@@ -33,6 +33,7 @@ import com.alexius.core.domain.model.Story
 import com.alexius.talktale.presentation.home_screen.HomeScreen
 import com.alexius.talktale.presentation.home_screen.HomeScreenViewModel
 import com.alexius.talktale.presentation.navgraph_main.Route
+import com.alexius.talktale.presentation.profile.ProfileScreen
 import com.alexius.talktale.presentation.report_card.ReportCardScreen
 import com.alexius.talktale.presentation.report_card.components.ReportCardBridgeScreen
 import com.alexius.talktale.presentation.storyscape.StoryScapeScreen
@@ -44,7 +45,8 @@ import kotlinx.coroutines.flow.asStateFlow
 @Composable
 fun TalkTaleNavgraph(
     modifier: Modifier = Modifier,
-    context: Context = LocalContext.current
+    context: Context = LocalContext.current,
+    onSignOut: () -> Unit
 ) {
     val bottomNavigationItems = remember {
         listOf(
@@ -210,6 +212,27 @@ fun TalkTaleNavgraph(
                             viewModelStoryScape.advancedCompletedStories.filter { it == true }.size +
                             viewModelStoryScape.advancedCareerCompletedStories.filter { it == true }.size
                 )
+            }
+
+            composable(
+                route = Route.ProfileScreen.route
+            ){
+                val viewModelHome: HomeScreenViewModel = hiltViewModel()
+                val userName by viewModelHome.userName.collectAsStateWithLifecycle()
+                val category by viewModelHome.category.collectAsStateWithLifecycle()
+                val userInfo by viewModelHome.userInfo.collectAsStateWithLifecycle()
+
+                userInfo?.let {
+                    ProfileScreen(
+                        userName = userName,
+                        category = category,
+                        birthDate = it.birth_date,
+                        phoneNumber = it.phone_number,
+                        onSignedOut = {
+
+                        }
+                    )
+                }
             }
         }
     }

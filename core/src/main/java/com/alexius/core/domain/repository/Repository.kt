@@ -23,6 +23,8 @@ interface Repository {
 
     fun changeLocalUserInfoName(name: String)
 
+    fun signOut()
+
     fun getLocalUserInfo(): UserInfo
 
     fun getLocalAssessmentScore(): AssessmentScore

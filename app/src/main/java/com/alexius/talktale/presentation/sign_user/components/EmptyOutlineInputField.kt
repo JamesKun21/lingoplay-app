@@ -32,6 +32,7 @@ fun EmptyOutlineInputField(
     onInputFieldEmpty: () -> Unit = {},
     onInputFieldFilled: () -> Unit = {},
     trailingIcon: @Composable (() -> Unit)? = null,
+    readOnly: Boolean = false
 ) {
     var isError by rememberSaveable() { mutableStateOf(false) }
 
@@ -47,6 +48,7 @@ fun EmptyOutlineInputField(
                     onInputFieldFilled()
                 }
             },
+            readOnly = readOnly,
             placeholder = {
                 Text(
                     text = placeHolderText,

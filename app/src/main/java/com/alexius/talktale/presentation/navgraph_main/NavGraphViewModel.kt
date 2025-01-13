@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.alexius.core.domain.usecases.app_entry.DeleteAppEntry
 import com.alexius.core.domain.usecases.app_entry.ReadAssessmentTaken
 import com.alexius.core.domain.usecases.app_entry.SaveAssessment
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class NavGraphViewModel @Inject constructor (
     private val saveAssessment: SaveAssessment,
-    private val readAssessmentTaken: ReadAssessmentTaken
+    private val readAssessmentTaken: ReadAssessmentTaken,
+    private val deleteAppEntry: DeleteAppEntry
 ): ViewModel() {
 
     private val _takenAssessment = mutableStateOf(Route.AssessmentNavigation.route)
@@ -38,6 +40,12 @@ class NavGraphViewModel @Inject constructor (
     fun saveAssessmentTaken() {
         viewModelScope.launch {
             saveAssessment(true)
+        }
+    }
+
+    fun deleteEntry() {
+        viewModelScope.launch {
+            deleteAppEntry()
         }
     }
 }

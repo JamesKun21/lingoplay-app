@@ -44,6 +44,10 @@ class RepositoryImplementation @Inject constructor(
 
     val assessmentScore = _assessmentScore
 
+    override fun signOut() {
+        auth.signOut()
+    }
+
     override suspend fun generateSpeech(
         id: String,
         apiKey: String,
