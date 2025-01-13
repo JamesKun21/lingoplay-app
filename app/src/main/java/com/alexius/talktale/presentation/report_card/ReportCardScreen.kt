@@ -1,6 +1,7 @@
 package com.alexius.talktale.presentation.report_card
 
 import android.media.MediaPlayer
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -45,11 +46,7 @@ fun ReportCardScreen(
 
             var selectedAnswerIndex = rememberSaveable() { mutableIntStateOf(-1) }
 
-            var isLoading by remember { mutableStateOf(false) }
 
-            val geminiState by reportCardViewModel.uiStateGemini.collectAsStateWithLifecycle()
-
-            val context = LocalContext.current
 
             ReportCardQuiz(
                 onBackClick = {
@@ -65,31 +62,14 @@ fun ReportCardScreen(
                 onNextClick = {
                     if (reportCardViewModel.currentQuestionIndex.value == reportCardViewModel.questions.size - 1) {
                         reportCardViewModel.analyzeAnswers(answersToAnalyze)
-                        isLoading = true
+                        Log.d("ReportCardScreen", "Answers to analyze: $answersToAnalyze")
                         navigateTo(navController, Route.ReportCardWordWizardScreen.route)
                     } else {
                         reportCardViewModel.moveToNextQuestion()
+                        selectedAnswerIndex.intValue = -1
                     }
                 }
             )
-
-            when (val state = geminiState) {
-                is UIState.Loading -> {
-                    // Show loading indicator
-                }
-                is UIState.Success -> {
-                    isLoading = false
-                }
-                is UIState.Error -> {
-                    // Show error message
-                    if (state.errorMessage != null) {
-                        Toast.makeText(context, state.errorMessage, Toast.LENGTH_SHORT).show()
-                    }
-                    isLoading = false
-                }
-            }
-
-            LoadingScreen(enableLoading = isLoading)
         }
 
         composable(
@@ -98,6 +78,9 @@ fun ReportCardScreen(
             val vocabList by reportCardViewModel.listVocabResponse.collectAsStateWithLifecycle()
             val grammarList by reportCardViewModel.listGrammarResponse.collectAsStateWithLifecycle()
             var isGrammar by remember { mutableStateOf(true) }
+            var isLoading by remember { mutableStateOf(false) }
+            val context = LocalContext.current
+            val geminiState by reportCardViewModel.uiStateGemini.collectAsStateWithLifecycle()
 
             ReportCardWordWizard(
                 isGrammar = isGrammar,
@@ -113,10 +96,29 @@ fun ReportCardScreen(
                     if (isGrammar) {
                         isGrammar = false
                     } else {
-                        onEndReportCard()
+                        navigateTo(navController, Route.ReportCardEndScreen.route)
                     }
                 }
             )
+
+            when (val state = geminiState) {
+                is UIState.Loading -> {
+                    // Show loading indicator
+                    isLoading = true
+                }
+                is UIState.Success -> {
+                    isLoading = false
+                }
+                is UIState.Error -> {
+                    // Show error message
+                    if (state.errorMessage != null) {
+                        Toast.makeText(context, state.errorMessage, Toast.LENGTH_SHORT).show()
+                    }
+                    isLoading = false
+                }
+            }
+
+            LoadingScreen(enableLoading = isLoading)
         }
 
         composable(

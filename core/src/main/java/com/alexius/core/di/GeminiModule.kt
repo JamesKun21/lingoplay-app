@@ -21,15 +21,13 @@ object GeminiModule {
     fun provideModel(): GenerativeModel {
 
         val config = generationConfig {
-            temperature = 0.15f
-            topK = 32
-            topP = 1f
-            maxOutputTokens = 4096
+            maxOutputTokens = 6000
         }
 
         val generativeModel = GenerativeModel(
-            modelName = "gemini-1.5-pro",
+            modelName = "gemini-1.5-flash",
             apiKey = GEMINI_API_KEY,
+            generationConfig = config,
             safetySettings = listOf(
                 SafetySetting(HarmCategory.HARASSMENT, BlockThreshold.MEDIUM_AND_ABOVE),
                 SafetySetting(HarmCategory.HATE_SPEECH, BlockThreshold.MEDIUM_AND_ABOVE),

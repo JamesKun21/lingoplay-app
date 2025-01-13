@@ -187,8 +187,13 @@ fun TalkTaleNavgraph(
                     onNextButton = {navigateToTap(navController, Route.ReportCardScreen.route)}
                 )
             }
-
             composable(route = Route.ReportCardScreen.route){
+
+                LaunchedEffect(Unit) {
+                    viewModelStoryScape.getTotalCompletedStoriesInEachCategory()
+                }
+
+
                 ReportCardScreen(
                     onEndReportCard = {
                         navController.navigate(Route.HomeScreen.route){

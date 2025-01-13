@@ -92,6 +92,8 @@ class ReportCardViewModel @Inject constructor(
                 }
                 _listGrammarResponse.value = listResponseGrammar
                 _listVocabResponse.value = listResponseVocab
+                _uiStateGemini.value = UIState.Success("Success")
+                Log.d("ReportCardViewModel", "analyzeAnswers: ${listResponseGrammar.size} + ${listResponseVocab.size}")
             } catch (e: Exception) {
                 _uiStateGemini.value = UIState.Error(e.message ?: "Unknown error")
                 Log.d("ReportCardViewModel", "analyzeAnswers: ${e.message}")

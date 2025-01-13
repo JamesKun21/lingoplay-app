@@ -22,6 +22,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.alexius.talktale.ui.theme.Black
@@ -29,6 +30,8 @@ import com.alexius.talktale.ui.theme.Blue
 import com.alexius.talktale.ui.theme.Poppins
 import com.alexius.talktale.R
 import com.alexius.talktale.presentation.common.MainButton
+import com.alexius.talktale.presentation.home_screen.HomeScreen
+import com.alexius.talktale.ui.theme.TalkTaleTheme
 
 @Composable
 fun EndReportCardScreen(
@@ -42,7 +45,7 @@ fun EndReportCardScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Report Cardd",
+            text = "Report Card",
             style = MaterialTheme.typography.displayMedium,
             color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.Bold
@@ -100,7 +103,8 @@ fun EndReportCardScreen(
 
         Text(
             text = "Teruslah berusaha, dan kamu akan menjadi ahli dalam bahasa Inggris!",
-            style = MaterialTheme.typography.labelSmall
+            style = MaterialTheme.typography.labelSmall,
+            textAlign = TextAlign.Center
         )
          Spacer(modifier = modifier.height(47.dp))
 
@@ -108,6 +112,17 @@ fun EndReportCardScreen(
             text = "Selesai",
             onClick = onEndButtonClick,
             enabled = true
+        )
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
+@Composable
+private fun Prev() {
+    TalkTaleTheme {
+        EndReportCardScreen(
+            storiesCompleted = 5,
+            onEndButtonClick = {}
         )
     }
 }

@@ -1313,6 +1313,7 @@ class StoryScapeViewModel @Inject constructor(
                     _intermediateCompletedStories.addAll(completedStories.intermediate)
                     _advancedCompletedStories.addAll(completedStories.advancedTales)
                     _advancedCareerCompletedStories.addAll(completedStories.careerTales)
+                    Log.d("StoryScapeViewModel", "_beginner: $_beginnerCompletedStories")
                 }
             }
         }
@@ -1335,22 +1336,26 @@ class StoryScapeViewModel @Inject constructor(
                 }
             }
             val completedStories = CompletedStories(
-                beginner = _beginnerCompletedStories as ArrayList<Boolean>,
-                intermediate = _intermediateCompletedStories as ArrayList<Boolean>,
-                advancedTales = _advancedCompletedStories as ArrayList<Boolean>,
-                careerTales = _advancedCareerCompletedStories as ArrayList<Boolean>
+                beginner = arrayListOf(_beginnerCompletedStories[0], _beginnerCompletedStories[1], _beginnerCompletedStories[2]),
+                intermediate = arrayListOf(_intermediateCompletedStories[0], _intermediateCompletedStories[1], _intermediateCompletedStories[2]),
+                advancedTales = arrayListOf(_advancedCompletedStories[0], _advancedCompletedStories[1], _advancedCompletedStories[2]),
+                careerTales = arrayListOf(_advancedCareerCompletedStories[0], _advancedCareerCompletedStories[1], _advancedCareerCompletedStories[2])
             )
+
+            Log.d("StoryScapeViewModel", "Completed Stories: $completedStories")
 
             updateCompletedStories(completedStories).collect {response ->
                 response.onSuccess {
                     Log.d("StoryScapeViewModel", "Completed Stories Updated")
+                }
+                response.onFailure {
+                    Log.d("StoryScapeViewModel", "Error: ${it.message}")
                 }
             }
         }
     }
 
     fun getTotalCompletedStoriesInEachCategory() {
-
         viewModelScope.launch {
             getCompletedStories().collect {response ->
                 response.onSuccess {
