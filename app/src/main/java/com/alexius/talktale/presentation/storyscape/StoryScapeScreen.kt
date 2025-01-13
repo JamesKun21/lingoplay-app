@@ -21,7 +21,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.alexius.core.domain.model.Story
 import com.alexius.core.util.UIState
-import com.alexius.talktale.Greeting
 import com.alexius.talktale.presentation.common.LoadingScreen
 import com.alexius.talktale.presentation.navgraph_main.Route
 import com.alexius.talktale.presentation.storyscape.choose_screen.CareerChooseScreen

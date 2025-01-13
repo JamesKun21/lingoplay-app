@@ -65,11 +65,15 @@ sealed class Route(
 
     object ReportCardScreen: Route(route = "reportCardScreen")
 
-    object ReportCardBridgeScreen: Route(route = "reportCardBridgeScreen")
+    object ReportCardQuizScreen: Route(route = "reportCardQuizScreen")
 
-    object ProfileScreen: Route(route = "profileScreen")
+    object ReportCardWordWizardScreen: Route(route = "reportCardWordWizardScreen")
+
+    object ReportCardEndScreen: Route(route = "reportCardEndScreen")
 
     object ReportCardDisplay: Route(route = "reportCardDisplay")
+
+    object ProfileScreen: Route(route = "profileScreen")
 
     object AppStartNavigation : Route(route = "appStartNavigation")
 

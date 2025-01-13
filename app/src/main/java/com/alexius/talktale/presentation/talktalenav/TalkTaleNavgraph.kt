@@ -33,6 +33,8 @@ import com.alexius.core.domain.model.Story
 import com.alexius.talktale.presentation.home_screen.HomeScreen
 import com.alexius.talktale.presentation.home_screen.HomeScreenViewModel
 import com.alexius.talktale.presentation.navgraph_main.Route
+import com.alexius.talktale.presentation.report_card.ReportCardScreen
+import com.alexius.talktale.presentation.report_card.components.ReportCardBridgeScreen
 import com.alexius.talktale.presentation.storyscape.StoryScapeScreen
 import com.alexius.talktale.presentation.storyscape.StoryScapeViewModel
 import com.alexius.talktale.presentation.storyscape.choose_screen.LevelChooseScreen
@@ -181,11 +183,28 @@ fun TalkTaleNavgraph(
             }
 
             composable(route = Route.ReportCardDisplay.route){
-
+                ReportCardBridgeScreen(
+                    onNextButton = {navigateToTap(navController, Route.ReportCardScreen.route)}
+                )
             }
 
             composable(route = Route.ReportCardScreen.route){
-
+                ReportCardScreen(
+                    onEndReportCard = {
+                        navController.navigate(Route.HomeScreen.route){
+                            launchSingleTop = true
+                            popUpTo(Route.ReportCardScreen.route){
+                                inclusive = true
+                            }
+                        }
+                    },
+                    reportCardViewModel = hiltViewModel(),
+                    answersToAnalyze = viewModelStoryScape.listOfAnswers,
+                    completedStoriesCount = viewModelStoryScape.beginnerCompletedStories.filter { it == true }.size +
+                            viewModelStoryScape.intermediateCompletedStories.filter { it == true }.size +
+                            viewModelStoryScape.advancedCompletedStories.filter { it == true }.size +
+                            viewModelStoryScape.advancedCareerCompletedStories.filter { it == true }.size
+                )
             }
         }
     }

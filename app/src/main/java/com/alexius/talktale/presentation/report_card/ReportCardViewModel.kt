@@ -71,30 +71,26 @@ class ReportCardViewModel @Inject constructor(
                 val listResponseGrammar: ArrayList<ReportCardAnalysis> = arrayListOf()
                 val listResponseVocab: ArrayList<ReportCardAnalysis> = arrayListOf()
 
-                for (i in 0 .. 2){
-                    answers[i].let {
-                        val grammarPrompt = generateGrammarReportCardPrompt(it)
+                for (i in answers.indices) {
+                    if (i < 3) {
+                        val grammarPrompt = generateGrammarReportCardPrompt(answers[i])
                         val grammarResponse = geminiModel.generateContent(grammarPrompt)
                             .text?.replace("```json", "")?.replace("```", "")?.let { Json.decodeFromString<ReportCardAnalysis>(it) }
-                        listResponseGrammar.add(grammarResponse?: ReportCardAnalysis(
+                        listResponseGrammar.add(grammarResponse ?: ReportCardAnalysis(
+                            "", "",
+                            suggestion = ""
+                        ))
+                    } else if (i < 6) {
+                        val vocabPrompt = generateVocabReportCardPrompt(answers[i])
+                        val vocabResponse = geminiModel.generateContent(vocabPrompt)
+                            .text?.replace("```json", "")?.replace("```", "")?.let { Json.decodeFromString<ReportCardAnalysis>(it) }
+                        listResponseVocab.add(vocabResponse ?: ReportCardAnalysis(
                             "", "",
                             suggestion = ""
                         ))
                     }
                 }
                 _listGrammarResponse.value = listResponseGrammar
-
-                for (i in 3 .. 5){
-                    answers[i].let {
-                        val vocabPrompt = generateVocabReportCardPrompt(it)
-                        val vocabResponse = geminiModel.generateContent(vocabPrompt)
-                            .text?.replace("```json", "")?.replace("```", "")?.let { Json.decodeFromString<ReportCardAnalysis>(it) }
-                        listResponseVocab.add(vocabResponse?: ReportCardAnalysis(
-                            "", "",
-                            suggestion = ""
-                        ))
-                    }
-                }
                 _listVocabResponse.value = listResponseVocab
             } catch (e: Exception) {
                 _uiStateGemini.value = UIState.Error(e.message ?: "Unknown error")
@@ -111,6 +107,14 @@ class ReportCardViewModel @Inject constructor(
        /* checkAnswer()*/
         if (_currentQuestionIndex.intValue < _questions.size - 1) {
             _currentQuestionIndex.intValue++
+        }
+    }
+
+    fun moveToPreviousQuestion(callbackIfIndexBelowZero: () -> Unit) {
+        if (_currentQuestionIndex.intValue > 0) {
+            _currentQuestionIndex.intValue--
+        } else{
+            callbackIfIndexBelowZero()
         }
     }
 }
