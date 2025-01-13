@@ -228,9 +228,7 @@ fun TalkTaleNavgraph(
                         category = category,
                         birthDate = it.birth_date,
                         phoneNumber = it.phone_number,
-                        onSignedOut = {
-
-                        }
+                        onSignedOut = onSignOut
                     )
                 }
             }
