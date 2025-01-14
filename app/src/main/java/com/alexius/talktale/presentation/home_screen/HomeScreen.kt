@@ -152,7 +152,7 @@ fun HomeScreen(
             )
 
             Spacer(modifier = modifier.height(10.dp))
-
+/*
             Column(
                 modifier = modifier.fillMaxWidth()
             ) {
@@ -169,13 +169,24 @@ fun HomeScreen(
                 )
             }
 
-            Spacer(modifier = modifier.height(10.dp))
+            Spacer(modifier = modifier.height(10.dp))*/
 
             StoryCard(
                 imageDrawable = R.drawable.lion,
                 title = "The Lion and the Mouse",
                 description = "The Unexpected Friendship Adventure",
-                completed = true,
+                completed = false,
+                locked = false,
+                onClickPlay = onClickStoryCard
+            )
+
+            Spacer(modifier = modifier.height(10.dp))
+
+            StoryCard(
+                imageDrawable = com.alexius.core.R.drawable.red_hood,
+                title = "The Girl in the Red Hood",
+                description = "The Little Red Riding Hood Adventure",
+                completed = false,
                 locked = false,
                 onClickPlay = onClickStoryCard
             )

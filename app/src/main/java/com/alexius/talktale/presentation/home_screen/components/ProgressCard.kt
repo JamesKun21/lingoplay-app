@@ -73,7 +73,7 @@ fun ProgressCard(
                     Spacer(modifier = modifier.height(4.dp))
 
                     Text(
-                        text = "Selamat! Kamu telah menyelesaikan 2 cerita lebih banyak dibandingkan minggu lalu!",
+                        text = "Kamu bisa mengecek hasil progress cerita yang telah kamu selesaikan di sini",
                         style = MaterialTheme.typography.labelSmall
                     )
                 }
