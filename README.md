@@ -6,6 +6,8 @@ TalkTale is an innovative Android application designed to help users improve the
 
 ![Thumbnail](https://github.com/user-attachments/assets/72a5e5da-5721-434d-b277-5e01c5287d0d)
 
+https://youtu.be/1yyQ9pRDka4?feature=shared
+
 ## ✨ Features
 
 - **Interactive Stories**: Engaging stories with different difficulty levels
