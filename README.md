@@ -2,7 +2,7 @@
 
 TalkTale is an innovative Android application designed to help users improve their English language skills through interactive storytelling and AI-powered features. Built with Kotlin and modern Android development practices.
 
-## 📱 TalkTale
+## 📱 App
 
 ![Thumbnail](https://github.com/user-attachments/assets/72a5e5da-5721-434d-b277-5e01c5287d0d)
 
