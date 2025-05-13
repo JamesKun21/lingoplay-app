@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "943882727599",
+    "project_id": "android-ee6ac",
+    "storage_bucket": "android-ee6ac.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:943882727599:android:e0c94d9ebfcd4828fe645a",
+        "android_client_info": {
+          "package_name": "com.alexius.talktale"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv5YtBCl2DlUATR_1_W7hMoZ5AGJQ2j5U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
